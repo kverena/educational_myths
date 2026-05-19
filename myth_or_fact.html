@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Myth or Fact? – Educational Myths SoSe 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F5F0; --surface: #fff; --border: #E2DED6;
+    --text: #1A1816; --muted: #6B6760; --faint: #9E9A94;
+    --accent: #1A4F8A; --accent-l: #E6EFF8;
+    --green: #1A6B45; --green-l: #E6F3ED;
+    --red: #8A2020; --red-l: #F8EAEA;
+    --amber: #7A4F10; --amber-l: #FBF0DC;
+    --radius: 10px; --font: 'DM Sans', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+  .header-left h1 { font-size: 18px; font-weight: 500; }
+  .header-left p { font-size: 12px; color: var(--faint); margin-top: 2px; }
+  .progress-wrap { display: flex; align-items: center; gap: 10px; }
+  .progress-bar { width: 140px; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.4s; }
+  .progress-label { font-size: 12px; color: var(--muted); }
+
+  .game-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 2.5rem 2rem;
+    max-width: 600px; width: 100%; text-align: center;
+    transition: transform 0.2s;
+  }
+  .card-tag { font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--faint); margin-bottom: 1rem; }
+  .card-statement { font-size: 20px; font-weight: 400; line-height: 1.5; margin-bottom: 2rem; color: var(--text); }
+
+  .btn-row { display: flex; gap: 12px; justify-content: center; margin-bottom: 1rem; }
+  .btn-choice {
+    padding: 0.75rem 2.5rem; font-family: var(--font); font-size: 15px; font-weight: 500;
+    border-radius: var(--radius); border: 2px solid; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-myth { background: var(--red-l); color: var(--red); border-color: #E8BEBE; }
+  .btn-myth:hover { background: #f0d0d0; }
+  .btn-fact { background: var(--green-l); color: var(--green); border-color: #A8D4BC; }
+  .btn-fact:hover { background: #cce8d8; }
+  .btn-choice:disabled { opacity: 0.5; cursor: default; }
+
+  .feedback {
+    display: none; margin-top: 1.5rem;
+    border-radius: var(--radius); padding: 1.1rem 1.25rem; text-align: left;
+  }
+  .feedback.show { display: block; }
+  .feedback-correct { background: var(--green-l); border: 1px solid #A8D4BC; }
+  .feedback-wrong { background: var(--red-l); border: 1px solid #E8BEBE; }
+  .feedback-head { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+  .feedback-correct .feedback-head { color: var(--green); }
+  .feedback-wrong .feedback-head { color: var(--red); }
+  .feedback-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  .btn-next {
+    display: none; margin-top: 1.25rem;
+    padding: 0.65rem 2rem; font-family: var(--font); font-size: 14px; font-weight: 500;
+    background: var(--accent); color: white; border: none; border-radius: var(--radius);
+    cursor: pointer; transition: background 0.15s;
+  }
+  .btn-next:hover { background: #153F6E; }
+  .btn-next.show { display: inline-block; }
+
+  .score-screen { display: none; text-align: center; max-width: 480px; width: 100%; }
+  .score-screen.show { display: block; }
+  .score-num { font-size: 56px; font-weight: 300; color: var(--accent); line-height: 1; margin-bottom: 0.5rem; }
+  .score-label { font-size: 15px; color: var(--muted); margin-bottom: 1.5rem; }
+  .score-msg { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; background: var(--accent-l); border-radius: var(--radius); padding: 1rem 1.25rem; }
+  .btn-restart { padding: 0.65rem 2rem; font-family: var(--font); font-size: 14px; font-weight: 500; background: var(--accent); color: white; border: none; border-radius: var(--radius); cursor: pointer; }
+  .btn-restart:hover { background: #153F6E; }
+
+  .card-wrap { width: 100%; max-width: 600px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-left">
+    <h1>Myth or Fact?</h1>
+    <p>SoSe 2026 · Köstler · Educational Myths</p>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <span class="progress-label" id="progressLabel">0 / 8</span>
+  </div>
+</header>
+
+<div class="game-wrap">
+  <div class="card-wrap" id="cardWrap">
+    <div class="card" id="card">
+      <div class="card-tag">Statement <span id="qNum">1</span> of <span id="qTotal">8</span></div>
+      <div class="card-statement" id="statement"></div>
+      <div class="btn-row">
+        <button class="btn-choice btn-myth" onclick="answer('myth')">Myth</button>
+        <button class="btn-choice btn-fact" onclick="answer('fact')">Fact</button>
+      </div>
+      <div class="feedback" id="feedback">
+        <div class="feedback-head" id="feedbackHead"></div>
+        <div class="feedback-text" id="feedbackText"></div>
+      </div>
+      <button class="btn-next" id="btnNext" onclick="next()">Next →</button>
+    </div>
+  </div>
+
+  <div class="score-screen" id="scoreScreen">
+    <div class="score-num" id="scoreNum"></div>
+    <div class="score-label">correct answers</div>
+    <div class="score-msg" id="scoreMsg"></div>
+    <button class="btn-restart" onclick="restart()">Play again</button>
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    statement: "A peer-reviewed article has been checked for quality by independent experts before publication.",
+    answer: "fact",
+    explanation: "Correct. Peer review means that independent scholars in the field have evaluated the article before it was accepted for publication. It is a quality filter – though not a perfect one."
+  },
+  {
+    statement: "The more studies support a claim, the stronger the evidence.",
+    answer: "myth",
+    explanation: "Not quite. What matters is the quality of the studies, not just the quantity. Ten poorly designed studies can be outweighed by one rigorous meta-analysis."
+  },
+  {
+    statement: "A meta-analysis combines and statistically synthesises the results of many individual studies.",
+    answer: "fact",
+    explanation: "Exactly. A meta-analysis pools data across studies to calculate an overall effect size, giving a much more reliable picture than any single study."
+  },
+  {
+    statement: "If a study finds a statistically significant result, it means the effect is practically important.",
+    answer: "myth",
+    explanation: "Statistical significance and practical significance are different things. A tiny effect can be statistically significant with a large enough sample. Always look at the effect size, not just the p-value."
+  },
+  {
+    statement: "A Clearinghouse like the What Works Clearinghouse has already evaluated the quality of evidence for many educational interventions.",
+    answer: "fact",
+    explanation: "Yes. Clearinghouses systematically review research and rate the strength of evidence. They are a useful starting point for understanding what the accumulated research says."
+  },
+  {
+    statement: "If you can't find any studies on a topic, that proves the myth is false.",
+    answer: "myth",
+    explanation: "Absence of evidence is not evidence of absence. A lack of studies might mean the topic hasn't been well researched yet – or that your search terms need adjusting."
+  },
+  {
+    statement: "An effect size of d = 0.20 indicates a stronger educational impact than d = 0.60.",
+    answer: "myth",
+    explanation: "The opposite is true. A higher effect size means a stronger effect. Hattie uses 0.40 as a rough threshold for meaningful educational impact."
+  },
+  {
+    statement: "A systematic review follows a pre-defined, transparent search protocol to minimise bias in selecting studies.",
+    answer: "fact",
+    explanation: "Correct. Unlike a narrative literature review, a systematic review documents exactly how studies were searched, selected, and evaluated – making it reproducible and more trustworthy."
+  }
+];
+
+let current = 0;
+let score = 0;
+let shuffled = [];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function load() {
+  const q = shuffled[current];
+  document.getElementById('qNum').textContent = current + 1;
+  document.getElementById('qTotal').textContent = shuffled.length;
+  document.getElementById('statement').textContent = q.statement;
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('btnNext').className = 'btn-next';
+  document.querySelectorAll('.btn-choice').forEach(b => b.disabled = false);
+  document.getElementById('progressFill').style.width = (current / shuffled.length * 100) + '%';
+  document.getElementById('progressLabel').textContent = current + ' / ' + shuffled.length;
+}
+
+function answer(choice) {
+  const q = shuffled[current];
+  const correct = choice === q.answer;
+  if (correct) score++;
+  document.querySelectorAll('.btn-choice').forEach(b => b.disabled = true);
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback show ' + (correct ? 'feedback-correct' : 'feedback-wrong');
+  document.getElementById('feedbackHead').textContent = correct ? '✓ Correct!' : '✗ Not quite.';
+  document.getElementById('feedbackText').textContent = q.explanation;
+  document.getElementById('btnNext').className = 'btn-next show';
+}
+
+function next() {
+  current++;
+  if (current >= shuffled.length) {
+    showScore();
+  } else {
+    load();
+  }
+}
+
+function showScore() {
+  document.getElementById('cardWrap').style.display = 'none';
+  const s = document.getElementById('scoreScreen');
+  s.className = 'score-screen show';
+  document.getElementById('scoreNum').textContent = score + ' / ' + shuffled.length;
+  const pct = score / shuffled.length;
+  let msg = '';
+  if (pct === 1) msg = "Perfect score! You have a solid understanding of how evidence works in educational research.";
+  else if (pct >= 0.75) msg = "Great result. A few areas to revisit – pay particular attention to the difference between statistical and practical significance.";
+  else if (pct >= 0.5) msg = "Good start. Some key concepts around evidence quality and effect sizes are worth looking at more closely before you begin your literature search.";
+  else msg = "This is a good reminder of how tricky evidence quality can be. Have another go – these concepts will be really useful for your deconstruction chapter.";
+  document.getElementById('scoreMsg').textContent = msg;
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('progressLabel').textContent = shuffled.length + ' / ' + shuffled.length;
+}
+
+function restart() {
+  current = 0; score = 0;
+  shuffled = shuffle(questions);
+  document.getElementById('cardWrap').style.display = 'block';
+  document.getElementById('scoreScreen').className = 'score-screen';
+  load();
+}
+
+shuffled = shuffle(questions);
+load();
+</script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Methods Quiz – Educational Myths SoSe 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F5F0; --surface: #fff; --border: #E2DED6;
+    --text: #1A1816; --muted: #6B6760; --faint: #9E9A94;
+    --accent: #1A4F8A; --accent-l: #E6EFF8;
+    --green: #1A6B45; --green-l: #E6F3ED;
+    --red: #8A2020; --red-l: #F8EAEA;
+    --amber: #7A4F10; --amber-l: #FBF0DC;
+    --radius: 10px; --font: 'DM Sans', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  header h1 { font-size: 18px; font-weight: 500; }
+  header p { font-size: 12px; color: var(--faint); margin-top: 2px; }
+  .progress-wrap { display: flex; align-items: center; gap: 10px; }
+  .progress-bar { width: 160px; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.4s; }
+  .progress-label { font-size: 12px; color: var(--muted); min-width: 40px; }
+
+  .game-wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem 1.5rem; }
+  .quiz-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; max-width: 620px; width: 100%; }
+
+  .q-tag { font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--faint); margin-bottom: 0.9rem; }
+  .q-text { font-size: 17px; line-height: 1.5; margin-bottom: 1.5rem; }
+
+  .options { display: grid; gap: 0.6rem; margin-bottom: 1rem; }
+  .option {
+    width: 100%; text-align: left; padding: 0.75rem 1rem;
+    font-family: var(--font); font-size: 14px; color: var(--text);
+    background: var(--bg); border: 1.5px solid var(--border);
+    border-radius: var(--radius); cursor: pointer;
+    transition: all 0.15s; display: flex; align-items: flex-start; gap: 10px;
+  }
+  .option:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-l); }
+  .option:disabled { cursor: default; }
+  .option.correct { background: var(--green-l); border-color: #A8D4BC; color: var(--green); }
+  .option.wrong { background: var(--red-l); border-color: #E8BEBE; color: var(--red); }
+  .option.reveal { background: var(--green-l); border-color: #A8D4BC; color: var(--green); opacity: 0.7; }
+  .opt-letter { font-weight: 500; flex-shrink: 0; min-width: 18px; }
+
+  .explanation { display: none; margin-top: 0.75rem; padding: 0.9rem 1rem; border-radius: var(--radius); font-size: 13px; line-height: 1.6; }
+  .explanation.show { display: block; }
+  .exp-correct { background: var(--green-l); border: 1px solid #A8D4BC; color: #14532D; }
+  .exp-wrong { background: var(--red-l); border: 1px solid #E8BEBE; color: var(--red); }
+  .exp-head { font-weight: 500; margin-bottom: 4px; }
+
+  .btn-next { display: none; margin-top: 1rem; padding: 0.65rem 1.75rem; font-family: var(--font); font-size: 14px; font-weight: 500; background: var(--accent); color: white; border: none; border-radius: var(--radius); cursor: pointer; transition: background 0.15s; }
+  .btn-next:hover { background: #153F6E; }
+  .btn-next.show { display: inline-block; }
+
+  .final { display: none; text-align: center; max-width: 500px; }
+  .final.show { display: block; }
+  .final-score { font-size: 52px; font-weight: 300; color: var(--accent); line-height: 1; margin-bottom: 0.4rem; }
+  .final-label { font-size: 15px; color: var(--muted); margin-bottom: 1.25rem; }
+  .final-msg { font-size: 13px; color: var(--muted); line-height: 1.7; background: var(--accent-l); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1.5rem; text-align: left; }
+  .btn-restart { padding: 0.65rem 2rem; font-family: var(--font); font-size: 14px; font-weight: 500; background: var(--accent); color: white; border: none; border-radius: var(--radius); cursor: pointer; }
+  .btn-restart:hover { background: #153F6E; }
+
+  .score-chip { font-size: 12px; background: var(--accent-l); color: var(--accent); border-radius: 20px; padding: 3px 10px; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Research Methods Quiz</h1>
+    <p>SoSe 2026 · Köstler · Educational Myths</p>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="pFill" style="width:0%"></div></div>
+    <span class="progress-label" id="pLabel">0 / 10</span>
+    <span class="score-chip" id="scoreChip">0 pts</span>
+  </div>
+</header>
+
+<div class="game-wrap">
+  <div id="quizCard" class="quiz-card">
+    <div class="q-tag">Question <span id="qNum">1</span> of <span id="qTotal">10</span></div>
+    <div class="q-text" id="qText"></div>
+    <div class="options" id="options"></div>
+    <div class="explanation" id="explanation"></div>
+    <button class="btn-next" id="btnNext" onclick="nextQ()">Next question →</button>
+  </div>
+  <div class="final" id="final">
+    <div class="final-score" id="finalScore"></div>
+    <div class="final-label">out of 10 points</div>
+    <div class="final-msg" id="finalMsg"></div>
+    <button class="btn-restart" onclick="restart()">Try again</button>
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "What is the main advantage of a meta-analysis over a single empirical study?",
+    opts: ["It is faster to produce", "It combines results across many studies, giving a more reliable overall estimate", "It uses bigger questionnaires", "It is always published in better journals"],
+    correct: 1,
+    exp: "A meta-analysis pools data from many studies and calculates an overall effect size. This makes it far more reliable than any single study, because individual studies can be affected by small samples, specific contexts, or random error."
+  },
+  {
+    q: "You search ERIC for your myth topic and get 0 results. What is the most likely reason?",
+    opts: ["The myth does not exist", "The topic has never been studied by anyone", "Your search terms may be too specific or in the wrong language", "ERIC only covers US journals"],
+    correct: 2,
+    exp: "Zero results almost always means a search term problem. Try broader terms, switch from German to English, or search for the underlying concept rather than the specific myth formulation."
+  },
+  {
+    q: "What does an effect size of d = 0.80 tell you?",
+    opts: ["80% of students benefit from the intervention", "The result is statistically significant", "There is a large difference between the groups compared", "The study had 80 participants"],
+    correct: 2,
+    exp: "Cohen's d is a standardised measure of the difference between two groups. d = 0.80 is conventionally considered a 'large' effect. It says nothing directly about the percentage of students who benefit or about statistical significance."
+  },
+  {
+    q: "Which of the following is the strongest type of evidence for a causal claim?",
+    opts: ["A large-scale survey", "An expert opinion piece", "A randomised controlled trial (RCT)", "A case study of one school"],
+    correct: 2,
+    exp: "An RCT randomly assigns participants to conditions, which controls for confounding variables and allows causal conclusions. Surveys, expert opinions, and case studies can show associations but cannot establish causality."
+  },
+  {
+    q: "A study finds a statistically significant result (p < .05). What does this mean?",
+    opts: ["The effect is definitely real and practically important", "There is less than a 5% probability of getting this result by chance if there were no true effect", "The study has a very large sample", "The intervention works for all students"],
+    correct: 1,
+    exp: "Statistical significance tells you about the probability of the observed result under the null hypothesis. It does not mean the effect is large, practically meaningful, or guaranteed to replicate."
+  },
+  {
+    q: "What is the purpose of the 'Peer Reviewed' filter in ERIC?",
+    opts: ["It filters for articles written by professors only", "It filters for articles reviewed and approved by independent experts before publication", "It filters for the most recently published articles", "It filters out articles in languages other than English"],
+    correct: 1,
+    exp: "Peer review means that other experts in the field have critically evaluated the article before publication. It is a quality filter – imperfect, but an important baseline for academic sources."
+  },
+  {
+    q: "You find a study showing that students who eat breakfast perform better academically. What can you conclude?",
+    opts: ["Eating breakfast causes better academic performance", "There is an association between eating breakfast and academic performance, but causality is unclear", "Schools should immediately mandate breakfast programmes", "The study is irrelevant to educational research"],
+    correct: 1,
+    exp: "Correlation does not equal causation. Students who eat breakfast may also come from households with better resources, more stable routines, or other factors that affect performance. An observational study cannot isolate the effect of breakfast alone."
+  },
+  {
+    q: "What distinguishes a systematic review from a narrative literature review?",
+    opts: ["Systematic reviews only cover quantitative studies", "Systematic reviews follow a pre-defined, documented search and selection protocol to minimise bias", "Narrative reviews are more reliable because they are written by senior researchers", "There is no meaningful difference between the two"],
+    correct: 1,
+    exp: "A systematic review documents exactly how studies were searched, included, and evaluated – making it transparent and reproducible. A narrative review reflects the author's selection and interpretation, which can introduce bias."
+  },
+  {
+    q: "For your deconstruction chapter, you find one study from 2005 with n=45 and one meta-analysis from 2019 covering 78 studies. Which should anchor your argument?",
+    opts: ["The 2005 study, because it is older and more established", "The meta-analysis, because it synthesises far more evidence", "Both equally – more sources are always better", "Neither – you need at least 10 sources before making any claim"],
+    correct: 1,
+    exp: "The meta-analysis represents far more evidence and is more recent. One high-quality synthesis is more valuable than one older small study. You may still cite the 2005 study for context, but the meta-analysis should anchor your argument."
+  },
+  {
+    q: "What does it mean when a Clearinghouse rates an intervention as having 'no discernible effects'?",
+    opts: ["The intervention has been proven to be harmful", "Studies on the intervention meet quality standards but show no meaningful effect on outcomes", "There are not enough studies to evaluate the intervention", "The intervention was not studied in the correct country"],
+    correct: 1,
+    exp: "'No discernible effects' means the studies exist and are of sufficient quality, but the intervention does not show a meaningful impact on the measured outcomes. This is different from 'insufficient evidence', which means not enough quality research exists yet."
+  }
+];
+
+let current = 0;
+let score = 0;
+let shuffled = [];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+const letters = ['A', 'B', 'C', 'D'];
+
+function load() {
+  const q = shuffled[current];
+  document.getElementById('qNum').textContent = current + 1;
+  document.getElementById('qTotal').textContent = shuffled.length;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('pFill').style.width = (current / shuffled.length * 100) + '%';
+  document.getElementById('pLabel').textContent = current + ' / ' + shuffled.length;
+
+  const opts = document.getElementById('options');
+  opts.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${o}</span>`;
+    btn.onclick = () => answer(i);
+    opts.appendChild(btn);
+  });
+
+  document.getElementById('explanation').className = 'explanation';
+  document.getElementById('btnNext').className = 'btn-next';
+}
+
+function answer(idx) {
+  const q = shuffled[current];
+  const btns = document.querySelectorAll('.option');
+  btns.forEach(b => b.disabled = true);
+  const correct = idx === q.correct;
+  if (correct) { score++; btns[idx].classList.add('correct'); }
+  else { btns[idx].classList.add('wrong'); btns[q.correct].classList.add('reveal'); }
+  const exp = document.getElementById('explanation');
+  exp.className = 'explanation show ' + (correct ? 'exp-correct' : 'exp-wrong');
+  exp.innerHTML = `<div class="exp-head">${correct ? '✓ Correct!' : '✗ Not quite.'}</div>${q.exp}`;
+  document.getElementById('btnNext').className = 'btn-next show';
+  document.getElementById('scoreChip').textContent = score + ' pts';
+  document.getElementById('pFill').style.width = ((current + 1) / shuffled.length * 100) + '%';
+  document.getElementById('pLabel').textContent = (current + 1) + ' / ' + shuffled.length;
+}
+
+function nextQ() {
+  current++;
+  if (current >= shuffled.length) showFinal();
+  else load();
+}
+
+function showFinal() {
+  document.getElementById('quizCard').style.display = 'none';
+  const f = document.getElementById('final');
+  f.className = 'final show';
+  document.getElementById('finalScore').textContent = score;
+  const pct = score / shuffled.length;
+  let msg = '';
+  if (pct === 1) msg = "Perfect score! You have a thorough understanding of evidence quality, research methodology, and database search strategy. You are well-prepared for your deconstruction chapter.";
+  else if (pct >= 0.8) msg = "Excellent. You have a strong grasp of the key concepts. Review any questions you got wrong – particularly the distinction between statistical significance and practical significance, and causality vs. correlation.";
+  else if (pct >= 0.6) msg = "Good result. There are a few areas worth revisiting before your literature search: effect sizes, the difference between study types, and what Clearinghouse ratings mean.";
+  else msg = "This is a useful baseline. Before diving into your deconstruction chapter, it is worth spending some time on evidence quality, effect sizes, and the hierarchy of research designs. The other games in this series can help.";
+  document.getElementById('finalMsg').textContent = msg;
+}
+
+function restart() {
+  current = 0; score = 0;
+  shuffled = shuffle(questions);
+  document.getElementById('quizCard').style.display = 'block';
+  document.getElementById('final').className = 'final';
+  document.getElementById('scoreChip').textContent = '0 pts';
+  load();
+}
+
+shuffled = shuffle(questions);
+load();
+</script>
+</body>
+</html>

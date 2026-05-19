@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evidence Strength Rater – Educational Myths SoSe 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F5F0; --surface: #fff; --border: #E2DED6;
+    --text: #1A1816; --muted: #6B6760; --faint: #9E9A94;
+    --accent: #1A4F8A; --accent-l: #E6EFF8;
+    --green: #1A6B45; --green-l: #E6F3ED;
+    --amber: #7A4F10; --amber-l: #FBF0DC;
+    --red: #8A2020; --red-l: #F8EAEA;
+    --purple: #4A3A8A; --purple-l: #EEEDF8;
+    --radius: 10px; --font: 'DM Sans', sans-serif; --mono: 'DM Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  header h1 { font-size: 18px; font-weight: 500; }
+  header p { font-size: 12px; color: var(--faint); margin-top: 2px; }
+  .progress-wrap { display: flex; align-items: center; gap: 10px; }
+  .progress-bar { width: 140px; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.4s; }
+  .progress-label { font-size: 12px; color: var(--muted); }
+
+  .page { max-width: 700px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .source-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.75rem; margin-bottom: 1.5rem; }
+  .source-label { font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--faint); margin-bottom: 1rem; }
+  .source-title { font-size: 15px; font-weight: 500; margin-bottom: 0.4rem; }
+  .source-meta { font-size: 13px; color: var(--muted); margin-bottom: 1rem; font-family: var(--mono); }
+  .source-abstract { font-size: 13px; color: var(--muted); line-height: 1.65; background: var(--bg); border-radius: 8px; padding: 0.9rem 1rem; margin-bottom: 1.25rem; border-left: 2px solid var(--border); }
+
+  .rating-label { font-size: 13px; font-weight: 500; margin-bottom: 0.6rem; }
+  .rating-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 0.5rem; }
+  .rating-btn {
+    padding: 6px 14px; font-family: var(--font); font-size: 13px;
+    border: 1.5px solid var(--border); border-radius: 20px;
+    background: var(--surface); color: var(--muted);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .rating-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .rating-btn.selected-1 { background: var(--red-l); border-color: #E8BEBE; color: var(--red); }
+  .rating-btn.selected-2 { background: var(--amber-l); border-color: #E8C87E; color: var(--amber); }
+  .rating-btn.selected-3 { background: var(--accent-l); border-color: #A0C0E0; color: var(--accent); }
+  .rating-btn.selected-4 { background: var(--green-l); border-color: #A8D4BC; color: var(--green); }
+
+  .reasoning-label { font-size: 12px; color: var(--muted); margin-bottom: 4px; margin-top: 0.75rem; }
+  textarea { width: 100%; font-family: var(--font); font-size: 13px; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 0.8rem; resize: vertical; transition: border-color 0.15s; }
+  textarea:focus { outline: none; border-color: #4A7DB5; box-shadow: 0 0 0 3px rgba(74,125,181,0.12); }
+
+  .feedback-panel { display: none; margin-top: 1rem; border-radius: 8px; padding: 0.9rem 1rem; font-size: 13px; line-height: 1.6; }
+  .feedback-panel.show { display: block; }
+  .fb-strong { background: var(--green-l); border: 1px solid #A8D4BC; color: #14532D; }
+  .fb-moderate { background: var(--accent-l); border: 1px solid #A0C0E0; color: var(--accent); }
+  .fb-weak { background: var(--amber-l); border: 1px solid #E8C87E; color: var(--amber); }
+  .fb-lowest { background: var(--red-l); border: 1px solid #E8BEBE; color: var(--red); }
+  .fb-head { font-weight: 500; margin-bottom: 4px; }
+
+  .btn-row { display: flex; gap: 10px; margin-top: 1rem; flex-wrap: wrap; }
+  .btn-check { padding: 0.6rem 1.5rem; font-family: var(--font); font-size: 13px; font-weight: 500; background: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; transition: background 0.15s; }
+  .btn-check:hover { background: #153F6E; }
+  .btn-next { padding: 0.6rem 1.5rem; font-family: var(--font); font-size: 13px; font-weight: 500; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; display: none; transition: background 0.15s; }
+  .btn-next:hover { background: var(--bg); }
+
+  .summary { background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: 14px; padding: 1.75rem; display: none; }
+  .summary.show { display: block; }
+  .summary h2 { font-size: 17px; font-weight: 500; margin-bottom: 0.5rem; }
+  .summary p { font-size: 13px; color: var(--muted); margin-bottom: 1rem; line-height: 1.6; }
+  .takeaway { background: var(--accent-l); border-radius: 8px; padding: 0.9rem 1rem; font-size: 13px; color: var(--accent); line-height: 1.6; margin-bottom: 0.75rem; }
+  .btn-restart { padding: 0.6rem 1.5rem; font-family: var(--font); font-size: 13px; font-weight: 500; background: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; margin-top: 0.5rem; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Evidence Strength Rater</h1>
+    <p>SoSe 2026 · Köstler · Educational Myths</p>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="pFill" style="width:0%"></div></div>
+    <span class="progress-label" id="pLabel">0 / 4</span>
+  </div>
+</header>
+
+<div class="page">
+  <div id="gameArea"></div>
+  <div class="summary" id="summary">
+    <h2>Well done – here are the key takeaways</h2>
+    <p>Rating evidence quality is one of the most important skills in academic writing. Here is what this exercise was designed to show:</p>
+    <div class="takeaway">A single study – even a published one – is much weaker evidence than a systematic review or meta-analysis, which synthesises many studies and controls for individual weaknesses.</div>
+    <div class="takeaway">Sample size matters: a study with n=12 cannot support strong generalisations. Always ask: how many participants, and from what context?</div>
+    <div class="takeaway">Correlation is not causation. Many educational studies find associations but cannot prove that one thing caused another.</div>
+    <div class="takeaway">For your deconstruction chapter: if you rely on only one or two studies, acknowledge their limitations. One strong meta-analysis is worth more than five individual studies cited uncritically.</div>
+    <button class="btn-restart" onclick="location.reload()">Start again</button>
+  </div>
+</div>
+
+<script>
+const sources = [
+  {
+    label: "Source A",
+    title: "Screen time and academic performance in elementary school children",
+    meta: "Johnson & Park (2019) · Journal of Educational Psychology · n = 2,847",
+    abstract: "This longitudinal study followed 2,847 children across 14 schools over three years. Children with more than 2 hours of daily screen time showed significantly lower reading scores (d = −0.31, p < .001) after controlling for socioeconomic status, parental education, and prior attainment. The study used validated psychometric instruments and a pre-registered analysis plan.",
+    correctRating: 4,
+    levels: ["Very weak – anecdote or opinion", "Weak – single small study", "Moderate – solid single study", "Strong – large or synthesised evidence"],
+    feedback: {
+      4: "Correct. This is a large, longitudinal, pre-registered study with controls for confounds and a meaningful effect size. It is strong single-study evidence – though it would still benefit from replication.",
+      3: "Close – but this study is actually stronger than 'moderate'. The large sample (n = 2,847), longitudinal design, pre-registration, and controlled analysis push it to strong single-study evidence.",
+      2: "This underestimates the evidence. The large sample size, longitudinal design, pre-registered analysis, and statistical controls make this considerably more rigorous than a typical small study.",
+      1: "This significantly underestimates the study. It is a large, well-designed empirical study – very different from an anecdote or expert opinion."
+    }
+  },
+  {
+    label: "Source B",
+    title: "My experience as a teacher: why homework doesn't work",
+    meta: "Williams, T. (2022) · Blog post · TeachingThoughts.net",
+    abstract: "In this reflective post, a secondary school teacher describes how, after 15 years in the classroom, he has noticed that students who complete lots of homework do not necessarily perform better. He argues that homework creates stress and family conflict, and calls for schools to rethink their homework policies.",
+    correctRating: 1,
+    levels: ["Very weak – anecdote or opinion", "Weak – single small study", "Moderate – solid single study", "Strong – large or synthesised evidence"],
+    feedback: {
+      1: "Correct. This is a personal reflective account from one practitioner. It may be interesting and authentic, but it is not empirical evidence. It cannot be used to make generalisable claims in an academic paper.",
+      2: "This overestimates the source. A blog post reflecting on personal experience is not a study at all – there is no data, no methodology, and no peer review.",
+      3: "This is a significant overestimate. The source is a practitioner blog post, not an empirical study. It has no data, no methodology, and has not been peer-reviewed.",
+      4: "This is a major overestimate. A personal blog post is among the weakest forms of evidence. It cannot be used as academic evidence for a claim about homework effectiveness."
+    }
+  },
+  {
+    label: "Source C",
+    title: "Does class size affect student achievement? A meta-analysis of 127 studies",
+    meta: "Chen, R., Mueller, S. & Okafor, J. (2021) · Review of Educational Research · k = 127 studies, N > 400,000",
+    abstract: "This meta-analysis synthesised findings from 127 independent studies published between 1990 and 2020, covering over 400,000 students across 18 countries. The overall effect of class size reduction on academic achievement was small (d = 0.18, 95% CI [0.12, 0.24]), with larger effects found in early primary education and for students from low-income backgrounds. Substantial heterogeneity between studies was observed.",
+    correctRating: 4,
+    levels: ["Very weak – anecdote or opinion", "Weak – single small study", "Moderate – solid single study", "Strong – large or synthesised evidence"],
+    feedback: {
+      4: "Correct. A meta-analysis of 127 studies with over 400,000 participants across 18 countries represents very strong synthesised evidence. The reported confidence interval and heterogeneity analysis show methodological rigour.",
+      3: "This underestimates the source considerably. A meta-analysis synthesising 127 studies and 400,000+ participants is far stronger than a single well-designed study.",
+      2: "This significantly underestimates the source. Meta-analyses represent the highest level of empirical evidence in educational research.",
+      1: "This is a major underestimate. A peer-reviewed meta-analysis is essentially the opposite of anecdotal evidence."
+    }
+  },
+  {
+    label: "Source D",
+    title: "Praise and self-esteem: a pilot study in one classroom",
+    meta: "Müller, A. (2020) · Unpublished conference paper · n = 12 students, one school",
+    abstract: "This exploratory study observed one class of 12 students over six weeks. The teacher increased the frequency of verbal praise, and students were surveyed about their self-esteem at the beginning and end of the period. Seven out of twelve students reported feeling 'more confident'. The author notes the study is preliminary and that further research is needed.",
+    correctRating: 2,
+    levels: ["Very weak – anecdote or opinion", "Weak – single small study", "Moderate – solid single study", "Strong – large or synthesised evidence"],
+    feedback: {
+      2: "Correct. This is an empirical study – it has a methodology and data – but it is very weak. The sample is tiny (n = 12), there is no control group, the outcome measure is self-reported, and the author themselves notes it is preliminary.",
+      1: "Not quite. This is technically a study with data, not purely anecdotal – but you are right that it is extremely weak. The tiny sample, lack of control group, and self-reported outcomes make it unreliable for any strong claim.",
+      3: "This overestimates the source. A study with 12 participants, no control group, and self-reported outcomes cannot support generalisable conclusions. It is weak exploratory work at best.",
+      4: "This significantly overestimates the source. A pilot study with 12 students is among the weakest forms of empirical evidence."
+    }
+  }
+];
+
+let current = 0;
+let selectedRating = null;
+
+function render() {
+  if (current >= sources.length) {
+    document.getElementById('gameArea').style.display = 'none';
+    document.getElementById('summary').className = 'summary show';
+    document.getElementById('pFill').style.width = '100%';
+    document.getElementById('pLabel').textContent = sources.length + ' / ' + sources.length;
+    return;
+  }
+  const s = sources[current];
+  selectedRating = null;
+  document.getElementById('pFill').style.width = (current / sources.length * 100) + '%';
+  document.getElementById('pLabel').textContent = current + ' / ' + sources.length;
+
+  document.getElementById('gameArea').innerHTML = `
+    <div class="source-card">
+      <div class="source-label">${s.label} of ${sources.length}</div>
+      <div class="source-title">${s.title}</div>
+      <div class="source-meta">${s.meta}</div>
+      <div class="source-abstract">${s.abstract}</div>
+      <div class="rating-label">How strong is this evidence?</div>
+      <div class="rating-row" id="ratingRow">
+        ${s.levels.map((l, i) => `<button class="rating-btn" onclick="selectRating(${i+1})" id="rb${i+1}">${i+1} – ${l}</button>`).join('')}
+      </div>
+      <div class="reasoning-label">Why did you choose this rating? (optional)</div>
+      <textarea rows="2" placeholder="Your reasoning..."></textarea>
+      <div class="feedback-panel" id="fbPanel"></div>
+      <div class="btn-row">
+        <button class="btn-check" onclick="check()">Check answer</button>
+        <button class="btn-next" id="btnNext" onclick="nextQ()">Next source →</button>
+      </div>
+    </div>
+  `;
+}
+
+function selectRating(r) {
+  selectedRating = r;
+  for (let i = 1; i <= 4; i++) {
+    document.getElementById('rb'+i).className = 'rating-btn' + (i === r ? ' selected-' + r : '');
+  }
+}
+
+function check() {
+  if (!selectedRating) { alert('Please select a rating first.'); return; }
+  const s = sources[current];
+  const fb = document.getElementById('fbPanel');
+  const correct = selectedRating === s.correctRating;
+  const classMap = { 4: 'fb-strong', 3: 'fb-moderate', 2: 'fb-weak', 1: 'fb-lowest' };
+  fb.className = 'feedback-panel show ' + classMap[s.correctRating];
+  fb.innerHTML = `<div class="fb-head">${correct ? '✓ Good rating!' : 'Expert rating: ' + s.correctRating + ' – ' + s.levels[s.correctRating-1]}</div>${s.feedback[selectedRating]}`;
+  document.querySelectorAll('.btn-check').forEach(b => b.disabled = true);
+  document.getElementById('btnNext').style.display = 'inline-block';
+}
+
+function nextQ() { current++; render(); }
+
+render();
+</script>
+</body>
+</html>

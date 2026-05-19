@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sort the Sources – Educational Myths SoSe 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F5F0; --surface: #fff; --border: #E2DED6;
+    --text: #1A1816; --muted: #6B6760; --faint: #9E9A94;
+    --accent: #1A4F8A; --accent-l: #E6EFF8;
+    --green: #1A6B45; --green-l: #E6F3ED;
+    --amber: #7A4F10; --amber-l: #FBF0DC;
+    --red: #8A2020; --red-l: #F8EAEA;
+    --purple: #4A3A8A; --purple-l: #EEEDF8;
+    --coral: #8A3020; --coral-l: #F8EDEA;
+    --radius: 10px; --font: 'DM Sans', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1.25rem 2rem; }
+  header h1 { font-size: 18px; font-weight: 500; }
+  header p { font-size: 12px; color: var(--faint); margin-top: 2px; }
+
+  .page { max-width: 960px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem; }
+  .intro { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; background: var(--accent-l); border-radius: var(--radius); padding: 0.9rem 1.1rem; line-height: 1.6; }
+
+  .game-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+  @media (max-width: 650px) { .game-layout { grid-template-columns: 1fr; } }
+
+  .sources-pool { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.25rem; }
+  .pool-label { font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--faint); margin-bottom: 1rem; }
+
+  .source-item {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+    padding: 0.75rem 0.9rem; margin-bottom: 0.6rem; cursor: grab;
+    transition: all 0.15s; user-select: none;
+  }
+  .source-item:last-child { margin-bottom: 0; }
+  .source-item:hover { border-color: var(--accent); background: var(--accent-l); }
+  .source-item.dragging { opacity: 0.4; }
+  .source-item-title { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+  .source-item-meta { font-size: 12px; color: var(--muted); }
+
+  .categories { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .category {
+    border: 2px dashed var(--border); border-radius: 12px; padding: 0.9rem;
+    min-height: 100px; transition: border-color 0.15s, background 0.15s;
+  }
+  .category.drag-over { border-color: var(--accent); background: var(--accent-l); }
+  .cat-label { font-size: 12px; font-weight: 500; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .cat-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .cat-desc { font-size: 11px; color: var(--faint); margin-bottom: 8px; line-height: 1.4; }
+  .cat-items { min-height: 40px; }
+  .cat-item { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0.5rem 0.7rem; margin-bottom: 5px; font-size: 12px; cursor: grab; }
+  .cat-item:hover { background: var(--bg); }
+
+  .btn-row { display: flex; gap: 10px; margin-top: 1.5rem; flex-wrap: wrap; }
+  .btn-check { padding: 0.65rem 1.5rem; font-family: var(--font); font-size: 14px; font-weight: 500; background: var(--accent); color: white; border: none; border-radius: var(--radius); cursor: pointer; }
+  .btn-check:hover { background: #153F6E; }
+  .btn-reset { padding: 0.65rem 1.5rem; font-family: var(--font); font-size: 14px; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; }
+  .btn-reset:hover { background: var(--bg); }
+
+  .results { margin-top: 1.5rem; display: none; }
+  .results.show { display: block; }
+  .result-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 0.75rem; font-size: 13px; line-height: 1.6; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; }
+  .result-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .result-text { color: var(--muted); }
+  .result-text strong { color: var(--text); font-weight: 500; }
+  .score-banner { background: var(--accent-l); border: 1px solid #A0C0E0; border-radius: var(--radius); padding: 0.9rem 1.1rem; font-size: 14px; color: var(--accent); font-weight: 500; margin-bottom: 1rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Sort the Sources</h1>
+  <p>SoSe 2026 · Köstler · Educational Myths</p>
+</header>
+
+<div class="page">
+  <div class="intro">Drag each source into the correct category. Think about: What type of source is it? How was it produced? Can it be cited as academic evidence?</div>
+
+  <div class="game-layout">
+    <div class="sources-pool">
+      <div class="pool-label">Sources to sort</div>
+      <div id="pool"></div>
+    </div>
+    <div>
+      <div class="categories" id="catGrid"></div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-check" onclick="checkAnswers()">Check answers</button>
+    <button class="btn-reset" onclick="resetGame()">Reset</button>
+  </div>
+
+  <div class="results" id="results"></div>
+</div>
+
+<script>
+const categories = [
+  { id: 'meta', label: 'Meta-analysis / Systematic review', color: '#1A6B45', bg: '#E6F3ED', desc: 'Synthesises many studies; highest evidence level' },
+  { id: 'empirical', label: 'Empirical study', color: '#1A4F8A', bg: '#E6EFF8', desc: 'Collects and analyses original data' },
+  { id: 'theory', label: 'Theoretical / conceptual work', color: '#4A3A8A', bg: '#EEEDF8', desc: 'Develops frameworks or arguments without primary data' },
+  { id: 'grey', label: 'Grey literature / non-academic', color: '#7A4F10', bg: '#FBF0DC', desc: 'Blog posts, news, reports – not peer-reviewed' }
+];
+
+const sources = [
+  { id: 's1', title: 'Effects of feedback on student motivation: a meta-analysis of 89 studies', meta: 'Hsieh et al. (2020) · Educational Psychology Review', correct: 'meta', explanation: 'The title signals it directly: "meta-analysis of 89 studies". This is synthesised evidence at the highest level.' },
+  { id: 's2', title: 'Why I stopped giving grades – and what happened next', meta: 'Robinson, K. (2021) · Medium blog post', correct: 'grey', explanation: 'A personal reflective blog post on Medium. Not peer-reviewed, not empirical. Interesting perspective but not usable as academic evidence.' },
+  { id: 's3', title: 'Stereotype threat and girls\' mathematics performance: an experimental study', meta: 'Navarro & Chen (2018) · Journal of Educational Psychology · n = 214', correct: 'empirical', explanation: 'An experimental study with a specific sample. It collects original data to test a hypothesis – this is empirical research.' },
+  { id: 's4', title: 'Towards a theory of meaningful learning: constructivism reconsidered', meta: 'Hoffmann, G. (2016) · Educational Theory', correct: 'theory', explanation: 'A theoretical article in a theory journal. It develops a conceptual argument rather than collecting data.' },
+  { id: 's5', title: 'OECD Education at a Glance 2023: key indicators', meta: 'OECD (2023) · OECD Publishing', correct: 'grey', explanation: 'A policy report from the OECD. Valuable data source, but it is grey literature – not peer-reviewed academic research.' },
+  { id: 's6', title: 'Do growth mindset interventions improve academic achievement? A systematic review', meta: 'Park, S. & Williams, D. (2022) · Review of Educational Research · k = 43', correct: 'meta', explanation: 'A systematic review of 43 studies. This is synthesised evidence – stronger than any individual study on its own.' },
+  { id: 's7', title: 'Teacher expectations and student outcomes: a longitudinal observational study', meta: 'Okafor, M. et al. (2019) · British Journal of Educational Psychology · n = 1,200', correct: 'empirical', explanation: 'A longitudinal observational study with a large sample. This is empirical research that collects original data over time.' },
+  { id: 's8', title: 'The myth of the learning styles: a critical conceptual analysis', meta: 'De Bruyckere, P. (2017) · Educational Psychology Review', correct: 'theory', explanation: 'A critical conceptual analysis – it argues against a concept without collecting new data. This is theoretical/conceptual work.' }
+];
+
+let placements = {};
+let draggedId = null;
+
+function renderPool() {
+  const pool = document.getElementById('pool');
+  pool.innerHTML = '';
+  sources.filter(s => !Object.values(placements).flat().includes(s.id)).forEach(s => {
+    pool.appendChild(makeItem(s, 'pool'));
+  });
+}
+
+function makeItem(s, context) {
+  const div = document.createElement('div');
+  div.className = context === 'pool' ? 'source-item' : 'cat-item';
+  div.draggable = true;
+  div.dataset.id = s.id;
+  if (context === 'pool') {
+    div.innerHTML = `<div class="source-item-title">${s.title}</div><div class="source-item-meta">${s.meta}</div>`;
+  } else {
+    div.textContent = s.title;
+  }
+  div.addEventListener('dragstart', e => { draggedId = s.id; div.classList.add('dragging'); });
+  div.addEventListener('dragend', () => div.classList.remove('dragging'));
+  return div;
+}
+
+function renderCats() {
+  const grid = document.getElementById('catGrid');
+  grid.innerHTML = '';
+  categories.forEach(cat => {
+    const div = document.createElement('div');
+    div.className = 'category';
+    div.dataset.cat = cat.id;
+    div.innerHTML = `
+      <div class="cat-label"><span class="cat-dot" style="background:${cat.color}"></span>${cat.label}</div>
+      <div class="cat-desc">${cat.desc}</div>
+      <div class="cat-items" id="ci-${cat.id}"></div>
+    `;
+    div.addEventListener('dragover', e => { e.preventDefault(); div.classList.add('drag-over'); });
+    div.addEventListener('dragleave', () => div.classList.remove('drag-over'));
+    div.addEventListener('drop', e => {
+      e.preventDefault(); div.classList.remove('drag-over');
+      if (!draggedId) return;
+      Object.keys(placements).forEach(k => { placements[k] = placements[k].filter(x => x !== draggedId); });
+      if (!placements[cat.id]) placements[cat.id] = [];
+      placements[cat.id].push(draggedId);
+      draggedId = null;
+      renderAll();
+    });
+    grid.appendChild(div);
+    (placements[cat.id] || []).forEach(id => {
+      const s = sources.find(x => x.id === id);
+      if (s) document.getElementById('ci-' + cat.id).appendChild(makeItem(s, 'cat'));
+    });
+  });
+}
+
+function renderAll() { renderPool(); renderCats(); }
+
+function checkAnswers() {
+  let correct = 0;
+  const res = document.getElementById('results');
+  res.innerHTML = '';
+  const placed = Object.values(placements).flat();
+  if (placed.length < sources.length) {
+    res.innerHTML = '<div class="score-banner">Please sort all sources before checking.</div>';
+    res.className = 'results show'; return;
+  }
+  sources.forEach(s => {
+    const userCat = Object.keys(placements).find(k => placements[k].includes(s.id));
+    const isCorrect = userCat === s.correct;
+    if (isCorrect) correct++;
+    const correctLabel = categories.find(c => c.id === s.correct).label;
+    const userLabel = userCat ? categories.find(c => c.id === userCat).label : 'not placed';
+    res.innerHTML += `
+      <div class="result-item">
+        <span class="result-icon">${isCorrect ? '✓' : '✗'}</span>
+        <div class="result-text">
+          <strong>${s.title}</strong><br>
+          ${isCorrect ? 'Correctly placed in: ' + correctLabel : 'You placed it in: <em>' + userLabel + '</em> · Correct category: <em>' + correctLabel + '</em>'}<br>
+          ${s.explanation}
+        </div>
+      </div>`;
+  });
+  res.innerHTML = `<div class="score-banner">${correct} / ${sources.length} correct</div>` + res.innerHTML;
+  res.className = 'results show';
+}
+
+function resetGame() {
+  placements = {};
+  document.getElementById('results').className = 'results';
+  renderAll();
+}
+
+renderAll();
+</script>
+</body>
+</html>
