@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Hub – Educational Myths SoSe 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F5F0; --surface: #fff; --border: #E2DED6;
+    --text: #1A1816; --muted: #6B6760; --faint: #9E9A94;
+    --accent: #1A4F8A; --accent-l: #E6EFF8;
+    --green: #1A6B45; --green-l: #E6F3ED;
+    --amber: #7A4F10; --amber-l: #FBF0DC;
+    --purple: #4A3A8A; --purple-l: #EEEDF8;
+    --coral: #8A3020; --coral-l: #F8EDEA;
+    --radius: 12px; --font: 'DM Sans', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1.5rem 2rem; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .seminar-tag { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); margin-bottom: 4px; }
+  header h1 { font-size: 20px; font-weight: 500; margin-bottom: 2px; }
+  header h1 span { color: var(--muted); font-weight: 300; }
+  .header-meta { font-size: 13px; color: var(--muted); }
+  .uni-badge { font-size: 12px; color: var(--muted); border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; white-space: nowrap; align-self: center; }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  .page-intro { font-size: 14px; color: var(--muted); margin-bottom: 2rem; line-height: 1.7; max-width: 580px; }
+
+  .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 1rem; }
+  @media (max-width: 500px) { .games-grid { grid-template-columns: 1fr; } }
+
+  .game-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.5rem;
+    text-decoration: none; color: var(--text);
+    display: flex; flex-direction: column; gap: 0.75rem;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .game-card:hover { border-color: #B0C8E0; transform: translateY(-2px); }
+  .game-card-top { display: flex; align-items: center; gap: 12px; }
+  .game-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .game-title { font-size: 15px; font-weight: 500; }
+  .game-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .game-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { font-size: 11px; font-weight: 500; padding: 2px 9px; border-radius: 20px; }
+  .chip-when { background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
+  .arrow { font-size: 18px; color: var(--faint); margin-top: auto; align-self: flex-end; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+  .worksheet-link { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; text-decoration: none; color: var(--text); transition: border-color 0.15s; }
+  .worksheet-link:hover { border-color: #B0C8E0; }
+  .ws-icon { font-size: 20px; }
+  .ws-text {}
+  .ws-title { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
+  .ws-sub { font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="seminar-tag">SoSe 2026 · Köstler</div>
+    <h1>Game Hub <span>/ Lernspiele</span></h1>
+    <div class="header-meta">Educational Myths – Evidence &amp; Research Methodology</div>
+  </div>
+  <div class="uni-badge">Universität Passau</div>
+</header>
+
+<div class="page">
+  <p class="page-intro">Four interactive activities to help you understand evidence quality, source types, and research methodology – the foundations of a strong deconstruction chapter.</p>
+
+  <div class="games-grid">
+
+    <a href="myth_or_fact.html" class="game-card">
+      <div class="game-card-top">
+        <div class="game-icon" style="background:#EEEDF8">🎯</div>
+        <div class="game-title">Myth or Fact?</div>
+      </div>
+      <div class="game-desc">Eight statements about research and evidence. Tap Myth or Fact and find out how well you already understand how academic evidence works.</div>
+      <div class="game-meta">
+        <span class="chip chip-when">⏱ ~5 min</span>
+        <span class="chip" style="background:#EEEDF8;color:#4A3A8A">Good for: Before the search</span>
+      </div>
+      <div class="arrow">→</div>
+    </a>
+
+    <a href="sort_the_sources.html" class="game-card">
+      <div class="game-card-top">
+        <div class="game-icon" style="background:#FBF0DC">📂</div>
+        <div class="game-title">Sort the Sources</div>
+      </div>
+      <div class="game-desc">Drag eight source descriptions into the correct category: meta-analysis, empirical study, theoretical work, or grey literature.</div>
+      <div class="game-meta">
+        <span class="chip chip-when">⏱ ~8 min</span>
+        <span class="chip" style="background:#FBF0DC;color:#7A4F10">Good for: After the search</span>
+      </div>
+      <div class="arrow">→</div>
+    </a>
+
+    <a href="evidence_rater.html" class="game-card">
+      <div class="game-card-top">
+        <div class="game-icon" style="background:#E6F3ED">⚖️</div>
+        <div class="game-title">Evidence Strength Rater</div>
+      </div>
+      <div class="game-desc">Read four source abstracts and rate the strength of their evidence on a 4-point scale. Compare your rating with the expert assessment and explanation.</div>
+      <div class="game-meta">
+        <span class="chip chip-when">⏱ ~10 min</span>
+        <span class="chip" style="background:#E6F3ED;color:#1A6B45">Good for: After the search</span>
+      </div>
+      <div class="arrow">→</div>
+    </a>
+
+    <a href="research_quiz.html" class="game-card">
+      <div class="game-card-top">
+        <div class="game-icon" style="background:#E6EFF8">🧠</div>
+        <div class="game-title">Research Methods Quiz</div>
+      </div>
+      <div class="game-desc">Ten multiple-choice questions on effect sizes, research designs, database search strategy, and what evidence actually means. Questions are shuffled each time.</div>
+      <div class="game-meta">
+        <span class="chip chip-when">⏱ ~10 min</span>
+        <span class="chip" style="background:#E6EFF8;color:#1A4F8A">Good for: Consolidation</span>
+      </div>
+      <div class="arrow">→</div>
+    </a>
+
+  </div>
+
+  <hr class="divider">
+
+  <a href="index.html" class="worksheet-link">
+    <span class="ws-icon">📄</span>
+    <div class="ws-text">
+      <div class="ws-title">Back to the search assignment</div>
+      <div class="ws-sub">Search for Your Myth – worksheet and step-by-step guide</div>
+    </div>
+    <span style="margin-left:auto;font-size:18px;color:#9E9A94">→</span>
+  </a>
+
+</div>
+</body>
+</html>
