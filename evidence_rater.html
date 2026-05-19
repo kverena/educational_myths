@@ -185,8 +185,6 @@ function render() {
       <div class="rating-row" id="ratingRow">
         ${s.levels.map((l, i) => `<button class="rating-btn" onclick="selectRating(${i+1})" id="rb${i+1}">${i+1} – ${l}</button>`).join('')}
       </div>
-      <div class="reasoning-label">Why did you choose this rating? (optional)</div>
-      <textarea rows="2" placeholder="Your reasoning..."></textarea>
       <div class="feedback-panel" id="fbPanel"></div>
       <div class="btn-row">
         <button class="btn-check" onclick="check()">Check answer</button>
