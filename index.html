@@ -1,16 +1,16 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Educational Myths – Literature Search Assignment</title>
+<title>Search for Your Myth – Educational Myths SoSe 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #F7F5F0;
     --surface: #FFFFFF;
     --border: #E2DED6;
-    --border-strong: #C8C3B8;
     --text: #1A1816;
     --text-muted: #6B6760;
     --text-faint: #9E9A94;
@@ -30,322 +30,121 @@
     --font: 'DM Sans', sans-serif;
     --mono: 'DM Mono', monospace;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.65; }
 
-  body {
-    font-family: var(--font);
-    background: var(--bg);
-    color: var(--text);
-    font-size: 15px;
-    line-height: 1.65;
-  }
-
-  /* ── Header ── */
   header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
+    background: var(--surface); border-bottom: 1px solid var(--border);
     padding: 1.5rem 2rem;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
   }
-  .header-left {}
-  .seminar-tag {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-faint);
-    margin-bottom: 4px;
-  }
-  header h1 {
-    font-size: 20px;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 2px;
-  }
+  .seminar-tag { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 4px; }
+  header h1 { font-size: 20px; font-weight: 500; margin-bottom: 2px; }
   header h1 span { color: var(--text-muted); font-weight: 300; }
   .header-meta { font-size: 13px; color: var(--text-muted); }
-  .uni-badge {
-    font-size: 12px;
-    color: var(--text-muted);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 6px 12px;
-    white-space: nowrap;
-    align-self: center;
-  }
+  .uni-badge { font-size: 12px; color: var(--text-muted); border: 1px solid var(--border); border-radius: var(--radius); padding: 6px 12px; white-space: nowrap; align-self: center; }
 
-  /* ── Layout ── */
   .page { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
 
-  /* ── Section ── */
-  .section { margin-bottom: 2.5rem; }
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 1rem;
-  }
-  .section-num {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    font-size: 13px;
-    font-weight: 500;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .section-title { font-size: 16px; font-weight: 500; }
-  .section-sub { font-size: 13px; color: var(--text-muted); margin-left: 38px; margin-top: -8px; margin-bottom: 1rem; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 2rem; }
+  .chip { font-size: 12px; border: 1px solid var(--border); border-radius: 20px; padding: 3px 11px; color: var(--text-muted); background: var(--surface); }
 
-  /* ── Cards ── */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1.25rem 1.5rem;
-    margin-bottom: 0.75rem;
+  .step-block {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); margin-bottom: 1.25rem; overflow: hidden;
   }
-
-  /* ── Steps ── */
-  .step-grid { display: grid; gap: 0.75rem; }
-  .step {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1rem 1.25rem;
-    display: grid;
-    grid-template-columns: 32px 1fr;
-    gap: 12px;
-    align-items: start;
+  .step-header {
+    display: grid; grid-template-columns: 36px 1fr; gap: 12px;
+    align-items: start; padding: 1.1rem 1.25rem 1rem;
   }
   .step-n {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    font-size: 13px;
-    font-weight: 500;
+    width: 28px; height: 28px; border-radius: 50%;
+    font-size: 13px; font-weight: 500;
     display: flex; align-items: center; justify-content: center;
-    margin-top: 1px;
+    margin-top: 2px; flex-shrink: 0;
   }
   .s1 { background: var(--purple-light); color: var(--purple); }
   .s2 { background: var(--green-light); color: var(--green); }
   .s3 { background: var(--amber-light); color: var(--amber); }
-  .s4 { background: var(--accent-light); color: var(--accent); }
-  .step-content {}
+  .s4 { background: var(--coral-light); color: var(--coral); }
+  .s5 { background: var(--accent-light); color: var(--accent); }
   .step-title { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
   .step-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
-  .step-time { font-size: 11px; color: var(--text-faint); margin-top: 5px; font-variant-numeric: tabular-nums; }
+  .step-time { font-size: 11px; color: var(--text-faint); margin-top: 5px; }
 
-  /* ── Help toggle ── */
-  .help-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 12px; color: var(--accent-mid);
-    background: var(--accent-light);
-    border: none; border-radius: var(--radius);
-    padding: 4px 10px; margin-top: 8px;
-    cursor: pointer; font-family: var(--font);
-    transition: background 0.15s;
+  .step-ws {
+    border-top: 1px dashed var(--border);
+    background: var(--bg); padding: 1rem 1.25rem;
   }
-  .help-btn:hover { background: #d4e5f5; }
-  .help-panel {
-    display: none;
-    margin-top: 8px;
-    padding: 0.65rem 0.9rem;
-    background: var(--accent-light);
-    border-left: 2px solid var(--accent-mid);
-    border-radius: 0 var(--radius) var(--radius) 0;
-    font-size: 13px;
-    color: #1A3A5C;
-    line-height: 1.6;
-  }
-  .help-panel.open { display: block; }
-  code {
-    font-family: var(--mono);
-    font-size: 12px;
-    background: rgba(26,79,138,0.1);
-    padding: 1px 5px;
-    border-radius: 3px;
-  }
-
-  /* ── Plenary box ── */
-  .plenary {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-top: 3px solid var(--accent);
-    border-radius: var(--radius-lg);
-    padding: 1.1rem 1.4rem;
-  }
-  .plenary-head {
-    font-size: 13px; font-weight: 500;
-    color: var(--accent);
-    margin-bottom: 0.6rem;
+  .ws-label {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-faint); margin-bottom: 0.75rem;
     display: flex; align-items: center; gap: 6px;
   }
-  .plenary ul { padding-left: 1.25rem; }
-  .plenary li { font-size: 13px; color: var(--text-muted); margin-bottom: 3px; line-height: 1.6; }
+  .ws-label::before { content: '✎'; font-size: 13px; }
 
-  /* ── Myth accordion ── */
-  .myth-list { display: grid; gap: 0.6rem; }
-  .myth-item {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-  }
-  .myth-trigger {
-    width: 100%; text-align: left;
-    padding: 0.9rem 1.25rem;
-    background: none; border: none;
-    font-family: var(--font);
-    font-size: 14px; font-weight: 500;
-    color: var(--text);
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: space-between; gap: 10px;
-    transition: background 0.15s;
-  }
-  .myth-trigger:hover { background: var(--bg); }
-  .myth-trigger-left { display: flex; align-items: flex-start; gap: 10px; }
-  .myth-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 3px; }
-  .tag {
-    font-size: 11px; font-weight: 500;
-    padding: 2px 7px;
-    border-radius: var(--radius);
-  }
-  .tag-e { background: var(--accent-light); color: var(--accent); }
-  .tag-n { background: var(--green-light); color: var(--green); }
-  .tag-s { background: var(--purple-light); color: var(--purple); }
-  .tag-p { background: var(--amber-light); color: var(--amber); }
-  .tag-m { background: #F0EFEC; color: #4A4845; }
-  .chev { font-size: 18px; color: var(--text-faint); transition: transform 0.2s; flex-shrink: 0; }
-  .myth-body { display: none; border-top: 1px solid var(--border); padding: 1rem 1.25rem; }
-  .myth-body.open { display: block; }
-  .route { margin-bottom: 1rem; }
-  .route:last-child { margin-bottom: 0; }
-  .route-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-  .route-label { font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: var(--radius); }
-  .route-title { font-size: 13px; font-weight: 500; }
-  .terms { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0 4px; }
-  .term {
-    font-family: var(--mono);
-    font-size: 11px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 2px 7px;
-    color: var(--text-muted);
-  }
-  .route-note { font-size: 12px; color: var(--text-muted); font-style: italic; line-height: 1.5; }
-  .decision {
-    background: var(--amber-light);
-    border-radius: var(--radius);
-    padding: 0.6rem 0.9rem;
-    font-size: 12px; color: var(--amber);
-    margin-top: 0.75rem;
-    line-height: 1.55;
-  }
-  .decision strong { font-weight: 500; }
-  .route-divider { border: none; border-top: 1px solid var(--border); margin: 0.75rem 0; }
-
-  /* ── Bilingual form ── */
-  .form-section { margin-bottom: 1.5rem; }
-  .form-label {
-    font-size: 13px; font-weight: 500;
-    margin-bottom: 2px;
-    display: block;
-  }
-  .form-label-de { font-size: 12px; color: var(--text-muted); font-weight: 300; display: block; margin-bottom: 6px; }
   textarea, input[type="text"] {
-    width: 100%;
-    font-family: var(--font);
-    font-size: 14px;
-    color: var(--text);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 0.6rem 0.8rem;
-    resize: vertical;
-    transition: border-color 0.15s;
+    width: 100%; font-family: var(--font); font-size: 14px;
+    color: var(--text); background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 0.6rem 0.8rem; resize: vertical; transition: border-color 0.15s;
   }
   textarea:focus, input[type="text"]:focus {
-    outline: none;
-    border-color: var(--accent-mid);
+    outline: none; border-color: var(--accent-mid);
     box-shadow: 0 0 0 3px rgba(74,125,181,0.12);
   }
-  .source-block {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1rem 1.25rem;
-    margin-bottom: 0.75rem;
-  }
-  .source-num { font-size: 12px; font-weight: 500; color: var(--text-faint); margin-bottom: 0.75rem; }
-  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 0.75rem; }
-  @media (max-width: 600px) { .field-row { grid-template-columns: 1fr; } }
   .field { margin-bottom: 0.75rem; }
   .field:last-child { margin-bottom: 0; }
+  .form-label { font-size: 12px; font-weight: 500; margin-bottom: 2px; display: block; }
+  .form-label-de { font-size: 11px; color: var(--text-faint); font-weight: 300; display: block; margin-bottom: 5px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 0.75rem; }
+  @media (max-width: 600px) { .field-row { grid-template-columns: 1fr; } }
 
-  /* ── Reflection ── */
-  .reflection-grid { display: grid; gap: 0.75rem; }
-
-  /* ── Print / PDF button ── */
-  .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 2rem; }
-  .btn-primary {
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: var(--radius);
-    padding: 0.6rem 1.25rem;
-    font-family: var(--font);
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
+  .hints-wrap { border-top: 1px solid var(--border); }
+  .hints-trigger {
+    width: 100%; text-align: left; padding: 0.75rem 1.25rem;
+    background: none; border: none; font-family: var(--font);
+    font-size: 13px; color: var(--amber);
+    cursor: pointer; display: flex; align-items: center; gap: 8px;
     transition: background 0.15s;
   }
+  .hints-trigger:hover { background: var(--amber-light); }
+  .hints-badge { font-size: 11px; font-weight: 500; background: var(--amber-light); color: var(--amber); padding: 2px 8px; border-radius: var(--radius); }
+  .chev { font-size: 16px; color: var(--text-faint); transition: transform 0.2s; margin-left: auto; }
+  .hints-body { display: none; border-top: 1px solid var(--border); padding: 0.9rem 1.25rem; background: #FEFCF8; }
+  .hints-body.open { display: block; }
+  .hint-item { display: grid; grid-template-columns: auto 1fr; gap: 10px; margin-bottom: 0.75rem; align-items: start; }
+  .hint-item:last-child { margin-bottom: 0; }
+  .hint-key { font-size: 13px; font-weight: 500; color: var(--amber); white-space: nowrap; }
+  .hint-val { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+  .source-block {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-bottom: 0.75rem;
+  }
+  .source-num { font-size: 11px; font-weight: 500; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+
+  .btn-primary { background: var(--accent); color: white; border: none; border-radius: var(--radius); padding: 0.6rem 1.25rem; font-family: var(--font); font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
   .btn-primary:hover { background: #153F6E; }
-  .btn-secondary {
-    background: var(--surface);
-    color: var(--text);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 0.6rem 1.25rem;
-    font-family: var(--font);
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
+  .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.6rem 1.25rem; font-family: var(--font); font-size: 14px; cursor: pointer; transition: background 0.15s; }
   .btn-secondary:hover { background: var(--bg); }
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 2rem; }
 
-  /* ── Timer chips ── */
-  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.25rem; }
-  .chip {
-    font-size: 12px;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 3px 11px;
-    color: var(--text-muted);
-    background: var(--surface);
-  }
-
-  /* ── Print ── */
   @media print {
-    header { break-inside: avoid; }
-    .myth-list, .help-btn, .actions, .chev { display: none !important; }
-    .myth-body { display: none !important; }
+    .hints-trigger, .hints-body, .actions { display: none !important; }
     body { background: white; }
-    .card, .step, .source-block { border: 1px solid #ccc; box-shadow: none; }
+    .step-block, .source-block { border: 1px solid #ccc; }
     textarea, input { border: 1px solid #ccc; }
+    .step-ws { background: #fafafa; }
   }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="header-left">
+  <div>
     <div class="seminar-tag">SoSe 2026 · Köstler</div>
-    <h1>Educational Myths <span>/ Pädagogische Mythen</span></h1>
+    <h1>Search for Your Myth <span>/ Literatursuche</span></h1>
     <div class="header-meta">Theoretical &amp; Disciplinary Grounding — Literature Search Assignment</div>
   </div>
   <div class="uni-badge">Universität Passau</div>
@@ -353,404 +152,215 @@
 
 <div class="page">
 
-  <!-- ══ SECTION 1: Assignment ══ -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-num s1">1</div>
-      <div class="section-title">Assignment / Arbeitsauftrag</div>
-    </div>
-
-    <div class="chips">
-      <span class="chip">⏱ Steps 1–3: ~20 min</span>
-      <span class="chip">⏱ Plenary / Plenum: ~10 min</span>
-      <span class="chip">📍 Individual work / Einzelarbeit</span>
-    </div>
-
-    <div class="step-grid">
-      <div class="step">
-        <div class="step-n s1">1</div>
-        <div class="step-content">
-          <div class="step-title">Collect your starting search terms · Erste Suchbegriffe sammeln</div>
-          <div class="step-desc">Write down 2–3 English keywords that describe your myth. Think about what someone who <em>believes</em> the myth would say – those are your first terms.<br>
-          <span style="color:#9E9A94">Notiere 2–3 englische Suchbegriffe. Überlege: Was würde jemand sagen, der den Mythos für wahr hält?</span></div>
-          <div class="step-time">~ 3 min</div>
-          <button class="help-btn" onclick="tog('h1')">▸ Support hint / Hilfestellung</button>
-          <div class="help-panel" id="h1">Take the core claim of your myth and translate it into keywords. E.g. "gaming → aggression" becomes <code>"video games" AND aggression</code>. The search term overview below shows examples for each myth. <br><em style="color:#4A7DB5">Nimm die Kernaussage deines Mythos und übersetze sie in Keywords. Das Suchbegriff-Widget unten zeigt Beispiele für jeden Mythos.</em></div>
-        </div>
-      </div>
-
-      <div class="step">
-        <div class="step-n s2">2</div>
-        <div class="step-content">
-          <div class="step-title">Run a first search in ERIC · Erste Suche in ERIC</div>
-          <div class="step-desc">Go to <strong style="font-weight:500">eric.ed.gov</strong>. Search with your terms. Apply the filter <em>Peer Reviewed</em>. Note: How many results? Does the volume suggest a well-researched area – or a gap?<br>
-          <span style="color:#9E9A94">Gehe zu eric.ed.gov, suche mit deinen Begriffen, setze den Filter "Peer Reviewed". Wie viele Treffer? Viel oder wenig Forschung?</span></div>
-          <div class="step-time">~ 7 min</div>
-          <button class="help-btn" onclick="tog('h2')">▸ Support hint / Hilfestellung</button>
-          <div class="help-panel" id="h2">Too many results? Add <code>AND "meta-analysis"</code> or <code>AND "systematic review"</code>. Too few? Try broader terms or remove one keyword.<br><em style="color:#4A7DB5">Zu viele Treffer? Ergänze <code>AND "meta-analysis"</code>. Zu wenige? Entferne einen Begriff oder wähle breitere Begriffe.</em></div>
-        </div>
-      </div>
-
-      <div class="step">
-        <div class="step-n s3">3</div>
-        <div class="step-content">
-          <div class="step-title">Assess what you find · Erste Einschätzung der Befunde</div>
-          <div class="step-desc">Look at 3–5 results. For each: What is the main claim? Does it challenge the myth, support it, or nuance it? Note which direction the evidence points – and revise your search terms if needed.<br>
-          <span style="color:#9E9A94">Lies die Abstracts von 3–5 Treffern. Wohin zeigt die Evidenz? Passe deine Suchbegriffe ggf. an.</span></div>
-          <div class="step-time">~ 10 min</div>
-          <button class="help-btn" onclick="tog('h3')">▸ Support hint / Hilfestellung</button>
-          <div class="help-panel" id="h3">Read only the abstract. Ask: What was the research question? What did they find? Is this empirical (data), theoretical (conceptual), or a review (synthesis)? That tells you how to use it.<br><em style="color:#4A7DB5">Lies nur den Abstract. Frage: Welche Forschungsfrage? Was wurde gefunden? Ist es eine Primärstudie, ein Review oder ein theoretischer Beitrag?</em></div>
-        </div>
-      </div>
-
-      <div class="step">
-        <div class="step-n s4">4</div>
-        <div class="step-content">
-          <div class="step-title">Prepare one finding for the plenary · Vorbereitung Plenum</div>
-          <div class="step-desc">Be ready to share: (a) one source and its main claim, (b) what you still can't answer, (c) whether an empirical deconstruction seems feasible – or whether a different angle may be needed.<br>
-          <span style="color:#9E9A94">(a) Eine Quelle + Kernaussage, (b) Was bleibt offen?, (c) Ist eine empirische Dekonstruktion möglich – oder braucht es einen anderen Ansatz?</span></div>
-          <div class="step-time">~ 3 min</div>
-          <button class="help-btn" onclick="tog('h4')">▸ Support hint / Hilfestellung</button>
-          <div class="help-panel" id="h4">Point (c) is the most important. If you found almost no empirical studies, that itself is a finding – your myth may be better deconstructed theoretically or via a sociological lens. It's fine not to have a clear direction yet.<br><em style="color:#4A7DB5">Punkt (c) ist zentral. Wenig Empirie = auch ein Befund. Der Mythos lässt sich vielleicht theoretisch oder soziologisch besser dekonstruieren.</em></div>
-        </div>
-      </div>
-    </div>
-
-    <div style="margin-top: 1rem;">
-      <div class="plenary">
-        <div class="plenary-head">💬 Plenary / Plenum (~10 min)</div>
-        <ul>
-          <li>What did you find – and what surprised you? / Was habt ihr gefunden – was hat euch überrascht?</li>
-          <li>Where was the evidence thin, contradictory, or hard to access? / Wo war die Evidenz dünn oder widersprüchlich?</li>
-          <li>Did the search change how you think about your myth? / Hat die Suche eure Sicht auf den Mythos verändert?</li>
-          <li>Which myth seems hardest to deconstruct empirically – and why? / Welcher Mythos lässt sich am schwersten empirisch dekonstruieren?</li>
-        </ul>
-      </div>
-    </div>
+  <div class="chips">
+    <span class="chip">⏱ ~30 min individual work / Einzelarbeit</span>
+    <span class="chip">⏱ Plenary / Plenum: ~10 min</span>
+    <span class="chip">📄 Fill in the worksheet as you go / Arbeitsblatt laufend ausfüllen</span>
   </div>
 
-  <!-- ══ SECTION 2: Search term reference ══ -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-num s2">2</div>
-      <div class="section-title">Search term reference / Suchbegriff-Übersicht</div>
+  <!-- STEP 1 -->
+  <div class="step-block">
+    <div class="step-header">
+      <div class="step-n s1">1</div>
+      <div>
+        <div class="step-title">Collect your starting search terms / Erste Suchbegriffe sammeln</div>
+        <div class="step-desc">Write down 2–3 English keywords that describe your myth. <br>
+        <span style="color:var(--text-faint)">Notiere 2–3 englische Suchbegriffe. </span></div>
+        <div class="step-time">~ 3 min</div>
+      </div>
     </div>
-    <p class="section-sub">Click your myth to see possible search routes and example terms. / Klicke deinen Mythos an.</p>
-
-    <div class="myth-list" id="mythList"></div>
-  </div>
-
-  <!-- ══ SECTION 3: Worksheet ══ -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-num s3">3</div>
-      <div class="section-title">Research worksheet / Arbeitsblatt</div>
-    </div>
-    <p class="section-sub">Fill this in during your search and keep it for your paper. / Fülle das Arbeitsblatt während der Recherche aus und nutze es für dein Paper.</p>
-
-    <div class="card">
-      <div class="form-section">
+    <div class="step-ws">
+      <div class="ws-label">Record here / Hier eintragen</div>
+      <div class="field">
         <label class="form-label">My myth / Mein Mythos</label>
-        <input type="text" placeholder="e.g. Gaming automatically makes people aggressive">
+        <input type="text" placeholder="Enter your myth here / Trage hier deinen Mythos ein">
       </div>
-      <div class="form-section">
-        <label class="form-label">My initial search terms / Meine ersten Suchbegriffe</label>
-        <label class="form-label-de">Notiere die Begriffe, mit denen du gestartet bist</label>
-        <textarea rows="2" placeholder='"video games" AND aggression, "violent video games" AND meta-analysis, ...'></textarea>
+      <div class="field">
+        <label class="form-label">Initial search terms / Erste Suchbegriffe</label>
+        <label class="form-label-de">Notiere die Begriffe, mit denen du startest</label>
+        <textarea rows="2" placeholder='"key concept" AND evidence, "your myth topic" AND meta-analysis, ...'></textarea>
       </div>
-      <div class="form-section">
-        <label class="form-label">Revised search terms after first results / Angepasste Suchbegriffe</label>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step-block">
+    <div class="step-header">
+      <div class="step-n s2">2</div>
+      <div>
+        <div class="step-title">Run a first search in an appropriate database / Erste Datenbanksuche</div>
+        <div class="step-desc">Go to <strong style="font-weight:500">eric.ed.gov</strong> (or another relevant database). Apply the filter <em>Peer Reviewed</em>. How many results do you get? Does the volume suggest a well-researched area – or a gap?<br>
+        <span style="color:var(--text-faint)">Gehe zu eric.ed.gov, setze den Filter "Peer Reviewed". Wie viele Treffer? Viel oder wenig Forschung?</span></div>
+        <div class="step-time">~ 7 min</div>
+      </div>
+    </div>
+    <div class="step-ws">
+      <div class="ws-label">Record here / Hier eintragen</div>
+      <div class="field-row">
+        <div class="field">
+          <label class="form-label">Database used / Genutzte Datenbank</label>
+          <input type="text" placeholder="e.g. ERIC, PsycINFO, FIS Bildung">
+        </div>
+        <div class="field">
+          <label class="form-label">Number of results / Trefferanzahl</label>
+          <input type="text" placeholder="e.g. 342 (filtered: 87)">
+        </div>
+      </div>
+      <div class="field">
+        <label class="form-label">Revised search terms / Angepasste Suchbegriffe</label>
         <label class="form-label-de">Welche Begriffe haben besser funktioniert?</label>
         <textarea rows="2" placeholder="Updated terms after seeing first results..."></textarea>
       </div>
     </div>
+  </div>
 
-    <div style="margin: 1rem 0 0.5rem;">
-      <span style="font-size:13px;font-weight:500;">Sources found / Gefundene Quellen</span>
-      <span style="font-size:12px;color:var(--text-faint);margin-left:8px;">Note at least 3 · Mindestens 3 notieren</span>
+  <!-- STEP 3 -->
+  <div class="step-block">
+    <div class="step-header">
+      <div class="step-n s3">3</div>
+      <div>
+        <div class="step-title">Assess what you find – and what it might mean for your argumentation</div>
+        <div class="step-desc">Look at 3–5 results. For each: What is the main claim? Does it challenge the myth, support it, or nuance it? Note which direction the evidence seems to point – you may need to revise your initial search terms based on what you find.<br>
+        <span style="color:var(--text-faint)">Lies 3–5 Abstracts. Wohin zeigt die Evidenz? Passe deine Suchbegriffe ggf. an.</span></div>
+        <div class="step-time">~ 10 min</div>
+      </div>
     </div>
-
-    <div id="sources">
-      <div class="source-block">
-        <div class="source-num">Source 1 / Quelle 1</div>
-        <div class="field-row">
-          <div class="field">
-            <label class="form-label" style="font-size:12px;">Author(s) / Autor:innen</label>
-            <input type="text" placeholder="Lastname, A., Lastname, B.">
+    <div class="step-ws">
+      <div class="ws-label">Sources found / Gefundene Quellen &nbsp;<span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-faint);font-size:11px;">note at least 3 · mindestens 3 notieren</span></div>
+      <div id="sources">
+        <div class="source-block">
+          <div class="source-num">Source 1 / Quelle 1</div>
+          <div class="field-row">
+            <div class="field"><label class="form-label">Author(s) / Autor:innen</label><input type="text" placeholder="Lastname, A."></div>
+            <div class="field"><label class="form-label">Year / Jahr</label><input type="text" placeholder="2023" style="max-width:120px"></div>
           </div>
+          <div class="field"><label class="form-label">Title / Titel</label><input type="text" placeholder="Full title of the article"></div>
           <div class="field">
-            <label class="form-label" style="font-size:12px;">Year / Jahr</label>
-            <input type="text" placeholder="2023" style="max-width:120px">
+            <label class="form-label">Source type / Quellentyp</label>
+            <label class="form-label-de">Primärstudie / Review / Meta-Analyse / Theorie</label>
+            <input type="text" placeholder="e.g. Meta-analysis / Systematic review / Empirical study">
           </div>
+          <div class="field"><label class="form-label">Main claim / Kernaussage <span style="font-weight:300">(1–2 sentences)</span></label><textarea rows="2" placeholder="What does this source say? Does it support, challenge, or nuance the myth?"></textarea></div>
+          <div class="field"><label class="form-label">Relevance for my paper / Relevanz für mein Paper</label><textarea rows="2" placeholder="How can I use this source in my deconstruction?"></textarea></div>
         </div>
-        <div class="field">
-          <label class="form-label" style="font-size:12px;">Title / Titel</label>
-          <input type="text" placeholder="Full title of the article">
+        <div class="source-block">
+          <div class="source-num">Source 2 / Quelle 2</div>
+          <div class="field-row">
+            <div class="field"><label class="form-label">Author(s)</label><input type="text" placeholder="Lastname, A."></div>
+            <div class="field"><label class="form-label">Year</label><input type="text" placeholder="2022" style="max-width:120px"></div>
+          </div>
+          <div class="field"><label class="form-label">Title</label><input type="text" placeholder="Full title"></div>
+          <div class="field"><label class="form-label">Source type</label><input type="text" placeholder="e.g. Empirical study"></div>
+          <div class="field"><label class="form-label">Main claim</label><textarea rows="2" placeholder="What does this source say?"></textarea></div>
+          <div class="field"><label class="form-label">Relevance for my paper</label><textarea rows="2" placeholder="How can I use this?"></textarea></div>
         </div>
-        <div class="field">
-          <label class="form-label" style="font-size:12px;">Source type / Quellentyp</label>
-          <label class="form-label-de">Primärstudie / Review / Meta-Analyse / Theorie</label>
-          <input type="text" placeholder="e.g. Meta-analysis / Systematic review / Empirical study">
-        </div>
-        <div class="field">
-          <label class="form-label" style="font-size:12px;">Main claim / Kernaussage <span style="font-weight:300">(1–2 sentences)</span></label>
-          <textarea rows="2" placeholder="What does this source say? Does it support, challenge, or nuance the myth?"></textarea>
-        </div>
-        <div class="field">
-          <label class="form-label" style="font-size:12px;">Relevance for my paper / Relevanz für mein Paper</label>
-          <textarea rows="2" placeholder="How can I use this source in my deconstruction?"></textarea>
+        <div class="source-block">
+          <div class="source-num">Source 3 / Quelle 3</div>
+          <div class="field-row">
+            <div class="field"><label class="form-label">Author(s)</label><input type="text" placeholder="Lastname, A."></div>
+            <div class="field"><label class="form-label">Year</label><input type="text" placeholder="2021" style="max-width:120px"></div>
+          </div>
+          <div class="field"><label class="form-label">Title</label><input type="text" placeholder="Full title"></div>
+          <div class="field"><label class="form-label">Source type</label><input type="text" placeholder="e.g. Review"></div>
+          <div class="field"><label class="form-label">Main claim</label><textarea rows="2" placeholder="What does this source say?"></textarea></div>
+          <div class="field"><label class="form-label">Relevance for my paper</label><textarea rows="2" placeholder="How can I use this?"></textarea></div>
         </div>
       </div>
-
-      <div class="source-block">
-        <div class="source-num">Source 2 / Quelle 2</div>
-        <div class="field-row">
-          <div class="field"><label class="form-label" style="font-size:12px;">Author(s)</label><input type="text" placeholder="Lastname, A."></div>
-          <div class="field"><label class="form-label" style="font-size:12px;">Year</label><input type="text" placeholder="2022" style="max-width:120px"></div>
-        </div>
-        <div class="field"><label class="form-label" style="font-size:12px;">Title</label><input type="text" placeholder="Full title"></div>
-        <div class="field"><label class="form-label" style="font-size:12px;">Source type</label><input type="text" placeholder="e.g. Empirical study"></div>
-        <div class="field"><label class="form-label" style="font-size:12px;">Main claim</label><textarea rows="2" placeholder="What does this source say?"></textarea></div>
-        <div class="field"><label class="form-label" style="font-size:12px;">Relevance for my paper</label><textarea rows="2" placeholder="How can I use this?"></textarea></div>
-      </div>
-
-      <div class="source-block">
-        <div class="source-num">Source 3 / Quelle 3</div>
-        <div class="field-row">
-          <div class="field"><label class="form-label" style="font-size:12px;">Author(s)</label><input type="text" placeholder="Lastname, A."></div>
-          <div class="field"><label class="form-label" style="font-size:12px;">Year</label><input type="text" placeholder="2021" style="max-width:120px"></div>
-        </div>
-        <div class="field"><label class="form-label" style="font-size:12px;">Title</label><input type="text" placeholder="Full title"></div>
-        <div class="field"><label class="form-label" style="font-size:12px;">Source type</label><input type="text" placeholder="e.g. Review"></div>
-        <div class="field"><label class="form-label" style="font-size:12px;">Main claim</label><textarea rows="2" placeholder="What does this source say?"></textarea></div>
-        <div class="field"><label class="form-label" style="font-size:12px;">Relevance for my paper</label><textarea rows="2" placeholder="How can I use this?"></textarea></div>
-      </div>
+      <button class="btn-secondary" onclick="addSource()" style="margin-top:0.5rem;font-size:13px;">+ Add source / Quelle hinzufügen</button>
     </div>
-
-    <button class="btn-secondary" onclick="addSource()" style="margin-top:0.5rem; font-size:13px;">+ Add source / Quelle hinzufügen</button>
-
-    <!-- Reflection -->
-    <div style="margin-top: 1.5rem;">
-      <div style="font-size:13px;font-weight:500;margin-bottom:0.75rem;">Reflection / Reflexion</div>
-      <div class="reflection-grid">
-        <div class="field">
-          <label class="form-label" style="font-size:13px;">What direction does the evidence point? / Wohin zeigt die Evidenz?</label>
-          <label class="form-label-de">Widerlegt sie den Mythos, differenziert sie ihn, oder ist das Bild gemischt?</label>
-          <textarea rows="3" placeholder="The evidence suggests... / Die Evidenz deutet darauf hin, dass..."></textarea>
+    <div class="hints-wrap">
+      <button class="hints-trigger" onclick="toggleHints()">
+        <span class="hints-badge">Hints</span>
+        <span>What to watch for…</span>
+        <span class="chev" id="hchev">›</span>
+      </button>
+      <div class="hints-body" id="hintsBody">
+        <div class="hint-item">
+          <div class="hint-key">You can't decide?</div>
+          <div class="hint-val">Maybe you haven't yet fully understood what your myth is actually claiming. Ask: "What exactly does someone believe who holds this myth? What would have to be true for the myth to be right?"</div>
         </div>
-        <div class="field">
-          <label class="form-label" style="font-size:13px;">What remains unanswered? / Was bleibt offen?</label>
-          <label class="form-label-de">Welche Fragen kann ich mit der bisherigen Suche noch nicht beantworten?</label>
-          <textarea rows="3" placeholder="I still need to find... / Ich muss noch herausfinden..."></textarea>
+        <div class="hint-item">
+          <div class="hint-key">You found more than one route?</div>
+          <div class="hint-val">A focused argument is stronger than a comprehensive survey (the paper has a page limit ;-) → depth beats breadth.</div>
         </div>
-        <div class="field">
-          <label class="form-label" style="font-size:13px;">Is an empirical deconstruction feasible? / Ist eine empirische Dekonstruktion möglich?</label>
-          <label class="form-label-de">Oder benötige ich einen anderen Ansatz (theoretisch, soziologisch, ...)?</label>
-          <textarea rows="3" placeholder="Yes / No / Partly, because... / Ja / Nein / Teils, weil..."></textarea>
+        <div class="hint-item">
+          <div class="hint-key">You find very little?</div>
+          <div class="hint-val">Maybe your search is too narrow or you haven't found the right terms yet → try switching German terms into appropriate English ones, broaden from a specific subgroup to a more general concept.</div>
+        </div>
+        <div class="hint-item">
+          <div class="hint-key">You find too much?</div>
+          <div class="hint-val">Decide for a more specific search strategy and apply filters! One (current) high-quality synthesis is more useful than a lot of individual studies.</div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="actions">
-      <button class="btn-primary" onclick="window.print()">⬇ Save as PDF / Als PDF speichern</button>
-      <button class="btn-secondary" onclick="clearForm()">↺ Clear form / Formular leeren</button>
+  <!-- STEP 4 -->
+  <div class="step-block">
+    <div class="step-header">
+      <div class="step-n s4">4</div>
+      <div>
+        <div class="step-title">Reflect on your findings / Befunde reflektieren</div>
+        <div class="step-desc">Based on what you found: Which direction does the evidence point? What remains open? Is an empirical deconstruction feasible for your myth – or might a different angle be needed?<br>
+        <span style="color:var(--text-faint)">Wohin zeigt die Evidenz? Was bleibt offen? Ist eine empirische Dekonstruktion möglich?</span></div>
+        <div class="step-time">~ 5 min</div>
+      </div>
     </div>
+    <div class="step-ws">
+      <div class="ws-label">Record here / Hier eintragen</div>
+      <div class="field">
+        <label class="form-label">What direction does the evidence point? / Wohin zeigt die Evidenz?</label>
+        <label class="form-label-de">Widerlegt sie den Mythos, differenziert sie ihn, oder ist das Bild gemischt?</label>
+        <textarea rows="3" placeholder="The evidence suggests... / Die Evidenz deutet darauf hin, dass..."></textarea>
+      </div>
+      <div class="field">
+        <label class="form-label">What remains unanswered? / Was bleibt offen?</label>
+        <label class="form-label-de">Welche Fragen kann ich mit der bisherigen Suche noch nicht beantworten?</label>
+        <textarea rows="3" placeholder="I still need to find... / Ich muss noch herausfinden..."></textarea>
+      </div>
+      <div class="field">
+        <label class="form-label">Is an empirical deconstruction feasible? / Ist eine empirische Dekonstruktion möglich?</label>
+        <label class="form-label-de">Oder benötige ich einen anderen Ansatz (theoretisch, soziologisch, ...)?</label>
+        <textarea rows="3" placeholder="Yes / No / Partly, because... / Ja / Nein / Teils, weil..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step-block">
+    <div class="step-header">
+      <div class="step-n s5">5</div>
+      <div>
+        <div class="step-title">Prepare one finding for sharing with the seminar / Vorbereitung Plenum</div>
+        <div class="step-desc">Based on your reflection above, be ready to share: (a) one source and its main claim, (b) what you still can't answer, and (c) whether an empirical deconstruction seems feasible for your myth.<br>
+        <span style="color:var(--text-faint)">(a) Eine Quelle + Kernaussage, (b) Was bleibt offen?, (c) Ist eine empirische Dekonstruktion möglich?</span></div>
+        <div class="step-time">~ 3 min</div>
+      </div>
+    </div>
+    <div class="step-ws" style="background:var(--accent-light);">
+      <div class="ws-label" style="color:var(--accent-mid);">Plenary discussion / Plenumsdiskussion (~10 min)</div>
+      <ul style="padding-left:1.25rem;">
+        <li style="font-size:13px;color:var(--text-muted);margin-bottom:4px;line-height:1.6">What did you find – and what surprised you?</li>
+        <li style="font-size:13px;color:var(--text-muted);margin-bottom:4px;line-height:1.6">Where was the evidence thin, contradictory, or hard to access?</li>
+        <li style="font-size:13px;color:var(--text-muted);margin-bottom:4px;line-height:1.6">Did the search change how you think about your myth?</li>
+        <li style="font-size:13px;color:var(--text-muted);line-height:1.6">Which myth seems hardest to deconstruct empirically – and why?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-primary" onclick="window.print()">⬇ Save as PDF / Als PDF speichern</button>
+    <button class="btn-secondary" onclick="clearForm()">↺ Clear form / Formular leeren</button>
   </div>
 
 </div>
 
 <script>
-const myths = [
-  {
-    title: "Digital Natives have automatically high digital competencies based on their socialisation",
-    tags: [{l:"Empirical",c:"tag-e"},{l:"Social",c:"tag-s"}],
-    routes: [
-      { label:"Empirical", lc:"tag-e", title:"Do young people actually have higher digital skills?",
-        terms:['"digital natives" AND competence','"digital literacy" AND adolescents AND evidence','"digital skills" AND "generational differences"','Prensky "digital natives" critique'],
-        note:"Kirschner & De Bruyckere (2017) is a key anchor paper." },
-      { label:"Social", lc:"tag-s", title:"Is competence shaped by social inequality rather than generation?",
-        terms:['"digital divide" AND education','"socioeconomic status" AND "digital skills"','"digital inequality" AND youth'],
-        note:"Opens a structural critique: not socialisation, but access and instruction." }
-    ],
-    decision:"Do you want to show the empirical assumption is false (Route 1), or that differences are socially produced, not natural (Route 2)?"
-  },
-  {
-    title: "The overreliance of GenAI undermines learner agency, critical thinking, and creativity",
-    tags: [{l:"Empirical",c:"tag-e"},{l:"Mixed",c:"tag-m"}],
-    routes: [
-      { label:"Empirical", lc:"tag-e", title:"What does research say about AI and cognitive outcomes?",
-        terms:['"generative AI" AND "critical thinking" AND students','"ChatGPT" AND "learning outcomes"','"AI tools" AND "cognitive offloading" AND education'],
-        note:"Very recent field – prioritise 2023–2025; preprints on EdArXiv may be relevant." },
-      { label:"Mixed", lc:"tag-m", title:"Is harm a question of tool design, not the technology itself?",
-        terms:['"AI-assisted learning" AND agency','"human-AI collaboration" AND creativity','"automation" AND "skill atrophy"'],
-        note:"This route nuances rather than fully refutes the myth – valid if argued carefully." }
-    ],
-    decision:"Do you want to refute the myth empirically, or nuance it (harm depends on how AI is used)? Both are valid but lead to different paper structures."
-  },
-  {
-    title: "Gaming automatically makes people aggressive",
-    tags: [{l:"Empirical",c:"tag-e"},{l:"Neuro",c:"tag-n"}],
-    routes: [
-      { label:"Empirical", lc:"tag-e", title:"Meta-analytic evidence on gaming and aggression",
-        terms:['"video games" AND aggression AND "meta-analysis"','"violent video games" AND aggression AND evidence','Anderson Bushman video game aggression critique','"General Aggression Model" evidence'],
-        note:"Contested field – showing the Bushman vs. Ferguson debate IS the deconstruction." },
-      { label:"Neuro", lc:"tag-n", title:"What does neuroscience say?",
-        terms:['"video games" AND brain AND neuroimaging','"gaming" AND amygdala OR "prefrontal cortex"','"desensitisation" AND violence AND neuroscience'],
-        note:"Risk: neuroscience findings are often over-interpreted. Critical reading essential." }
-    ],
-    decision:"Challenge the empirical evidence directly (Route 1, methodological critique), or approach from neuroscience (Route 2)? Route 1 is more developed in the literature."
-  },
-  {
-    title: "Smaller class sizes lead to better learning outcomes",
-    tags: [{l:"Empirical",c:"tag-e"},{l:"Policy",c:"tag-p"}],
-    routes: [
-      { label:"Empirical", lc:"tag-e", title:"Effect sizes of class size on achievement",
-        terms:['"class size" AND "learning outcomes" AND "meta-analysis"','Hattie "class size" effect size','"Project STAR" Tennessee class size'],
-        note:"Hattie's effect size is ~0.21 – meaningful but modest. STAR is the anchor study." },
-      { label:"Policy", lc:"tag-p", title:"Why does the myth persist despite mixed evidence?",
-        terms:['"class size" AND policy AND "political economy"','"teacher workload" AND class size','"class size" AND "teacher quality" interaction'],
-        note:"Asks: are there other reasons class size matters even if effects are small?" }
-    ],
-    decision:"Show the evidence is weaker than assumed (Route 1), or argue the myth conflates class size with other variables like teacher quality (Route 2)?"
-  },
-  {
-    title: "Girls are naturally more gifted in language than boys",
-    tags: [{l:"Neuro",c:"tag-n"},{l:"Social",c:"tag-s"}],
-    routes: [
-      { label:"Neuro", lc:"tag-n", title:"Is there neurological evidence for language differences?",
-        terms:['"sex differences" AND language AND "meta-analysis"','Hyde "gender similarities hypothesis"','"brain sex" AND language critique'],
-        note:"Hyde's Gender Similarities Hypothesis (2005/2014) is the key anchor paper." },
-      { label:"Social", lc:"tag-s", title:"Are differences produced by socialisation and expectation?",
-        terms:['"stereotype threat" AND girls AND language','"gender expectations" AND "reading achievement"','"teacher beliefs" AND gender AND language'],
-        note:"Even small average differences are dwarfed by within-group variation." }
-    ],
-    decision:"Challenge the biological claim directly (Route 1), or argue social factors explain observed patterns better (Route 2)?"
-  },
-  {
-    title: "Based on natural disposition, boys have better mathematical achievement than girls",
-    tags: [{l:"Neuro",c:"tag-n"},{l:"Social",c:"tag-s"}],
-    routes: [
-      { label:"Neuro", lc:"tag-n", title:"Biological evidence for sex differences in mathematics",
-        terms:['"sex differences" AND mathematics AND "meta-analysis"','Hyde "gender similarities" mathematics','"math gender gap" AND neuroscience'],
-        note:"Differences are shrinking globally – strong counter-argument against 'natural disposition'." },
-      { label:"Social", lc:"tag-s", title:"Cross-cultural and societal explanations",
-        terms:['"math gender gap" AND "cross-cultural"','"gender equality index" AND "math achievement"','PISA gender mathematics'],
-        note:"Countries with higher gender equality show smaller or reversed gaps – powerful evidence." }
-    ],
-    decision:"The cross-cultural route (Route 2) is particularly powerful. Consider combining both, but pick one as your main argument."
-  },
-  {
-    title: "Gifted children do not need any support in class",
-    tags: [{l:"Empirical",c:"tag-e"},{l:"Policy",c:"tag-p"}],
-    routes: [
-      { label:"Empirical", lc:"tag-e", title:"Evidence on gifted education and outcomes",
-        terms:['"gifted education" AND "academic outcomes"','"high ability" AND underachievement','"acceleration" OR "enrichment" AND gifted evidence'],
-        note:"Research shows gifted children benefit from challenge and can underachieve without support." },
-      { label:"Policy", lc:"tag-p", title:"Equity and inclusion perspectives",
-        terms:['"gifted identification" AND bias','"twice exceptional" students','"inclusive education" AND "high ability"'],
-        note:"Challenges who gets identified as gifted and what support looks like in inclusive settings." }
-    ],
-    decision:"Focus on what gifted children need (Route 1 – empirical), or on problematic assumptions behind 'giftedness' itself (Route 2 – critical/policy)?"
-  },
-  {
-    title: "Introverted teachers are automatically worse at teaching",
-    tags: [{l:"Empirical",c:"tag-e"},{l:"Social",c:"tag-s"}],
-    routes: [
-      { label:"Empirical", lc:"tag-e", title:"Is extraversion linked to teaching effectiveness?",
-        terms:['"teacher personality" AND "teaching effectiveness"','"Big Five" AND "teacher performance"','"extraversion" AND classroom AND evidence'],
-        note:"Very limited direct research – methodological discussion of what 'teaching effectiveness' means is essential." },
-      { label:"Social", lc:"tag-s", title:"Where does this cultural assumption come from?",
-        terms:['"introversion" AND bias AND workplace','Cain Quiet introversion','"ideal worker" AND extraversion'],
-        note:"Connects to cultural bias toward extraversion. Susan Cain's work is a popular entry point needing academic grounding." }
-    ],
-    decision:"Because direct research is sparse, consider (a) showing absence of evidence, and (b) analysing where the assumption comes from culturally. A combined approach is legitimate."
-  },
-  {
-    title: "Speech disorders are more common in bilingual children",
-    tags: [{l:"Empirical",c:"tag-e"},{l:"Neuro",c:"tag-n"}],
-    routes: [
-      { label:"Empirical", lc:"tag-e", title:"Prevalence of speech disorders: bilingual vs. monolingual",
-        terms:['"bilingualism" AND "speech disorder" AND prevalence','"bilingual" AND "language delay" AND evidence','"dual language" AND "speech-language pathology"'],
-        note:"Research consistently shows no higher prevalence. Misdiagnosis is the real risk." },
-      { label:"Neuro", lc:"tag-n", title:"How does bilingual language acquisition work neurologically?",
-        terms:['"bilingual language acquisition" AND neuroscience','"code-switching" AND "language development"','"simultaneous bilingualism" AND brain'],
-        note:"Explains why mixing languages is normal development – helps frame why the myth exists." }
-    ],
-    decision:"Route 1 directly refutes the myth with prevalence data. Route 2 explains why the myth exists. Both can work together."
-  },
-  {
-    title: "The 'Bagrut' test as a form of success",
-    tags: [{l:"Policy",c:"tag-p"},{l:"Empirical",c:"tag-e"}],
-    routes: [
-      { label:"Policy", lc:"tag-p", title:"What does the Bagrut actually measure – and who does it exclude?",
-        terms:['"high-stakes testing" AND meritocracy','"standardised testing" AND "social inequality"','"matriculation exam" AND validity'],
-        note:"Deconstructs the assumption that test success = educational success. Strong equity and validity angle." },
-      { label:"Empirical", lc:"tag-e", title:"Predictive validity: does the Bagrut predict life outcomes?",
-        terms:['"matriculation" AND "higher education outcomes"','"high-stakes exam" AND "predictive validity"','"standardised testing" AND "long-term outcomes"'],
-        note:"Tests whether the myth of the Bagrut as a success marker holds up empirically." }
-    ],
-    decision:"Challenge what the test measures (Route 1 – construct validity and equity), or whether it predicts anything meaningful (Route 2 – predictive validity)?"
-  },
-  {
-    title: "Primary school transition decisions are based solely on academic performance (meritocracy myth)",
-    tags: [{l:"Policy",c:"tag-p"},{l:"Social",c:"tag-s"}],
-    routes: [
-      { label:"Policy", lc:"tag-p", title:"What factors actually influence transition decisions?",
-        terms:['"school transition" AND "teacher recommendation" AND bias','"Grundschulübergang" AND "soziale Herkunft"','"primary school tracking" AND "social class"'],
-        note:"German context is particularly well-researched (PISA, IGLU). German-language sources via FIS Bildung are essential." },
-      { label:"Social", lc:"tag-s", title:"Structural reproduction of inequality through tracking",
-        terms:['"educational tracking" AND "social inequality"','Bourdieu "cultural capital" education','"stratification" AND "primary education"'],
-        note:"Bourdieu provides a theoretical framework to explain why decisions are not purely meritocratic." }
-    ],
-    decision:"Route 1 gives direct empirical evidence that decisions are not meritocratic. Route 2 provides a theoretical framework to explain why. Route 1 should anchor the deconstruction."
-  }
-];
-
-const tagMap = { "Empirical":"tag-e","Neuro":"tag-n","Social":"tag-s","Policy":"tag-p","Mixed":"tag-m" };
-
-const list = document.getElementById('mythList');
-myths.forEach((m, i) => {
-  const item = document.createElement('div');
-  item.className = 'myth-item';
-  const tags = m.tags.map(t => `<span class="tag ${t.c}">${t.l}</span>`).join('');
-  const routes = m.routes.map((r, ri) => `
-    ${ri > 0 ? '<hr class="route-divider">' : ''}
-    <div class="route">
-      <div class="route-head">
-        <span class="route-label ${r.lc}" style="font-size:11px;padding:2px 7px;border-radius:4px;">Route ${ri+1} · ${r.label}</span>
-        <span class="route-title">${r.title}</span>
-      </div>
-      <div class="terms">${r.terms.map(t => `<span class="term">${t}</span>`).join('')}</div>
-      <div class="route-note">${r.note}</div>
-    </div>
-  `).join('');
-  item.innerHTML = `
-    <button class="myth-trigger" onclick="toggleMyth(${i})">
-      <div class="myth-trigger-left">
-        <div>
-          <div>${m.title}</div>
-          <div class="myth-tags">${tags}</div>
-        </div>
-      </div>
-      <span class="chev" id="chev-${i}">›</span>
-    </button>
-    <div class="myth-body" id="mb-${i}">
-      ${routes}
-      <div class="decision"><strong>Decision prompt:</strong> ${m.decision}</div>
-    </div>
-  `;
-  list.appendChild(item);
-});
-
-function toggleMyth(i) {
-  const b = document.getElementById('mb-'+i);
-  const c = document.getElementById('chev-'+i);
-  const open = b.classList.toggle('open');
-  c.style.transform = open ? 'rotate(90deg)' : '';
-}
-
-function tog(id) {
-  document.getElementById(id).classList.toggle('open');
+function toggleHints() {
+  const body = document.getElementById('hintsBody');
+  const chev = document.getElementById('hchev');
+  const open = body.classList.toggle('open');
+  chev.style.transform = open ? 'rotate(90deg)' : '';
 }
 
 let srcCount = 3;
@@ -761,13 +371,13 @@ function addSource() {
   div.innerHTML = `
     <div class="source-num">Source ${srcCount} / Quelle ${srcCount}</div>
     <div class="field-row">
-      <div class="field"><label class="form-label" style="font-size:12px;">Author(s)</label><input type="text" placeholder="Lastname, A."></div>
-      <div class="field"><label class="form-label" style="font-size:12px;">Year</label><input type="text" placeholder="2024" style="max-width:120px"></div>
+      <div class="field"><label class="form-label">Author(s)</label><input type="text" placeholder="Lastname, A."></div>
+      <div class="field"><label class="form-label">Year</label><input type="text" placeholder="2024" style="max-width:120px"></div>
     </div>
-    <div class="field"><label class="form-label" style="font-size:12px;">Title</label><input type="text" placeholder="Full title"></div>
-    <div class="field"><label class="form-label" style="font-size:12px;">Source type</label><input type="text" placeholder="e.g. Meta-analysis"></div>
-    <div class="field"><label class="form-label" style="font-size:12px;">Main claim</label><textarea rows="2" placeholder="What does this source say?"></textarea></div>
-    <div class="field"><label class="form-label" style="font-size:12px;">Relevance for my paper</label><textarea rows="2" placeholder="How can I use this?"></textarea></div>
+    <div class="field"><label class="form-label">Title</label><input type="text" placeholder="Full title"></div>
+    <div class="field"><label class="form-label">Source type</label><input type="text" placeholder="e.g. Meta-analysis"></div>
+    <div class="field"><label class="form-label">Main claim</label><textarea rows="2" placeholder="What does this source say?"></textarea></div>
+    <div class="field"><label class="form-label">Relevance for my paper</label><textarea rows="2" placeholder="How can I use this?"></textarea></div>
   `;
   document.getElementById('sources').appendChild(div);
 }
