@@ -87,7 +87,8 @@
     width: 100%; font-family: var(--font); font-size: 14px;
     color: var(--text); background: var(--surface);
     border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 0.6rem 0.8rem; resize: vertical; transition: border-color 0.15s;
+    padding: 0.6rem 0.8rem; resize: none; transition: border-color 0.15s;
+    overflow: hidden;
   }
   textarea:focus, input[type="text"]:focus {
     outline: none; border-color: var(--accent-mid);
@@ -134,7 +135,7 @@
     .hints-trigger, .hints-body, .actions { display: none !important; }
     body { background: white; }
     .step-block, .source-block { border: 1px solid #ccc; }
-    textarea, input { border: 1px solid #ccc; }
+    textarea, input { border: 1px solid #ccc; overflow: visible; }
     .step-ws { background: #fafafa; }
   }
 </style>
@@ -333,6 +334,20 @@
 </div>
 
 <script>
+function autoGrow(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+function initAutoGrow() {
+  document.querySelectorAll('textarea').forEach(ta => {
+    ta.addEventListener('input', () => autoGrow(ta));
+    autoGrow(ta); // set initial height
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initAutoGrow);
+
 function toggleHints() {
   const body = document.getElementById('hintsBody');
   const chev = document.getElementById('hchev');
@@ -357,11 +372,19 @@ function addSource() {
     <div class="field"><label class="form-label">Relevance for my paper</label><textarea rows="2" placeholder="How can I use this?"></textarea></div>
   `;
   document.getElementById('sources').appendChild(div);
+  // init auto-grow for newly added textareas
+  div.querySelectorAll('textarea').forEach(ta => {
+    ta.addEventListener('input', () => autoGrow(ta));
+    autoGrow(ta);
+  });
 }
 
 function clearForm() {
   if (!confirm('Clear all form fields? / Alle Eingaben löschen?')) return;
-  document.querySelectorAll('textarea, input[type="text"]').forEach(el => el.value = '');
+  document.querySelectorAll('textarea, input[type="text"]').forEach(el => {
+    el.value = '';
+    if (el.tagName === 'TEXTAREA') autoGrow(el);
+  });
 }
 </script>
 </body>
