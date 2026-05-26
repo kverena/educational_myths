@@ -1,0 +1,391 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search for Your Myth – Educational Myths SoSe 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --border: #E2DED6;
+    --text: #1A1816;
+    --text-muted: #6B6760;
+    --text-faint: #9E9A94;
+    --accent: #1A4F8A;
+    --accent-light: #E6EFF8;
+    --accent-mid: #4A7DB5;
+    --green: #1A6B45;
+    --green-light: #E6F3ED;
+    --amber: #7A4F10;
+    --amber-light: #FBF0DC;
+    --purple: #4A3A8A;
+    --purple-light: #EEEDF8;
+    --coral: #8A3020;
+    --coral-light: #F8EDEA;
+    --radius: 8px;
+    --radius-lg: 12px;
+    --font: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.65; }
+
+  header {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  }
+  .seminar-tag { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 4px; }
+  header h1 { font-size: 20px; font-weight: 500; margin-bottom: 2px; }
+  header h1 span { color: var(--text-muted); font-weight: 300; }
+  .header-meta { font-size: 13px; color: var(--text-muted); }
+  .uni-badge { font-size: 12px; color: var(--text-muted); border: 1px solid var(--border); border-radius: var(--radius); padding: 6px 12px; white-space: nowrap; align-self: center; }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 2rem; }
+  .chip { font-size: 12px; border: 1px solid var(--border); border-radius: 20px; padding: 3px 11px; color: var(--text-muted); background: var(--surface); }
+
+  .step-block {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); margin-bottom: 1.25rem; overflow: hidden;
+  }
+  .step-header {
+    display: grid; grid-template-columns: 36px 1fr; gap: 12px;
+    align-items: start; padding: 1.1rem 1.25rem 1rem;
+  }
+  .step-n {
+    width: 28px; height: 28px; border-radius: 50%;
+    font-size: 13px; font-weight: 500;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 2px; flex-shrink: 0;
+  }
+  .s1 { background: var(--purple-light); color: var(--purple); }
+  .s2 { background: var(--green-light); color: var(--green); }
+  .s3 { background: var(--amber-light); color: var(--amber); }
+  .s4 { background: var(--coral-light); color: var(--coral); }
+  .s5 { background: var(--accent-light); color: var(--accent); }
+  .step-title { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
+  .step-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .step-time { font-size: 11px; color: var(--text-faint); margin-top: 5px; }
+
+  .step-ws {
+    border-top: 1px dashed var(--border);
+    background: var(--bg); padding: 1rem 1.25rem;
+  }
+  .ws-label {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-faint); margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .ws-label::before { content: '✎'; font-size: 13px; }
+
+  textarea, input[type="text"] {
+    width: 100%; font-family: var(--font); font-size: 14px;
+    color: var(--text); background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 0.6rem 0.8rem; resize: none; transition: border-color 0.15s;
+    overflow: hidden;
+  }
+  textarea:focus, input[type="text"]:focus {
+    outline: none; border-color: var(--accent-mid);
+    box-shadow: 0 0 0 3px rgba(74,125,181,0.12);
+  }
+  .field { margin-bottom: 0.75rem; }
+  .field:last-child { margin-bottom: 0; }
+  .form-label { font-size: 12px; font-weight: 500; margin-bottom: 2px; display: block; }
+  .form-label-de { font-size: 11px; color: var(--text-faint); font-weight: 300; display: block; margin-bottom: 5px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 0.75rem; }
+  @media (max-width: 600px) { .field-row { grid-template-columns: 1fr; } }
+
+  .hints-wrap { border-top: 1px solid var(--border); }
+  .hints-trigger {
+    width: 100%; text-align: left; padding: 0.75rem 1.25rem;
+    background: none; border: none; font-family: var(--font);
+    font-size: 13px; color: var(--amber);
+    cursor: pointer; display: flex; align-items: center; gap: 8px;
+    transition: background 0.15s;
+  }
+  .hints-trigger:hover { background: var(--amber-light); }
+  .hints-badge { font-size: 11px; font-weight: 500; background: var(--amber-light); color: var(--amber); padding: 2px 8px; border-radius: var(--radius); }
+  .chev { font-size: 16px; color: var(--text-faint); transition: transform 0.2s; margin-left: auto; }
+  .hints-body { display: none; border-top: 1px solid var(--border); padding: 0.9rem 1.25rem; background: #FEFCF8; }
+  .hints-body.open { display: block; }
+  .hint-item { display: grid; grid-template-columns: auto 1fr; gap: 10px; margin-bottom: 0.75rem; align-items: start; }
+  .hint-item:last-child { margin-bottom: 0; }
+  .hint-key { font-size: 13px; font-weight: 500; color: var(--amber); white-space: nowrap; }
+  .hint-val { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+  .source-block {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-bottom: 0.75rem;
+  }
+  .source-num { font-size: 11px; font-weight: 500; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+
+  .btn-primary { background: var(--accent); color: white; border: none; border-radius: var(--radius); padding: 0.6rem 1.25rem; font-family: var(--font); font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+  .btn-primary:hover { background: #153F6E; }
+  .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.6rem 1.25rem; font-family: var(--font); font-size: 14px; cursor: pointer; transition: background 0.15s; }
+  .btn-secondary:hover { background: var(--bg); }
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 2rem; }
+
+  @media print {
+    .hints-trigger, .hints-body, .actions { display: none !important; }
+    body { background: white; }
+    .step-block, .source-block { border: 1px solid #ccc; }
+    textarea, input { border: 1px solid #ccc; overflow: visible; }
+    .step-ws { background: #fafafa; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="seminar-tag">SoSe 2026 · Köstler</div>
+    <h1>Search for Your Myth <span>/ Literatursuche</span></h1>
+    <div class="header-meta">Theoretical &amp; Disciplinary Grounding — Literature Search Assignment</div>
+  </div>
+  <div class="uni-badge">Universität Passau</div>
+</header>
+
+<div class="page">
+
+  <div class="chips">
+    <span class="chip">⏱ ~45 min individual work / Einzelarbeit</span>
+    <span class="chip">📄 Fill in the worksheet & save as PDF for your work / Arbeitsblatt ausfüllen & als PDF für die weitere Arbeit speichern </span>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step-block">
+    <div class="step-header">
+      <div class="step-n s1">1</div>
+      <div>
+        <div class="step-title">Collect your starting search terms / Erste Suchbegriffe sammeln</div>
+        <div class="step-desc">Write down 2–3 keywords that describe your myth. <br>
+        <span style="color:var(--text-faint)">Notiere 2–3 Suchbegriffe. </span></div>
+        <div class="step-time">~ 5 min</div>
+      </div>
+    </div>
+    <div class="step-ws">
+      <div class="ws-label">Record here / Hier eintragen</div>
+      <div class="field">
+        <label class="form-label">My myth / Mein Mythos</label>
+        <input type="text" placeholder="Enter your myth here / Trage hier deinen Mythos ein">
+      </div>
+      <div class="field">
+        <label class="form-label">Initial search terms / Erste Suchbegriffe</label>
+        <label class="form-label-de">Notiere die Begriffe, mit denen du startest</label>
+        <textarea rows="2" placeholder='"key concept" AND evidence, "your myth topic" AND "term of relevant theory", ...'></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step-block">
+    <div class="step-header">
+      <div class="step-n s2">2</div>
+      <div>
+        <div class="step-title">Run a first search in an appropriate database / Erste Datenbanksuche</div>
+        <div class="step-desc">Go to <strong style="font-weight:500">appropriate database</strong>. Apply filters. How many results do you get? Does the volume suggest a well-researched area – or a gap?<br>    
+          <span style="color:var(--text-faint)">Gehe zu einer geeigneten Datenbank, setze Filter. Wie viele Treffer? Viel oder wenig Forschung?</span></div>
+        <div class="step-time">~ 10 min</div>
+      </div>
+    </div>
+    <div class="step-ws">
+      <div class="ws-label">Record here / Hier eintragen</div>
+      <div class="field-row">
+        <div class="field">
+          <label class="form-label">Database used / Genutzte Datenbank</label>
+          <input type="text" placeholder="e.g. ERIC, Scopus, FIS Bildung">
+        </div>
+        <div class="field">
+          <label class="form-label">Number of results / Trefferanzahl</label>
+          <input type="text" placeholder="e.g. 342 (filtered: 87)">
+        </div>
+      </div>
+      <div class="field">
+        <label class="form-label">Revised search terms / Angepasste Suchbegriffe</label>
+        <label class="form-label-de">Welche Begriffe haben besser funktioniert?</label>
+        <textarea rows="2" placeholder="Updated terms after seeing first results..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step-block">
+    <div class="step-header">
+      <div class="step-n s3">3</div>
+      <div>
+        <div class="step-title">Assess what you find – and what it might mean for your argumentation</div>
+        <div class="step-desc">Look at 3–5 results. For each: What is the main claim? Does it challenge the myth, support it, or nuance it? You may need to revise your initial search terms (once again) based on what you find.<br>
+        <span style="color:var(--text-faint)">Lies 3–5 Abstracts. Jeweils: Was ist die zentrale Aussage? Stellt es den Mythos in Frage, stützt oder relativiert ihn? Passe deine Suchbegriffe ggf. (erneut) an.</span></div>
+        <div class="step-time">~ 15 min</div>
+      </div>
+    </div>
+    <div class="step-ws">
+      <div class="ws-label">Sources found / Gefundene Quellen &nbsp;<span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-faint);font-size:11px;">note at least 3 · mindestens 3 notieren</span></div>
+      <div id="sources">
+        <div class="source-block">
+          <div class="source-num">Source 1 / Quelle 1</div>
+          <div class="field-row">
+            <div class="field"><label class="form-label">Author(s) / Autor:innen</label><input type="text" placeholder="Lastname, A."></div>
+            <div class="field"><label class="form-label">Year / Jahr</label><input type="text" placeholder="2023" style="max-width:120px"></div>
+          </div>
+          <div class="field"><label class="form-label">Title / Titel</label><input type="text" placeholder="Full title of the article"></div>
+          <div class="field">
+            <label class="form-label">Source type / Quellentyp</label>
+            <label class="form-label-de">Primärstudie / Review / Meta-Analyse / Theorie</label>
+            <input type="text" placeholder="e.g. Meta-analysis / Systematic review / Empirical study">
+          </div>
+          <div class="field"><label class="form-label">Main claim / Kernaussage <span style="font-weight:300">(1–2 sentences)</span></label><textarea rows="2" placeholder="What does this source say? Does it support, challenge, or nuance the myth?"></textarea></div>
+          <div class="field"><label class="form-label">Relevance for my paper / Relevanz für mein Paper</label><textarea rows="2" placeholder="How can I use this source in my deconstruction?"></textarea></div>
+        </div>
+        <div class="source-block">
+          <div class="source-num">Source 2 / Quelle 2</div>
+          <div class="field-row">
+            <div class="field"><label class="form-label">Author(s)</label><input type="text" placeholder="Lastname, A."></div>
+            <div class="field"><label class="form-label">Year</label><input type="text" placeholder="2022" style="max-width:120px"></div>
+          </div>
+          <div class="field"><label class="form-label">Title</label><input type="text" placeholder="Full title"></div>
+          <div class="field"><label class="form-label">Source type</label><input type="text" placeholder="e.g. Empirical study"></div>
+          <div class="field"><label class="form-label">Main claim</label><textarea rows="2" placeholder="What does this source say?"></textarea></div>
+          <div class="field"><label class="form-label">Relevance for my paper</label><textarea rows="2" placeholder="How can I use this?"></textarea></div>
+        </div>
+        <div class="source-block">
+          <div class="source-num">Source 3 / Quelle 3</div>
+          <div class="field-row">
+            <div class="field"><label class="form-label">Author(s)</label><input type="text" placeholder="Lastname, A."></div>
+            <div class="field"><label class="form-label">Year</label><input type="text" placeholder="2021" style="max-width:120px"></div>
+          </div>
+          <div class="field"><label class="form-label">Title</label><input type="text" placeholder="Full title"></div>
+          <div class="field"><label class="form-label">Source type</label><input type="text" placeholder="e.g. Review"></div>
+          <div class="field"><label class="form-label">Main claim</label><textarea rows="2" placeholder="What does this source say?"></textarea></div>
+          <div class="field"><label class="form-label">Relevance for my paper</label><textarea rows="2" placeholder="How can I use this?"></textarea></div>
+        </div>
+      </div>
+      <button class="btn-secondary" onclick="addSource()" style="margin-top:0.5rem;font-size:13px;">+ Add source / Quelle hinzufügen</button>
+    </div>
+    <div class="hints-wrap">
+      <button class="hints-trigger" onclick="toggleHints()">
+        <span class="hints-badge">Hints</span>
+        <span>What to watch for…</span>
+        <span class="chev" id="hchev">›</span>
+      </button>
+      <div class="hints-body" id="hintsBody">
+        <div class="hint-item">
+          <div class="hint-key">You can't decide?</div>
+          <div class="hint-val">Maybe you haven't yet fully understood what your myth is actually claiming. Ask: "What exactly does someone believe who holds this myth? What would have to be true for the myth to be right?"</div>
+        </div>
+        <div class="hint-item">
+          <div class="hint-key">You found more than one route?</div>
+          <div class="hint-val">A focused argument is stronger than a comprehensive survey (the paper has a page limit ;-) → depth beats breadth.</div>
+        </div>
+        <div class="hint-item">
+          <div class="hint-key">You find very little?</div>
+          <div class="hint-val">Maybe your search is too narrow or you haven't found the right terms yet → try switching German terms into appropriate English ones, broaden from a specific subgroup to a more general concept.</div>
+        </div>
+        <div class="hint-item">
+          <div class="hint-key">You find too much?</div>
+          <div class="hint-val">Decide for a more specific search strategy and apply filters! One (current) high-quality synthesis is more useful than a lot of individual studies.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step-block">
+    <div class="step-header">
+      <div class="step-n s4">4</div>
+      <div>
+        <div class="step-title">Reflect on your findings / Befunde reflektieren</div>
+        <div class="step-desc">Based on what you found: Which direction does the evidence point? What remains open? Is an empirical deconstruction feasible for your myth – or might a different angle be needed?<br>
+        <span style="color:var(--text-faint)">Wohin zeigt die Evidenz? Was bleibt offen? Ist eine empirische Dekonstruktion möglich?</span></div>
+        <div class="step-time">~ 10 min</div>
+      </div>
+    </div>
+    <div class="step-ws">
+      <div class="ws-label">Record here / Hier eintragen</div>
+      <div class="field">
+        <label class="form-label">What direction does the evidence point? / Wohin zeigt die Evidenz?</label>
+        <label class="form-label-de">Widerlegt sie den Mythos, differenziert sie ihn, oder ist das Bild gemischt?</label>
+        <textarea rows="3" placeholder="The evidence suggests... / Die Evidenz deutet darauf hin, dass..."></textarea>
+      </div>
+      <div class="field">
+        <label class="form-label">What remains unanswered? / Was bleibt offen?</label>
+        <label class="form-label-de">Welche Fragen kann ich mit der bisherigen Suche noch nicht beantworten?</label>
+        <textarea rows="3" placeholder="I still need to find... / Ich muss noch herausfinden..."></textarea>
+      </div>
+      <div class="field">
+        <label class="form-label">Is an empirical deconstruction feasible? / Ist eine empirische Dekonstruktion möglich?</label>
+        <label class="form-label-de">Oder benötige ich einen anderen Ansatz (theoretisch, soziologisch, ...)?</label>
+        <textarea rows="3" placeholder="Yes / No / Partly, because... / Ja / Nein / Teils, weil..."></textarea>
+      </div>
+    </div>
+  </div>
+
+    <div class="actions">
+    <button class="btn-primary" onclick="window.print()">⬇ Save as PDF / Als PDF speichern</button>
+    <button class="btn-secondary" onclick="clearForm()">↺ Clear form / Formular leeren</button>
+  </div>
+
+</div>
+
+<script>
+function autoGrow(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+function initAutoGrow() {
+  document.querySelectorAll('textarea').forEach(ta => {
+    ta.addEventListener('input', () => autoGrow(ta));
+    autoGrow(ta); // set initial height
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initAutoGrow);
+
+function toggleHints() {
+  const body = document.getElementById('hintsBody');
+  const chev = document.getElementById('hchev');
+  const open = body.classList.toggle('open');
+  chev.style.transform = open ? 'rotate(90deg)' : '';
+}
+
+let srcCount = 3;
+function addSource() {
+  srcCount++;
+  const div = document.createElement('div');
+  div.className = 'source-block';
+  div.innerHTML = `
+    <div class="source-num">Source ${srcCount} / Quelle ${srcCount}</div>
+    <div class="field-row">
+      <div class="field"><label class="form-label">Author(s)</label><input type="text" placeholder="Lastname, A."></div>
+      <div class="field"><label class="form-label">Year</label><input type="text" placeholder="2024" style="max-width:120px"></div>
+    </div>
+    <div class="field"><label class="form-label">Title</label><input type="text" placeholder="Full title"></div>
+    <div class="field"><label class="form-label">Source type</label><input type="text" placeholder="e.g. Meta-analysis"></div>
+    <div class="field"><label class="form-label">Main claim</label><textarea rows="2" placeholder="What does this source say?"></textarea></div>
+    <div class="field"><label class="form-label">Relevance for my paper</label><textarea rows="2" placeholder="How can I use this?"></textarea></div>
+  `;
+  document.getElementById('sources').appendChild(div);
+  // init auto-grow for newly added textareas
+  div.querySelectorAll('textarea').forEach(ta => {
+    ta.addEventListener('input', () => autoGrow(ta));
+    autoGrow(ta);
+  });
+}
+
+function clearForm() {
+  if (!confirm('Clear all form fields? / Alle Eingaben löschen?')) return;
+  document.querySelectorAll('textarea, input[type="text"]').forEach(el => {
+    el.value = '';
+    if (el.tagName === 'TEXTAREA') autoGrow(el);
+  });
+}
+</script>
+</body>
+</html>
