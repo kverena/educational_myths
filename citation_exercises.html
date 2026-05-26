@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Academic Citation – Exercises · Educational Myths SoSe 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --border: #E2DED6;
+    --text: #1A1816;
+    --text-muted: #6B6760;
+    --text-faint: #9E9A94;
+    --accent: #1A4F8A;
+    --accent-light: #E6EFF8;
+    --accent-mid: #4A7DB5;
+    --green: #1A6B45;
+    --green-light: #E6F3ED;
+    --amber: #7A4F10;
+    --amber-light: #FBF0DC;
+    --purple: #4A3A8A;
+    --purple-light: #EEEDF8;
+    --coral: #8A3020;
+    --coral-light: #F8EDEA;
+    --radius: 8px;
+    --radius-lg: 12px;
+    --font: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.65; }
+
+  header {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  }
+  .seminar-tag { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 4px; }
+  header h1 { font-size: 20px; font-weight: 500; margin-bottom: 2px; }
+  header h1 span { color: var(--text-muted); font-weight: 300; }
+  .header-meta { font-size: 13px; color: var(--text-muted); }
+  .uni-badge { font-size: 12px; color: var(--text-muted); border: 1px solid var(--border); border-radius: var(--radius); padding: 6px 12px; white-space: nowrap; align-self: center; }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 2rem; }
+  .chip { font-size: 12px; border: 1px solid var(--border); border-radius: 20px; padding: 3px 11px; color: var(--text-muted); background: var(--surface); }
+
+  /* Task blocks */
+  .task-block {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); margin-bottom: 1.25rem; overflow: hidden;
+  }
+  .task-header {
+    display: grid; grid-template-columns: 36px 1fr; gap: 12px;
+    align-items: start; padding: 1.1rem 1.25rem 1rem;
+  }
+  .task-n {
+    width: 28px; height: 28px; border-radius: 50%;
+    font-size: 13px; font-weight: 500;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 2px; flex-shrink: 0;
+  }
+  .t1 { background: var(--purple-light); color: var(--purple); }
+  .t2 { background: var(--coral-light); color: var(--coral); }
+  .t3 { background: var(--green-light); color: var(--green); }
+  .t4 { background: var(--amber-light); color: var(--amber); }
+  .task-title { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
+  .task-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .task-time { font-size: 11px; color: var(--text-faint); margin-top: 5px; }
+
+  .task-body {
+    border-top: 1px dashed var(--border);
+    background: var(--bg); padding: 1rem 1.25rem;
+  }
+
+  /* Shared form */
+  textarea, input[type="text"] {
+    width: 100%; font-family: var(--font); font-size: 14px;
+    color: var(--text); background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 0.6rem 0.8rem; resize: none; overflow: hidden; transition: border-color 0.15s;
+  }
+  textarea:focus, input[type="text"]:focus {
+    outline: none; border-color: var(--accent-mid);
+    box-shadow: 0 0 0 3px rgba(74,125,181,0.12);
+  }
+  .field { margin-bottom: 0.75rem; }
+  .field:last-child { margin-bottom: 0; }
+  .form-label { font-size: 12px; font-weight: 500; margin-bottom: 2px; display: block; }
+  .form-label-de { font-size: 11px; color: var(--text-faint); font-weight: 300; display: block; margin-bottom: 5px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 0.75rem; }
+  @media (max-width: 600px) { .field-row { grid-template-columns: 1fr; } }
+
+  /* Reference data box */
+  .ref-data {
+    background: var(--accent-light); border: 1px solid #C5D9EF;
+    border-radius: var(--radius); padding: 0.85rem 1rem;
+    font-size: 13px; line-height: 1.7; margin-bottom: 1rem;
+  }
+  .ref-data-label {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 0.4rem;
+  }
+  .ref-data table { width: 100%; border-collapse: collapse; }
+  .ref-data td { padding: 2px 0; vertical-align: top; }
+  .ref-data td:first-child { color: var(--text-muted); width: 130px; font-size: 12px; padding-right: 10px; }
+
+  /* Error-find task */
+  .faulty-ref {
+    background: var(--coral-light); border: 1px solid #E8C5BE;
+    border-radius: var(--radius); padding: 0.85rem 1rem;
+    font-size: 13px; font-family: var(--mono); line-height: 1.8;
+    margin-bottom: 1rem; color: var(--text);
+  }
+  .faulty-label {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--coral); margin-bottom: 0.5rem;
+    font-family: var(--font);
+  }
+
+  /* Matching task */
+  .match-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    margin-bottom: 1rem;
+  }
+  @media (max-width: 600px) { .match-grid { grid-template-columns: 1fr; } }
+  .match-col-label {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--text-faint); margin-bottom: 8px;
+  }
+  .match-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 0.6rem 0.9rem;
+    font-size: 13px; margin-bottom: 6px; line-height: 1.5;
+    cursor: grab; user-select: none; transition: box-shadow 0.15s, border-color 0.15s;
+  }
+  .match-item:active { cursor: grabbing; }
+  .match-item.dragging { opacity: 0.4; }
+  .match-item.drag-over { border-color: var(--accent-mid); box-shadow: 0 0 0 3px rgba(74,125,181,0.15); }
+
+  .drop-zone {
+    min-height: 60px; border: 2px dashed var(--border);
+    border-radius: var(--radius); padding: 0.5rem;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .drop-zone.over { border-color: var(--accent-mid); background: var(--accent-light); }
+
+  /* Zotero task */
+  .steps-list { counter-reset: steps; }
+  .steps-list li {
+    counter-increment: steps;
+    display: grid; grid-template-columns: 28px 1fr; gap: 10px;
+    align-items: start; margin-bottom: 0.6rem; font-size: 13px; color: var(--text-muted);
+  }
+  .steps-list li::before {
+    content: counter(steps);
+    background: var(--amber-light); color: var(--amber);
+    width: 22px; height: 22px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 500; flex-shrink: 0; margin-top: 2px;
+  }
+
+  /* Feedback */
+  .feedback-box {
+    border-radius: var(--radius); padding: 0.6rem 0.85rem;
+    font-size: 13px; margin-top: 0.75rem; display: none;
+  }
+  .feedback-box.correct { background: var(--green-light); color: var(--green); border: 1px solid #A8D5BE; }
+  .feedback-box.wrong { background: var(--coral-light); color: var(--coral); border: 1px solid #E8C5BE; }
+
+  /* Check button */
+  .btn-check {
+    background: var(--accent); color: white; border: none;
+    border-radius: var(--radius); padding: 0.5rem 1.1rem;
+    font-family: var(--font); font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: background 0.15s; margin-top: 0.5rem;
+  }
+  .btn-check:hover { background: #153F6E; }
+
+  .ws-label {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-faint); margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .ws-label::before { content: '✎'; font-size: 13px; }
+
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 2rem; }
+  .btn-primary { background: var(--accent); color: white; border: none; border-radius: var(--radius); padding: 0.6rem 1.25rem; font-family: var(--font); font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+  .btn-primary:hover { background: #153F6E; }
+  .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.6rem 1.25rem; font-family: var(--font); font-size: 14px; cursor: pointer; transition: background 0.15s; }
+  .btn-secondary:hover { background: var(--bg); }
+
+  @media print {
+    .actions { display: none !important; }
+    body { background: white; }
+    .task-block { border: 1px solid #ccc; }
+    textarea, input { border: 1px solid #ccc; overflow: visible; }
+    .task-body { background: #fafafa; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="seminar-tag">SoSe 2026 · Köstler</div>
+    <h1>Academic Citation <span>/ Wissenschaftliches Zitieren</span></h1>
+    <div class="header-meta">Theoretical & Disciplinary Grounding — Citation Exercises</div>
+  </div>
+  <div class="uni-badge">Universität Passau</div>
+</header>
+
+<div class="page">
+
+  <div class="chips">
+    <span class="chip">⏱ ~30 min individual work / Einzelarbeit</span>
+    <span class="chip">📄 Complete all tasks / Alle Aufgaben bearbeiten</span>
+    <span class="chip">📖 APA 7th edition</span>
+  </div>
+
+  <!-- TASK 1: Format a reference – chapter in edited volume -->
+  <div class="task-block">
+    <div class="task-header">
+      <div class="task-n t1">1</div>
+      <div>
+        <div class="task-title">Format a Reference from Raw Data</div>
+        <div class="task-desc">Below you find the raw bibliographic data for a <strong style="font-weight:500">chapter in an edited volume</strong>. Using APA 7th edition, write (a) the correct in-text citation and (b) the full reference list entry.<br>
+        <span style="color:var(--text-faint)">Erstelle aus den Rohdaten einen korrekten APA-7-Kurzbeleg und einen vollständigen Literaturverzeichniseintrag für einen Sammelwerksbeitrag.</span></div>
+        <div class="task-time">~ 8 min</div>
+      </div>
+    </div>
+    <div class="task-body">
+      <div class="ref-data">
+        <div class="ref-data-label">Raw data / Rohdaten</div>
+        <table>
+          <tr><td>Chapter author(s)</td><td>Bauer, Johannes &amp; Asberger, Johanna</td></tr>
+          <tr><td>Year</td><td>2022</td></tr>
+          <tr><td>Chapter title</td><td>Was Lehrkräfte im Unterricht getrost ignorieren können: Lernstile von Lernenden</td></tr>
+          <tr><td>Editors</td><td>Steins, Gisela; Spinath, Birgit; Dutke, Stephan; Roth, Marcus &amp; Limbourg, Margarete</td></tr>
+          <tr><td>Book title</td><td>Mythen, Fehlvorstellungen, Fehlkonzepte und Irrtümer in Schule und Unterricht</td></tr>
+          <tr><td>Pages</td><td>157–179</td></tr>
+          <tr><td>Publisher</td><td>Springer Fachmedien Wiesbaden</td></tr>
+          <tr><td>DOI (chapter)</td><td>10.1007/978-3-658-36260-7_8</td></tr>
+        </table>
+      </div>
+      <div class="ws-label">Your answer / Deine Antwort</div>
+      <div class="field">
+        <label class="form-label">In-text citation / Kurzbeleg im Text</label>
+        <label class="form-label-de">e.g. …. (Author &amp; Author, Year) or Author and Author (Year) argue that …</label>
+        <input type="text" placeholder="…. (">
+      </div>
+      <div class="field">
+        <label class="form-label">Reference list entry / Literaturverzeichniseintrag</label>
+        <label class="form-label-de">Full APA 7th edition format for a chapter in an edited volume</label>
+        <textarea rows="4" placeholder="Last, F., &amp; Last, F. (Year). Title of chapter. In F. Last &amp; F. Last (Eds.), Title of book (pp. xx–xx). Publisher. https://doi.org/..."></textarea>
+      </div>
+      <button class="btn-check" onclick="checkTask1()">Check answer / Antwort prüfen</button>
+      <div class="feedback-box" id="fb1"></div>
+    </div>
+  </div>
+
+  <!-- TASK 2: In-text vs. reference list (was Task 3) -->
+  <div class="task-block">
+    <div class="task-header">
+      <div class="task-n t2">2</div>
+      <div>
+        <div class="task-title">In-text Citation vs. Reference List Entry</div>
+        <div class="task-desc">Below are six citation elements. Decide for each: does it belong in the <strong style="font-weight:500">in-text citation</strong>, in the <strong style="font-weight:500">reference list</strong>, or in <strong style="font-weight:500">both</strong>? Drag each item into the correct column.<br>
+        <span style="color:var(--text-faint)">Ordne die sechs Elemente der richtigen Spalte zu.</span></div>
+        <div class="task-time">~ 7 min</div>
+      </div>
+    </div>
+    <div class="task-body">
+      <div id="drag-items" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:1rem;">
+        <div class="match-item" draggable="true" data-id="authors" data-correct="both">Author(s)</div>
+        <div class="match-item" draggable="true" data-id="year" data-correct="both">Publication year</div>
+        <div class="match-item" draggable="true" data-id="title" data-correct="ref">Full title of article</div>
+        <div class="match-item" draggable="true" data-id="journal" data-correct="ref">Journal name &amp; volume</div>
+        <div class="match-item" draggable="true" data-id="pages" data-correct="ref">Page numbers</div>
+        <div class="match-item" draggable="true" data-id="doi" data-correct="ref">DOI / URL</div>
+      </div>
+      <div class="match-grid">
+        <div>
+          <div class="match-col-label">In-text citation</div>
+          <div class="drop-zone" id="zone-intext" ondragover="onDragOver(event)" ondrop="onDrop(event,'intext')" ondragleave="onDragLeave(event)"></div>
+        </div>
+        <div>
+          <div class="match-col-label">Reference list</div>
+          <div class="drop-zone" id="zone-ref" ondragover="onDragOver(event)" ondrop="onDrop(event,'ref')" ondragleave="onDragLeave(event)"></div>
+        </div>
+        <div>
+          <div class="match-col-label">Both</div>
+          <div class="drop-zone" id="zone-both" ondragover="onDragOver(event)" ondrop="onDrop(event,'both')" ondragleave="onDragLeave(event)"></div>
+        </div>
+        <div>
+          <div class="match-col-label">Neither / unsure</div>
+          <div class="drop-zone" id="zone-neither" ondragover="onDragOver(event)" ondrop="onDrop(event,'neither')" ondragleave="onDragLeave(event)"></div>
+        </div>
+      </div>
+      <button class="btn-check" onclick="checkMatching()">Check / Auswerten</button>
+      <div class="feedback-box" id="fb2"></div>
+    </div>
+  </div>
+
+  <!-- TASK 3: Find the errors (was Task 2) -->
+  <div class="task-block">
+    <div class="task-header">
+      <div class="task-n t3">3</div>
+      <div>
+        <div class="task-title">Find &amp; Fix the Errors</div>
+        <div class="task-desc">The reference below contains <strong style="font-weight:500">four errors</strong> common in student papers. Identify them and write the corrected version.<br>
+        <span style="color:var(--text-faint)">Der folgende Eintrag enthält vier typische Fehler. Benenne sie und schreibe die korrekte Version.</span></div>
+        <div class="task-time">~ 8 min</div>
+      </div>
+    </div>
+    <div class="task-body">
+      <div class="faulty-label">Faulty reference / Fehlerhafter Eintrag</div>
+      <div class="faulty-ref">
+        Pashler, H., McDaniel, M., Rohrer, D. &amp; Bjork, R. (2008): Learning Styles: Concepts and Evidence. <em>Psychological Science in the Public Interest</em>, 9, 105-119.
+      </div>
+      <div class="ws-label">Your answer / Deine Antwort</div>
+      <div class="field">
+        <label class="form-label">Errors identified / Gefundene Fehler</label>
+        <label class="form-label-de">List each error briefly / Jeden Fehler kurz benennen</label>
+        <textarea rows="4" placeholder="1. …&#10;2. …&#10;3. …&#10;4. …"></textarea>
+      </div>
+      <div class="field">
+        <label class="form-label">Corrected reference / Korrigierter Eintrag</label>
+        <textarea rows="3" placeholder="Pashler, H., ..."></textarea>
+      </div>
+      <button class="btn-check" onclick="showErrors()">Show errors / Fehler anzeigen</button>
+      <div class="feedback-box" id="fb3"></div>
+    </div>
+  </div>
+
+  <!-- TASK 4: Reference management -->
+  <div class="task-block">
+    <div class="task-header">
+      <div class="task-n t4">4</div>
+      <div>
+        <div class="task-title">Reference Management in Practice <span style="font-weight:300">/ Literaturverwaltung</span></div>
+        <div class="task-desc">Import Pashler et al. (2008) into Citavi or Zotero using the DOI, set the correct citation style, and compare the generated entry with your corrected version from Task 3.<br>
+        <span style="color:var(--text-faint)">Importiere Pashler et al. (2008) per DOI in Citavi oder Zotero, stelle den richtigen Zitationsstil ein und vergleiche den generierten Eintrag mit deiner korrigierten Version aus Aufgabe 3.</span></div>
+        <div class="task-time">~ 7 min</div>
+      </div>
+    </div>
+    <div class="task-body">
+      <ol class="steps-list" style="margin-bottom:1rem;">
+        <li><span>Open <strong style="font-weight:500">Citavi</strong> (citavi.com) or <strong style="font-weight:500">Zotero</strong> (zotero.org) — both are free and available at Universität Passau.</span></li>
+        <li><span>Import Pashler et al. (2008) by title search — then use the DOI to verify and complete the entry if needed.<br>
+          <span style="color:var(--text-faint)">In Citavi: References → Add Reference → By Title &nbsp;·&nbsp; In Zotero: click the magic wand icon and search by title. Once imported, check whether the DOI field is populated — if not, look it up and add it manually.</span></span></li>
+        <li><span>Set the citation style to <strong style="font-weight:500">APA 7th edition</strong>.<br>
+          <span style="color:var(--text-faint)">In Citavi: Citation → Citation Style &nbsp;·&nbsp; In Zotero: Edit → Preferences → Cite → Styles</span></span></li>
+        <li><span>Generate the reference list entry and copy it to clipboard.<br>
+          <span style="color:var(--text-faint)">In Citavi: select reference → Copy as formatted citation &nbsp;·&nbsp; In Zotero: right-click → Create Bibliography from Item → APA 7th → Copy to Clipboard</span></span></li>
+        <li><span>Paste the generated entry below and compare it carefully with your corrected version from Task 3.</span></li>
+      </ol>
+      <div class="ws-label">Your answer / Deine Antwort</div>
+      <div class="field">
+        <label class="form-label">Tool used / Verwendetes Programm</label>
+        <input type="text" placeholder="Citavi / Zotero">
+      </div>
+      <div class="field">
+        <label class="form-label">Generated APA entry / Generierter APA-Eintrag</label>
+        <label class="form-label-de">Paste directly from Citavi / Zotero</label>
+        <textarea rows="3" placeholder="Paste here..."></textarea>
+      </div>
+      <div class="field">
+        <label class="form-label">Comparison with Task 3 / Vergleich mit Aufgabe 3</label>
+        <label class="form-label-de">Does the generated entry match your corrected version? Are there any remaining differences? What does this tell you about trusting reference managers?</label>
+        <textarea rows="3" placeholder="The generated entry matches / differs in… / Der generierte Eintrag stimmt überein / weicht ab in…"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-primary" onclick="window.print()">⬇ Save as PDF / Als PDF speichern</button>
+    <button class="btn-secondary" onclick="clearForm()">↺ Clear form / Formular leeren</button>
+  </div>
+
+</div>
+
+<script>
+// Auto-grow textareas
+function autoGrow(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('textarea').forEach(ta => {
+    ta.addEventListener('input', () => autoGrow(ta));
+    autoGrow(ta);
+  });
+});
+
+// Task 1: check reference – chapter in edited volume
+function checkTask1() {
+  const fb = document.getElementById('fb1');
+  fb.style.display = 'block';
+  fb.className = 'feedback-box correct';
+  fb.innerHTML = `
+    <strong>Correct APA 7th format:</strong><br>
+    <strong>In-text:</strong> …. (Bauer &amp; Asberger, 2022) <em>or</em> Bauer and Asberger (2022) argue that …<br><br>
+    <strong>Reference list:</strong><br>
+    Bauer, J., &amp; Asberger, J. (2022). Was Lehrkräfte im Unterricht getrost ignorieren können: Lernstile von Lernenden. In G. Steins, B. Spinath, S. Dutke, M. Roth, &amp; M. Limbourg (Eds.), <em>Mythen, Fehlvorstellungen, Fehlkonzepte und Irrtümer in Schule und Unterricht</em> (pp. 157–179). Springer Fachmedien Wiesbaden. https://doi.org/10.1007/978-3-658-36260-7_8<br><br>
+    <strong>Key rules for edited volume chapters:</strong> Chapter author(s) come first, not the editors · Five editors: list all five, separated by commas, "&amp;" before the last · Editors listed as "In F. Last, … &amp; F. Last (Eds.)" · Book title in italics, chapter title not · Page range with "pp." · Publisher without location (APA 7) · Use the chapter DOI, not the book DOI
+  `;
+}
+
+// Task 3 (error-finding): show errors with correct Pashler DOI
+function showErrors() {
+  const fb = document.getElementById('fb3');
+  fb.style.display = 'block';
+  fb.className = 'feedback-box correct';
+  fb.innerHTML = `
+    <strong>Four errors in the original:</strong><br>
+    1. <strong>Colon after year</strong> → should be a full stop: (2008)<strong>.</strong><br>
+    2. <strong>Missing comma before &amp;</strong> → APA 7 requires Oxford comma: Rohrer, D.<strong>,</strong> &amp; Bjork, R.<br>
+    3. <strong>Issue number missing</strong> → volume alone is not sufficient: <em>9</em><strong>(3)</strong><br>
+    4. <strong>Missing DOI</strong> → APA 7 requires: https://doi.org/10.1111/j.1539-6053.2009.01038.x<br><br>
+    <strong>Corrected entry:</strong><br>
+    Pashler, H., McDaniel, M., Rohrer, D., &amp; Bjork, R. (2008). Learning styles: Concepts and evidence. <em>Psychological Science in the Public Interest</em>, <em>9</em>(3), 105–119. https://doi.org/10.1111/j.1539-6053.2009.01038.x
+  `;
+}
+
+// Task 2 (drag & drop)
+let draggedId = null;
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.match-item').forEach(item => {
+    item.addEventListener('dragstart', e => {
+      draggedId = item.dataset.id;
+      setTimeout(() => item.classList.add('dragging'), 0);
+    });
+    item.addEventListener('dragend', () => item.classList.remove('dragging'));
+  });
+});
+
+function onDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('over'); }
+function onDragLeave(e) { e.currentTarget.classList.remove('over'); }
+function onDrop(e, zone) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('over');
+  const item = document.querySelector(`.match-item[data-id="${draggedId}"]`);
+  if (item) e.currentTarget.appendChild(item);
+}
+
+function checkMatching() {
+  const fb = document.getElementById('fb2');
+  let correct = 0, total = 0;
+  document.querySelectorAll('.match-item').forEach(item => {
+    total++;
+    const zone = item.closest('.drop-zone');
+    if (!zone) return;
+    const zoneId = zone.id.replace('zone-', '');
+    if (zoneId === item.dataset.correct) {
+      correct++;
+      item.style.background = '#E6F3ED';
+      item.style.borderColor = '#A8D5BE';
+    } else {
+      item.style.background = '#F8EDEA';
+      item.style.borderColor = '#E8C5BE';
+    }
+  });
+  fb.style.display = 'block';
+  fb.className = correct === total ? 'feedback-box correct' : 'feedback-box wrong';
+  fb.innerHTML = `${correct}/${total} correct. <strong>Answer key:</strong> Author(s) → Both · Publication year → Both · Full title → Reference list · Journal name &amp; volume → Reference list · Page numbers → Reference list · DOI/URL → Reference list`;
+}
+
+function clearForm() {
+  if (!confirm('Clear all form fields? / Alle Eingaben löschen?')) return;
+  document.querySelectorAll('textarea, input[type="text"]').forEach(el => {
+    el.value = '';
+    if (el.tagName === 'TEXTAREA') autoGrow(el);
+  });
+  // Reset drag items
+  const pool = document.getElementById('drag-items');
+  document.querySelectorAll('.match-item').forEach(item => {
+    item.style.background = '';
+    item.style.borderColor = '';
+    pool.appendChild(item);
+  });
+  ['fb1','fb2','fb3'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.style.display = 'none'; el.innerHTML = ''; }
+  });
+}
+</script>
+</body>
+</html>
