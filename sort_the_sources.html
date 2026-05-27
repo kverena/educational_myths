@@ -78,7 +78,7 @@
 </header>
 
 <div class="page">
-  <div class="intro">Drag each source into the correct category. Think about: What type of source is it? How was it produced? Can it be cited as academic evidence? Note: The sources below are illustrative examples created for this exercise — they do not necessarily exist as real publications.</div>
+  <div class="intro">Drag each source into the correct category. Think about: What type of source is it? How was it produced? Can it be cited as academic evidence?</div>
 
   <div class="game-layout">
     <div class="sources-pool">
@@ -107,7 +107,7 @@ const categories = [
 ];
 
 const sources = [
-  { id: 's1', title: 'The Power of Feedback Revisited: A Meta-Analysis of Educational Feedback Research', meta: 'Wisniewski et al. (2020) · Frontiers in Psychology', correct: 'meta', explanation: 'The title signals it directly: "meta-analysis of 89 studies". This is synthesised evidence at the highest level.' },
+  { id: 's1', title: 'Effects of feedback on student motivation: a meta-analysis of 89 studies', meta: 'Hsieh et al. (2020) · Educational Psychology Review', correct: 'meta', explanation: 'The title signals it directly: "meta-analysis of 89 studies". This is synthesised evidence at the highest level.' },
   { id: 's2', title: 'Why I stopped giving grades – and what happened next', meta: 'Robinson, K. (2021) · Medium blog post', correct: 'grey', explanation: 'A personal reflective blog post on Medium. Not peer-reviewed, not empirical. Interesting perspective but not usable as academic evidence.' },
   { id: 's3', title: 'Stereotype threat and girls\' mathematics performance: an experimental study', meta: 'Navarro & Chen (2018) · Journal of Educational Psychology · n = 214', correct: 'empirical', explanation: 'An experimental study with a specific sample. It collects original data to test a hypothesis – this is empirical research.' },
   { id: 's4', title: 'Towards a theory of meaningful learning: constructivism reconsidered', meta: 'Hoffmann, G. (2016) · Educational Theory', correct: 'theory', explanation: 'A theoretical article in a theory journal. It develops a conceptual argument rather than collecting data.' },
@@ -119,6 +119,94 @@ const sources = [
 
 let placements = {};
 let draggedId = null;
+
+// ── Touch drag state ──────────────────────────────────────────────
+let touchGhost = null;       // floating clone shown under finger
+let touchOffsetX = 0;
+let touchOffsetY = 0;
+let lastTouchTarget = null;  // category element currently hovered
+
+function createGhost(sourceEl, touchX, touchY) {
+  const rect = sourceEl.getBoundingClientRect();
+  touchOffsetX = touchX - rect.left;
+  touchOffsetY = touchY - rect.top;
+
+  touchGhost = sourceEl.cloneNode(true);
+  touchGhost.style.cssText = `
+    position: fixed; z-index: 9999; pointer-events: none;
+    width: ${rect.width}px; opacity: 0.85;
+    left: ${touchX - touchOffsetX}px; top: ${touchY - touchOffsetY}px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.18); border-radius: 8px;
+  `;
+  document.body.appendChild(touchGhost);
+}
+
+function moveGhost(touchX, touchY) {
+  if (!touchGhost) return;
+  touchGhost.style.left = (touchX - touchOffsetX) + 'px';
+  touchGhost.style.top  = (touchY - touchOffsetY) + 'px';
+}
+
+function removeGhost() {
+  if (touchGhost) { touchGhost.remove(); touchGhost = null; }
+}
+
+function categoryAtPoint(x, y) {
+  // Temporarily hide ghost so elementFromPoint works correctly
+  if (touchGhost) touchGhost.style.display = 'none';
+  const el = document.elementFromPoint(x, y);
+  if (touchGhost) touchGhost.style.display = '';
+  if (!el) return null;
+  return el.closest('.category');
+}
+
+function addTouchHandlers(div, sourceId) {
+  div.addEventListener('touchstart', e => {
+    // Only single-finger drags
+    if (e.touches.length !== 1) return;
+    draggedId = sourceId;
+    div.classList.add('dragging');
+    const t = e.touches[0];
+    createGhost(div, t.clientX, t.clientY);
+    // Prevent page scroll while dragging
+    e.preventDefault();
+  }, { passive: false });
+
+  div.addEventListener('touchmove', e => {
+    if (!draggedId) return;
+    e.preventDefault();
+    const t = e.touches[0];
+    moveGhost(t.clientX, t.clientY);
+
+    // Highlight the category under the finger
+    const cat = categoryAtPoint(t.clientX, t.clientY);
+    if (cat !== lastTouchTarget) {
+      if (lastTouchTarget) lastTouchTarget.classList.remove('drag-over');
+      if (cat) cat.classList.add('drag-over');
+      lastTouchTarget = cat;
+    }
+  }, { passive: false });
+
+  div.addEventListener('touchend', e => {
+    if (!draggedId) return;
+    const t = e.changedTouches[0];
+    const cat = categoryAtPoint(t.clientX, t.clientY);
+
+    div.classList.remove('dragging');
+    removeGhost();
+    if (lastTouchTarget) { lastTouchTarget.classList.remove('drag-over'); lastTouchTarget = null; }
+
+    if (cat) {
+      const catId = cat.dataset.cat;
+      Object.keys(placements).forEach(k => { placements[k] = placements[k].filter(x => x !== draggedId); });
+      if (!placements[catId]) placements[catId] = [];
+      placements[catId].push(draggedId);
+      renderAll();
+    }
+    draggedId = null;
+  });
+}
+// ─────────────────────────────────────────────────────────────────
 
 function renderPool() {
   const pool = document.getElementById('pool');
@@ -138,8 +226,11 @@ function makeItem(s, context) {
   } else {
     div.textContent = s.title;
   }
+  // Mouse drag
   div.addEventListener('dragstart', e => { draggedId = s.id; div.classList.add('dragging'); });
   div.addEventListener('dragend', () => div.classList.remove('dragging'));
+  // Touch drag
+  addTouchHandlers(div, s.id);
   return div;
 }
 
@@ -155,6 +246,7 @@ function renderCats() {
       <div class="cat-desc">${cat.desc}</div>
       <div class="cat-items" id="ci-${cat.id}"></div>
     `;
+    // Mouse drop
     div.addEventListener('dragover', e => { e.preventDefault(); div.classList.add('drag-over'); });
     div.addEventListener('dragleave', () => div.classList.remove('drag-over'));
     div.addEventListener('drop', e => {
