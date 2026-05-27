@@ -261,49 +261,104 @@
     </div>
   </div>
 
-  <!-- TASK 2: In-text vs. reference list (was Task 3) -->
-  <div class="task-block">
-    <div class="task-header">
-      <div class="task-n t2">2</div>
-      <div>
-        <div class="task-title">In-text Citation vs. Reference List Entry</div>
-        <div class="task-desc">Below are six citation elements. Decide for each: does it belong in the <strong style="font-weight:500">in-text citation</strong>, in the <strong style="font-weight:500">reference list</strong>, or in <strong style="font-weight:500">both</strong>? Drag each item into the correct column.<br>
-        <span style="color:var(--text-faint)">Ordne die sechs Elemente der richtigen Spalte zu.</span></div>
-        <div class="task-time">~ 7 min</div>
-      </div>
-    </div>
-    <div class="task-body">
-      <div id="drag-items" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:1rem;">
-        <div class="match-item" draggable="true" data-id="authors" data-correct="both">Author(s)</div>
-        <div class="match-item" draggable="true" data-id="year" data-correct="both">Publication year</div>
-        <div class="match-item" draggable="true" data-id="title" data-correct="ref">Full title of article</div>
-        <div class="match-item" draggable="true" data-id="journal" data-correct="ref">Journal name &amp; volume</div>
-        <div class="match-item" draggable="true" data-id="pages" data-correct="ref">Page numbers</div>
-        <div class="match-item" draggable="true" data-id="doi" data-correct="ref">DOI / URL</div>
-      </div>
-      <div class="match-grid">
-        <div>
-          <div class="match-col-label">In-text citation</div>
-          <div class="drop-zone" id="zone-intext" ondragover="onDragOver(event)" ondrop="onDrop(event,'intext')" ondragleave="onDragLeave(event)"></div>
-        </div>
-        <div>
-          <div class="match-col-label">Reference list</div>
-          <div class="drop-zone" id="zone-ref" ondragover="onDragOver(event)" ondrop="onDrop(event,'ref')" ondragleave="onDragLeave(event)"></div>
-        </div>
-        <div>
-          <div class="match-col-label">Both</div>
-          <div class="drop-zone" id="zone-both" ondragover="onDragOver(event)" ondrop="onDrop(event,'both')" ondragleave="onDragLeave(event)"></div>
-        </div>
-        <div>
-          <div class="match-col-label">Neither / unsure</div>
-          <div class="drop-zone" id="zone-neither" ondragover="onDragOver(event)" ondrop="onDrop(event,'neither')" ondragleave="onDragLeave(event)"></div>
-        </div>
-      </div>
-      <button class="btn-check" onclick="checkMatching()">Check / Auswerten</button>
-      <div class="feedback-box" id="fb2"></div>
-    </div>
-  </div>
+  // Task 2 (drag & drop) — mouse + touch
+let draggedId = null;
 
+// ── Touch drag state ──────────────────────────────────────────────
+let touchGhost   = null;
+let touchOffsetX = 0;
+let touchOffsetY = 0;
+let lastTouchZone = null;
+
+function createGhost(sourceEl, touchX, touchY) {
+  const rect = sourceEl.getBoundingClientRect();
+  touchOffsetX = touchX - rect.left;
+  touchOffsetY = touchY - rect.top;
+  touchGhost = sourceEl.cloneNode(true);
+  touchGhost.style.cssText = `
+    position:fixed; z-index:9999; pointer-events:none;
+    width:${rect.width}px; opacity:0.85;
+    left:${touchX - touchOffsetX}px; top:${touchY - touchOffsetY}px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.18); border-radius:8px;
+  `;
+  document.body.appendChild(touchGhost);
+}
+
+function moveGhost(touchX, touchY) {
+  if (!touchGhost) return;
+  touchGhost.style.left = (touchX - touchOffsetX) + 'px';
+  touchGhost.style.top  = (touchY - touchOffsetY) + 'px';
+}
+
+function removeGhost() {
+  if (touchGhost) { touchGhost.remove(); touchGhost = null; }
+}
+
+function zoneAtPoint(x, y) {
+  if (touchGhost) touchGhost.style.display = 'none';
+  const el = document.elementFromPoint(x, y);
+  if (touchGhost) touchGhost.style.display = '';
+  if (!el) return null;
+  return el.closest('.drop-zone');
+}
+
+function addTouchToItem(item) {
+  item.addEventListener('touchstart', e => {
+    if (e.touches.length !== 1) return;
+    draggedId = item.dataset.id;
+    item.classList.add('dragging');
+    const t = e.touches[0];
+    createGhost(item, t.clientX, t.clientY);
+    e.preventDefault();
+  }, { passive: false });
+
+  item.addEventListener('touchmove', e => {
+    if (!draggedId) return;
+    e.preventDefault();
+    const t = e.touches[0];
+    moveGhost(t.clientX, t.clientY);
+    const zone = zoneAtPoint(t.clientX, t.clientY);
+    if (zone !== lastTouchZone) {
+      if (lastTouchZone) lastTouchZone.classList.remove('over');
+      if (zone) zone.classList.add('over');
+      lastTouchZone = zone;
+    }
+  }, { passive: false });
+
+  item.addEventListener('touchend', e => {
+    if (!draggedId) return;
+    const t = e.changedTouches[0];
+    const zone = zoneAtPoint(t.clientX, t.clientY);
+    item.classList.remove('dragging');
+    removeGhost();
+    if (lastTouchZone) { lastTouchZone.classList.remove('over'); lastTouchZone = null; }
+    if (zone) zone.appendChild(item);
+    draggedId = null;
+  });
+}
+// ─────────────────────────────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.match-item').forEach(item => {
+    // Mouse drag
+    item.addEventListener('dragstart', e => {
+      draggedId = item.dataset.id;
+      setTimeout(() => item.classList.add('dragging'), 0);
+    });
+    item.addEventListener('dragend', () => item.classList.remove('dragging'));
+    // Touch drag
+    addTouchToItem(item);
+  });
+});
+
+function onDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('over'); }
+function onDragLeave(e) { e.currentTarget.classList.remove('over'); }
+function onDrop(e, zone) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('over');
+  const item = document.querySelector(`.match-item[data-id="${draggedId}"]`);
+  if (item) e.currentTarget.appendChild(item);
+}
   <!-- TASK 3: Find the errors (was Task 2) -->
   <div class="task-block">
     <div class="task-header">
