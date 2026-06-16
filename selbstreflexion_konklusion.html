@@ -22,7 +22,6 @@ body {
   min-height: 100vh; font-size: 15px; line-height: 1.6;
   padding: 0 0 5rem;
 }
-
 .topbar {
   position: sticky; top: 0; z-index: 100;
   background: var(--bg); border-bottom: 1px solid var(--border);
@@ -41,11 +40,9 @@ body {
 }
 .step-dot.active { border-color: var(--purple-600); color: var(--purple-600); background: var(--purple-50); }
 .step-dot.done { border-color: var(--purple-600); background: var(--purple-600); color: #fff; }
-
 .container { max-width: 740px; margin: 0 auto; padding: 2rem 1.25rem; }
 .page { display: none; }
 .page.active { display: block; }
-
 .overview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin: 1.5rem 0; }
 .ov-card {
   background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
@@ -70,12 +67,10 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 .ov-start:hover { opacity: 0.82; }
-
 .page-header { margin-bottom: 1.5rem; }
 .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-s); margin-bottom: 6px; }
 h1 { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
 .page-time { font-size: 13px; color: var(--text-s); }
-
 .name-row { display: flex; gap: 12px; margin-bottom: 1.75rem; flex-wrap: wrap; }
 .name-field { flex: 1; min-width: 200px; }
 .name-field label { font-size: 12px; color: var(--text-s); font-weight: 500; display: block; margin-bottom: 4px; }
@@ -85,7 +80,6 @@ h1 { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 6px; 
   background: var(--bg); transition: border-color 0.15s; -webkit-appearance: none;
 }
 .name-field input:focus { outline: none; border-color: var(--purple-600); }
-
 .explainer {
   background: var(--bg-2); border-left: 3px solid var(--gray-400);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
@@ -93,7 +87,6 @@ h1 { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 6px; 
   line-height: 1.6; margin-bottom: 1.25rem;
 }
 .explainer strong { color: var(--text); font-weight: 500; }
-
 .scale-legend {
   display: flex; gap: 10px; flex-wrap: wrap;
   margin-bottom: 1rem; font-size: 12px; color: var(--text-s); align-items: center;
@@ -101,7 +94,6 @@ h1 { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 6px; 
 .scale-legend strong { color: var(--text); }
 .scale-legend span { display: flex; align-items: center; gap: 4px; }
 .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
-
 .criterion-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 12px; overflow: hidden; }
 .criterion-header { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--border); }
 .c-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 8px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
@@ -126,18 +118,20 @@ h1 { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 6px; 
 .rating-btn.sel-1 { background: var(--amber-50); border-color: var(--amber-600); color: var(--amber-800); }
 .rating-btn.sel-2 { background: var(--teal-50); border-color: var(--teal-600); color: var(--teal-800); }
 .rating-btn.sel-3 { background: var(--purple-50); border-color: var(--purple-600); color: var(--purple-800); }
-
 .bullet-field { margin-bottom: 1.25rem; }
 .bullet-prompt { font-size: 14px; color: var(--text); margin-bottom: 8px; line-height: 1.5; font-style: italic; }
 .bullet-rows { display: flex; flex-direction: column; gap: 6px; }
 .bullet-row { display: flex; align-items: flex-start; gap: 8px; }
-.bullet-marker { width: 20px; flex-shrink: 0; color: var(--gray-400); font-size: 16px; line-height: 36px; }
-.bullet-row input {
-  flex: 1; border: 1px solid var(--border); border-radius: var(--radius-sm);
+.bullet-marker { width: 20px; flex-shrink: 0; color: var(--gray-400); font-size: 16px; padding-top: 8px; }
+.bullet-ta {
+  flex: 1;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
   padding: 8px 11px; font-size: 14px; font-family: inherit; color: var(--text);
-  background: var(--bg); transition: border-color 0.15s; -webkit-appearance: none; height: 36px;
+  background: var(--bg); line-height: 1.6; resize: none; overflow: hidden;
+  min-height: 36px; display: block; width: 100%;
+  transition: border-color 0.15s; -webkit-appearance: none;
 }
-.bullet-row input:focus { outline: none; border-color: var(--teal-600); background: #fff; }
+.bullet-ta:focus { outline: none; border-color: var(--teal-600); background: #fff; }
 .add-bullet {
   background: none; border: 1px dashed var(--border); border-radius: var(--radius-sm);
   color: var(--text-s); font-size: 13px; font-family: inherit;
@@ -145,7 +139,6 @@ h1 { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 6px; 
   transition: background 0.15s; -webkit-tap-highlight-color: transparent;
 }
 .add-bullet:hover { background: var(--bg-2); border-color: var(--gray-400); }
-
 .sentence-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 12px; padding: 14px 16px; }
 .sentence-starter { font-size: 14px; color: var(--text-s); margin-bottom: 8px; font-style: italic; }
 .sentence-starter strong { color: var(--text); font-style: normal; font-weight: 500; }
@@ -158,8 +151,6 @@ textarea {
 }
 textarea:focus { outline: none; border-color: var(--amber-600); background: #fff; }
 textarea::placeholder { color: var(--gray-100); }
-
-/* Navigation */
 .nav-bar {
   display: flex; align-items: flex-start; justify-content: space-between;
   margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
@@ -183,8 +174,7 @@ textarea::placeholder { color: var(--gray-100); }
   background: none; color: var(--text-s); border: 1px solid var(--border);
   border-radius: var(--radius-sm); padding: 8px 14px;
   font-size: 12px; font-family: inherit; cursor: pointer;
-  transition: all 0.15s; -webkit-tap-highlight-color: transparent;
-  white-space: nowrap;
+  transition: all 0.15s; -webkit-tap-highlight-color: transparent; white-space: nowrap;
 }
 .btn-save:hover { background: var(--bg-2); border-color: var(--gray-600); color: var(--text); }
 .btn-download-all {
@@ -196,7 +186,6 @@ textarea::placeholder { color: var(--gray-100); }
 }
 .btn-download-all:hover { opacity: 0.82; }
 .nav-hint { font-size: 12px; color: var(--text-s); text-align: right; }
-
 @media (max-width: 540px) {
   .rating-row { flex-direction: column; align-items: flex-start; }
   .rating-options { flex-wrap: wrap; }
@@ -230,7 +219,6 @@ textarea::placeholder { color: var(--gray-100); }
         Your answers are stored in the browser while the page is open. You can save each block as a PDF as you go, or download everything at the end.
       </p>
     </div>
-
     <div class="name-row">
       <div class="name-field">
         <label for="f-name">Your name</label>
@@ -241,7 +229,6 @@ textarea::placeholder { color: var(--gray-100); }
         <input type="text" id="f-myth">
       </div>
     </div>
-
     <div class="overview-grid">
       <div class="ov-card" onclick="goTo(1)">
         <span class="ov-badge ob-1">Block 1</span>
@@ -291,7 +278,6 @@ textarea::placeholder { color: var(--gray-100); }
       <span><span class="legend-dot" style="background:#1D9E75"></span>Developing</span>
       <span><span class="legend-dot" style="background:#534AB7"></span>Confident</span>
     </div>
-
     <div class="criterion-card">
       <div class="criterion-header"><span class="c-badge cb-1">Criterion 1</span><span class="c-title">Structure &amp; problem statement</span></div>
       <div class="rating-row"><span class="rating-text">My myth is clearly and precisely formulated as a researchable question.</span><div class="rating-options" data-id="r1a"><button class="rating-btn" data-val="0">Not yet</button><button class="rating-btn" data-val="1">Beginning</button><button class="rating-btn" data-val="2">Developing</button><button class="rating-btn" data-val="3">Confident</button></div></div>
@@ -316,7 +302,6 @@ textarea::placeholder { color: var(--gray-100); }
       <div class="rating-row"><span class="rating-text">My academic writing / presentation style is clear, precise, and objective.</span><div class="rating-options" data-id="r4b"><button class="rating-btn" data-val="0">Not yet</button><button class="rating-btn" data-val="1">Beginning</button><button class="rating-btn" data-val="2">Developing</button><button class="rating-btn" data-val="3">Confident</button></div></div>
       <div class="rating-row"><span class="rating-text">I have documented my use of AI tools according to the seminar guidelines.</span><div class="rating-options" data-id="r4c"><button class="rating-btn" data-val="0">Not yet</button><button class="rating-btn" data-val="1">Beginning</button><button class="rating-btn" data-val="2">Developing</button><button class="rating-btn" data-val="3">Confident</button></div></div>
     </div>
-
     <div class="nav-bar">
       <button class="btn-nav btn-back" onclick="goTo(0)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
@@ -347,7 +332,6 @@ textarea::placeholder { color: var(--gray-100); }
       The <strong>deconstruction</strong> analyses and synthesises relevant literature — it reorganises findings into a coherent picture, but does not yet evaluate what this means for the myth. That step comes in Block 2b.<br><br>
       Sketch your findings in <strong>bullet points</strong>. Be as concrete as possible: name studies, authors, or key concepts where you can. Add as many bullets as you need.
     </div>
-
     <div class="bullet-field">
       <div class="bullet-prompt">The central findings I have synthesised from my literature so far:</div>
       <div class="bullet-rows" id="b-central"></div>
@@ -368,7 +352,6 @@ textarea::placeholder { color: var(--gray-100); }
       <div class="bullet-rows" id="b-gaps"></div>
       <button class="add-bullet" onclick="addBullet('b-gaps')">+ Add gap</button>
     </div>
-
     <div class="nav-bar">
       <button class="btn-nav btn-back" onclick="goTo(1)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
@@ -398,7 +381,6 @@ textarea::placeholder { color: var(--gray-100); }
     <div class="explainer">
       Now — and only now — move from analysis to evaluation. Based on what you have found in your deconstruction: <strong>what does the evidence allow you to conclude about your myth?</strong> Complete the sentence starters below in as much detail as you need.
     </div>
-
     <div class="sentence-card">
       <div class="sentence-starter"><strong>My myth states that… The evidence I have found suggests that…</strong></div>
       <textarea id="s-evidence" oninput="autoResize(this)"></textarea>
@@ -415,7 +397,6 @@ textarea::placeholder { color: var(--gray-100); }
       <div class="sentence-starter">For educational practice, this means…</div>
       <textarea id="s-practice" oninput="autoResize(this)"></textarea>
     </div>
-
     <div class="nav-bar">
       <button class="btn-nav btn-back" onclick="goTo(2)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
@@ -445,7 +426,6 @@ textarea::placeholder { color: var(--gray-100); }
     <div class="explainer">
       A strong conclusion does four things: it <strong>revisits the myth question</strong> from the introduction, <strong>synthesises</strong> the deconstruction's key findings without repeating detail, provides a <strong>clear answer</strong> to the myth, and reflects on <strong>implications</strong>. Sketch each element in bullet points.
     </div>
-
     <div class="bullet-field">
       <div class="bullet-prompt">Revisiting the myth question from the introduction — how will I bring it back?</div>
       <div class="bullet-rows" id="b-revisit"></div>
@@ -471,7 +451,6 @@ textarea::placeholder { color: var(--gray-100); }
       <div class="bullet-rows" id="b-open"></div>
       <button class="add-bullet" onclick="addBullet('b-open')">+ Add question</button>
     </div>
-
     <div class="nav-bar">
       <button class="btn-nav btn-back" onclick="goTo(3)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
@@ -507,6 +486,11 @@ let currentPage = 0;
 
 BULLET_IDS.forEach(id => { bullets[id] = ['']; });
 
+function growTA(ta) {
+  ta.style.height = 'auto';
+  ta.style.height = ta.scrollHeight + 'px';
+}
+
 function renderBullets(id) {
   const container = document.getElementById(id);
   if (!container) return;
@@ -514,23 +498,33 @@ function renderBullets(id) {
   (bullets[id] || ['']).forEach((val, i) => {
     const row = document.createElement('div');
     row.className = 'bullet-row';
-   const inp = document.createElement('textarea');
-inp.value = val;
-inp.rows = 1;
-inp.style.cssText = 'resize:none;overflow:hidden;width:100%;min-height:36px;font-family:inherit;font-size:14px;padding:8px 11px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text);line-height:1.6;transition:border-color 0.15s;display:block;box-sizing:border-box;';
-    inp.addEventListener('input', e => { bullets[id][i] = e.target.value; e.target.style.height='auto'; e.target.style.height=e.target.scrollHeight+'px'; updateProgress(); });
-    row.innerHTML = '<span class="bullet-marker">•</span>';
-    row.appendChild(inp);
+    const marker = document.createElement('span');
+    marker.className = 'bullet-marker';
+    marker.textContent = '•';
+    const ta = document.createElement('textarea');
+    ta.className = 'bullet-ta';
+    ta.rows = 1;
+    ta.value = val;
+    ta.addEventListener('input', function() {
+      bullets[id][i] = this.value;
+      growTA(this);
+      updateProgress();
+    });
+    row.appendChild(marker);
+    row.appendChild(ta);
     container.appendChild(row);
+    if (val) growTA(ta);
   });
 }
+
 function addBullet(id) {
   if (!bullets[id]) bullets[id] = [];
   bullets[id].push('');
   renderBullets(id);
-  const inputs = document.getElementById(id).querySelectorAll('textarea');
-  if (inputs.length) inputs[inputs.length-1].focus();
+  const tas = document.getElementById(id).querySelectorAll('textarea');
+  if (tas.length) tas[tas.length - 1].focus();
 }
+
 BULLET_IDS.forEach(id => renderBullets(id));
 
 document.querySelectorAll('.rating-options').forEach(group => {
@@ -539,7 +533,7 @@ document.querySelectorAll('.rating-options').forEach(group => {
       const id = group.getAttribute('data-id');
       ratings[id] = i;
       group.querySelectorAll('.rating-btn').forEach((b, j) => {
-        b.className = 'rating-btn' + (j === i ? ' sel-'+j : '');
+        b.className = 'rating-btn' + (j === i ? ' sel-' + j : '');
       });
       updateProgress();
     });
@@ -558,8 +552,8 @@ TEXT_IDS.forEach(id => {
 
 function updateProgress() {
   const rDone = RATING_IDS.filter(id => ratings[id] !== undefined).length;
-  const tDone = TEXT_IDS.filter(id => (document.getElementById(id)||{}).value?.trim()).length;
-  const bDone = ['b-central','b-answer'].filter(id => (bullets[id]||[]).some(v=>v.trim())).length;
+  const tDone = TEXT_IDS.filter(id => (document.getElementById(id) || {}).value?.trim()).length;
+  const bDone = ['b-central','b-answer'].filter(id => (bullets[id] || []).some(v => v.trim())).length;
   const total = RATING_IDS.length + TEXT_IDS.length + 2;
   const pct = Math.round((rDone + tDone + bDone) / total * 100);
   document.getElementById('prog-fill').style.width = pct + '%';
@@ -583,23 +577,21 @@ function goTo(n) {
 renderDots();
 
 function getBullets(id) {
-  return (bullets[id]||[]).filter(v=>v.trim()).map(v=>'• '+v).join('\n') || '—';
+  return (bullets[id] || []).filter(v => v.trim()).map(v => '• ' + v).join('\n') || '—';
 }
-function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
-function tv(id){ return esc((document.getElementById(id)||{}).value?.trim()||'—'); }
+function esc(s) { return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+function tv(id) { return esc((document.getElementById(id) || {}).value?.trim() || '—'); }
 
 function pdfHeader(name, myth) {
   return `<div style="font-size:10px;color:#aaa;letter-spacing:.04em;margin-bottom:4px">SoSe 2026 · Educational Myths · Independent work session</div>
 <h1 style="font-size:18px;font-weight:600;margin-bottom:2px">${esc(name)}</h1>
 <div style="font-size:12px;color:#777;margin-bottom:24px">Myth / topic: ${esc(myth)}</div>`;
 }
-
 function sectionHead(num, color, title) {
   return `<div style="display:flex;align-items:center;gap:8px;margin:20px 0 12px;padding-bottom:8px;border-bottom:2px solid #e8e7e2">
     <span style="font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:${color};background:${color}18;border:1px solid ${color};border-radius:20px;padding:3px 10px">${num}</span>
     <span style="font-size:14px;font-weight:600;color:#1a1a18">${title}</span></div>`;
 }
-
 function bField(label, id) {
   return `<div style="margin-bottom:12px">
     <div style="font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">${label}</div>
@@ -640,14 +632,15 @@ function block1HTML() {
         <span style="font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:${ch[2]};background:${ch[2]}18;border:1px solid ${ch[2]};border-radius:20px;padding:2px 8px">${ch[0]}</span>
         <span style="font-size:12px;font-weight:600">${ch[1]}</span></div>
       <table style="width:100%;border-collapse:collapse">
-        ${criteriaIds[ci].map((rid,si)=>{
-          const val=ratings[rid]; const color=val!==undefined?SCALE_COLORS[val]:'#ccc'; const lbl=val!==undefined?SCALE[val]:'—';
+        ${criteriaIds[ci].map((rid,si) => {
+          const val = ratings[rid];
+          const color = val !== undefined ? SCALE_COLORS[val] : '#ccc';
+          const lbl = val !== undefined ? SCALE[val] : '—';
           return `<tr><td style="padding:6px 12px;font-size:12px;color:#333;border-bottom:1px solid #f0f0ee;width:78%">${criteriaLabels[ci][si]}</td>
             <td style="padding:6px 12px;text-align:right;border-bottom:1px solid #f0f0ee;white-space:nowrap"><span style="background:${color}22;color:${color};border:1px solid ${color};border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700">${lbl}</span></td></tr>`;
         }).join('')}
       </table></div>`).join('');
 }
-
 function block2aHTML() {
   return bField('Central findings synthesised from literature','b-central') +
     bField('A finding that complicates or nuances the picture','b-nuance') +
@@ -667,16 +660,14 @@ function block3HTML() {
     bField('Implications for educational practice or further research','b-impl') +
     bField('Open questions worth pursuing','b-open');
 }
-
 function wrapPDF(body, name, myth) {
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Self-Reflection — ${esc(name)}</title>
 <style>body{font-family:-apple-system,Helvetica,Arial,sans-serif;max-width:700px;margin:0 auto;padding:32px 28px 48px;color:#1a1a18;font-size:13px;line-height:1.6}
 .footer{margin-top:32px;font-size:10px;color:#ccc;border-top:1px solid #eee;padding-top:10px}</style>
-</head><body>${pdfHeader(name,myth)}${body}
+</head><body>${pdfHeader(name, myth)}${body}
 <div class="footer">Generated ${new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'})} · SoSe 2026 · Köstler — Educational Myths</div>
 </body></html>`;
 }
-
 function downloadBlock(blockNum) {
   const name = document.getElementById('f-name').value.trim() || 'Student';
   const myth = document.getElementById('f-myth').value.trim() || '—';
@@ -695,12 +686,12 @@ function downloadBlock(blockNum) {
   } else if (blockNum === 4) {
     body = sectionHead('Block 3','#712B13','Conclusion outline') + block3HTML();
   }
-  const w = window.open('','_blank');
-  if (!w){ alert('Please allow pop-ups to download your PDF.'); return; }
+  const w = window.open('', '_blank');
+  if (!w) { alert('Please allow pop-ups to download your PDF.'); return; }
   w.document.write(wrapPDF(body, name, myth));
   w.document.close();
   w.focus();
-  setTimeout(()=>{ w.print(); }, 450);
+  setTimeout(() => { w.print(); }, 450);
 }
 </script>
 </body>
