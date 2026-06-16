@@ -517,7 +517,9 @@ function renderBullets(id) {
     const inp = document.createElement('textarea');
     inp = document.createElement('textarea'); inp.rows = 1; inp.style.cssText = 'resize:none;overflow:hidden;width:100%;min-height:36px;font-family:inherit;font-size:14px;padding:8px 11px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text);line-height:1.6;transition:border-color 0.15s;display:block;box-sizing:border-box;';
     inp.value = val;
-    inp.addEventListener('input', function(){ this.style.height='auto'; this.style.height=this.scrollHeight+'px'; });
+    inp.rows = 1;
+    inp.style.cssText = 'resize:none;overflow:hidden;width:100%;min-height:36px;font-family:inherit;font-size:14px;padding:8px 11px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text);line-height:1.6;transition:border-color 0.15s;display:block;box-sizing:border-box;';
+    inp.addEventListener('input', e => { bullets[id][i] = e.target.value; e.target.style.height='auto'; e.target.style.height=e.target.scrollHeight+'px'; updateProgress(); });
     row.innerHTML = '<span class="bullet-marker">•</span>';
     row.appendChild(inp);
     container.appendChild(row);
