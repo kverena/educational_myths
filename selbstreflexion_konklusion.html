@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Self-Reflection & Transition to Conclusion — Educational Myths</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --purple-50: #EEEDFE; --purple-200: #AFA9EC; --purple-600: #534AB7; --purple-800: #3C3489;
+  --teal-50: #E1F5EE;   --teal-600: #0F6E56;   --teal-800: #085041;
+  --amber-50: #FAEEDA;  --amber-600: #854F0B;   --amber-800: #633806;
+  --coral-50: #FAECE7;  --coral-600: #993C1D;   --coral-800: #712B13;
+  --gray-50: #F1EFE8; --gray-100: #D3D1C7; --gray-400: #888780; --gray-600: #5F5E5A;
+  --text: #1a1a18; --text-s: #5a5955;
+  --border: #d6d4cc; --bg: #ffffff; --bg-page: #f7f6f2; --bg-2: #f0efe9;
+  --radius: 10px; --radius-sm: 6px;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: var(--bg-page); color: var(--text);
+  min-height: 100vh; font-size: 15px; line-height: 1.6;
+  padding: 0 0 5rem;
+}
+
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 10px 20px; display: flex; align-items: center; gap: 14px;
+}
+.progress-track { flex: 1; height: 5px; background: var(--gray-100); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--purple-600); border-radius: 3px; transition: width 0.4s ease; width: 0%; }
+.progress-label { font-size: 12px; color: var(--text-s); white-space: nowrap; min-width: 36px; text-align: right; }
+.step-dots { display: flex; gap: 5px; }
+.step-dot {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 1.5px solid var(--gray-100); background: var(--bg-page);
+  font-size: 10px; font-weight: 700; color: var(--gray-400);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.2s; flex-shrink: 0;
+}
+.step-dot.active { border-color: var(--purple-600); color: var(--purple-600); background: var(--purple-50); }
+.step-dot.done { border-color: var(--purple-600); background: var(--purple-600); color: #fff; }
+
+.container { max-width: 740px; margin: 0 auto; padding: 2rem 1.25rem; }
+.page { display: none; }
+.page.active { display: block; }
+
+.overview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; margin: 1.5rem 0; }
+.ov-card {
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px 18px; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.ov-card:hover { border-color: var(--purple-600); box-shadow: 0 0 0 3px var(--purple-50); }
+.ov-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 9px; border-radius: 20px; display: inline-block; width: fit-content; }
+.ob-1 { background: var(--purple-50); color: var(--purple-800); }
+.ob-2a { background: var(--teal-50); color: var(--teal-800); }
+.ob-2b { background: var(--amber-50); color: var(--amber-800); }
+.ob-3 { background: var(--coral-50); color: var(--coral-800); }
+.ov-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.ov-desc { font-size: 13px; color: var(--text-s); line-height: 1.5; }
+.ov-time { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
+.ov-start {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--text); color: #fff; border: none;
+  border-radius: var(--radius-sm); padding: 10px 20px;
+  font-size: 14px; font-weight: 500; font-family: inherit;
+  cursor: pointer; margin-top: 1rem; transition: opacity 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.ov-start:hover { opacity: 0.82; }
+
+.page-header { margin-bottom: 1.5rem; }
+.eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-s); margin-bottom: 6px; }
+h1 { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
+.page-time { font-size: 13px; color: var(--text-s); }
+
+.name-row { display: flex; gap: 12px; margin-bottom: 1.75rem; flex-wrap: wrap; }
+.name-field { flex: 1; min-width: 200px; }
+.name-field label { font-size: 12px; color: var(--text-s); font-weight: 500; display: block; margin-bottom: 4px; }
+.name-field input {
+  width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 9px 12px; font-size: 14px; font-family: inherit; color: var(--text);
+  background: var(--bg); transition: border-color 0.15s; -webkit-appearance: none;
+}
+.name-field input:focus { outline: none; border-color: var(--purple-600); }
+
+.explainer {
+  background: var(--bg-2); border-left: 3px solid var(--gray-400);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 12px 16px; font-size: 13px; color: var(--text-s);
+  line-height: 1.6; margin-bottom: 1.25rem;
+}
+.explainer strong { color: var(--text); font-weight: 500; }
+
+.scale-legend {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  margin-bottom: 1rem; font-size: 12px; color: var(--text-s); align-items: center;
+}
+.scale-legend strong { color: var(--text); }
+.scale-legend span { display: flex; align-items: center; gap: 4px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+.criterion-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 12px; overflow: hidden; }
+.criterion-header { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+.c-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 8px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+.cb-1 { background: var(--purple-50); color: var(--purple-800); }
+.cb-2 { background: var(--teal-50); color: var(--teal-800); }
+.cb-3 { background: var(--amber-50); color: var(--amber-800); }
+.cb-4 { background: var(--coral-50); color: var(--coral-800); }
+.c-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.rating-row { display: flex; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border); gap: 12px; }
+.rating-row:last-child { border-bottom: none; }
+.rating-text { flex: 1; font-size: 13px; color: var(--text); line-height: 1.45; }
+.rating-options { display: flex; gap: 4px; flex-shrink: 0; }
+.rating-btn {
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--bg-page); color: var(--text-s);
+  font-size: 11px; padding: 5px 8px; cursor: pointer;
+  font-family: inherit; transition: all 0.15s; white-space: nowrap;
+  -webkit-tap-highlight-color: transparent; line-height: 1.2;
+}
+.rating-btn:hover { border-color: var(--purple-600); color: var(--purple-800); background: var(--purple-50); }
+.rating-btn.sel-0 { background: #FCEBEB; border-color: #E24B4A; color: #791F1F; }
+.rating-btn.sel-1 { background: var(--amber-50); border-color: var(--amber-600); color: var(--amber-800); }
+.rating-btn.sel-2 { background: var(--teal-50); border-color: var(--teal-600); color: var(--teal-800); }
+.rating-btn.sel-3 { background: var(--purple-50); border-color: var(--purple-600); color: var(--purple-800); }
+
+.bullet-field { margin-bottom: 1.25rem; }
+.bullet-prompt { font-size: 14px; color: var(--text); margin-bottom: 8px; line-height: 1.5; font-style: italic; }
+.bullet-rows { display: flex; flex-direction: column; gap: 6px; }
+.bullet-row { display: flex; align-items: flex-start; gap: 8px; }
+.bullet-marker { width: 20px; flex-shrink: 0; color: var(--gray-400); font-size: 16px; line-height: 36px; }
+.bullet-row input {
+  flex: 1; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 8px 11px; font-size: 14px; font-family: inherit; color: var(--text);
+  background: var(--bg); transition: border-color 0.15s; -webkit-appearance: none; height: 36px;
+}
+.bullet-row input:focus { outline: none; border-color: var(--teal-600); background: #fff; }
+.add-bullet {
+  background: none; border: 1px dashed var(--border); border-radius: var(--radius-sm);
+  color: var(--text-s); font-size: 13px; font-family: inherit;
+  padding: 6px 12px; cursor: pointer; width: 100%; text-align: left; margin-top: 4px;
+  transition: background 0.15s; -webkit-tap-highlight-color: transparent;
+}
+.add-bullet:hover { background: var(--bg-2); border-color: var(--gray-400); }
+
+.sentence-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 12px; padding: 14px 16px; }
+.sentence-starter { font-size: 14px; color: var(--text-s); margin-bottom: 8px; font-style: italic; }
+.sentence-starter strong { color: var(--text); font-style: normal; font-weight: 500; }
+textarea {
+  width: 100%; min-height: 80px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 9px 11px; font-size: 14px; font-family: inherit; color: var(--text);
+  background: var(--bg-page); resize: none; line-height: 1.6;
+  transition: border-color 0.15s; -webkit-appearance: none; overflow: hidden;
+}
+textarea:focus { outline: none; border-color: var(--amber-600); background: #fff; }
+textarea::placeholder { color: var(--gray-100); }
+
+/* Navigation */
+.nav-bar {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+  gap: 12px; flex-wrap: wrap;
+}
+.nav-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.nav-buttons { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+.btn-nav {
+  display: inline-flex; align-items: center; gap: 7px;
+  border-radius: var(--radius-sm); padding: 10px 18px;
+  font-size: 14px; font-weight: 500; font-family: inherit;
+  cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+.btn-next { background: var(--text); color: #fff; border: none; }
+.btn-next:hover { opacity: 0.82; }
+.btn-back { background: none; color: var(--text-s); border: 1px solid var(--border); }
+.btn-back:hover { background: var(--bg-2); }
+.btn-save {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: none; color: var(--text-s); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 8px 14px;
+  font-size: 12px; font-family: inherit; cursor: pointer;
+  transition: all 0.15s; -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+.btn-save:hover { background: var(--bg-2); border-color: var(--gray-600); color: var(--text); }
+.btn-download-all {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--text); color: #fff; border: none;
+  border-radius: var(--radius-sm); padding: 10px 18px;
+  font-size: 14px; font-weight: 500; font-family: inherit;
+  cursor: pointer; transition: opacity 0.15s; -webkit-tap-highlight-color: transparent;
+}
+.btn-download-all:hover { opacity: 0.82; }
+.nav-hint { font-size: 12px; color: var(--text-s); text-align: right; }
+
+@media (max-width: 540px) {
+  .rating-row { flex-direction: column; align-items: flex-start; }
+  .rating-options { flex-wrap: wrap; }
+  .overview-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 19px; }
+  .nav-bar { flex-direction: column; }
+  .nav-right { align-items: stretch; width: 100%; }
+  .nav-buttons { justify-content: stretch; flex-direction: column; }
+  .btn-nav, .btn-save, .btn-download-all { justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="step-dots" id="step-dots"></div>
+  <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+  <div class="progress-label" id="prog-label">0%</div>
+</div>
+
+<div class="container">
+
+  <!-- PAGE 0: Overview -->
+  <div class="page active" id="page-0">
+    <div class="page-header">
+      <div class="eyebrow">SoSe 2026 · Educational Myths · Independent work session</div>
+      <h1>Self-reflection &amp; transition to conclusion</h1>
+      <p style="font-size:14px;color:var(--text-s);line-height:1.6;max-width:620px;margin-top:6px">
+        This task replaces one seminar session. Work through all blocks in order — they build on each other.
+        Plan for <strong style="color:var(--text)">90–120 minutes</strong> in total.
+        Your answers are stored in the browser while the page is open. You can save each block as a PDF as you go, or download everything at the end.
+      </p>
+    </div>
+
+    <div class="name-row">
+      <div class="name-field">
+        <label for="f-name">Your name</label>
+        <input type="text" id="f-name" autocomplete="name">
+      </div>
+      <div class="name-field">
+        <label for="f-myth">Your myth / pitch topic</label>
+        <input type="text" id="f-myth">
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <div class="ov-card" onclick="goTo(1)">
+        <span class="ov-badge ob-1">Block 1</span>
+        <div class="ov-title">Where do I stand?</div>
+        <div class="ov-desc">Self-assessment against the four assessment criteria using a rating scale.</div>
+        <div class="ov-time">approx. 25 min</div>
+      </div>
+      <div class="ov-card" onclick="goTo(2)">
+        <span class="ov-badge ob-2a">Block 2a</span>
+        <div class="ov-title">Stocktaking — What has my deconstruction yielded?</div>
+        <div class="ov-desc">Sketch your findings in bullet points: central results, nuances, connections, gaps.</div>
+        <div class="ov-time">approx. 30 min</div>
+      </div>
+      <div class="ov-card" onclick="goTo(3)">
+        <span class="ov-badge ob-2b">Block 2b</span>
+        <div class="ov-title">The step to conclusion</div>
+        <div class="ov-desc">Now evaluate: what does your evidence allow you to conclude about your myth?</div>
+        <div class="ov-time">approx. 30 min</div>
+      </div>
+      <div class="ov-card" onclick="goTo(4)">
+        <span class="ov-badge ob-3">Block 3</span>
+        <div class="ov-title">Conclusion outline</div>
+        <div class="ov-desc">Sketch the structure of your final chapter: synthesis, answer, implications, open questions.</div>
+        <div class="ov-time">approx. 20 min</div>
+      </div>
+    </div>
+    <button class="ov-start" onclick="goTo(1)">
+      Start with Block 1
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
+
+  <!-- PAGE 1: Block 1 -->
+  <div class="page" id="page-1">
+    <div class="page-header">
+      <div class="eyebrow">Block 1 · approx. 25 min</div>
+      <h1>Where do I stand?</h1>
+      <div class="page-time">Self-assessment against the assessment criteria</div>
+    </div>
+    <div class="explainer">
+      Rate each statement honestly based on your current progress in your <strong>seminar paper or presentation</strong>. There are no right or wrong answers; this is for your own orientation.
+    </div>
+    <div class="scale-legend">
+      <strong>Scale:</strong>
+      <span><span class="legend-dot" style="background:#E24B4A"></span>Not yet</span>
+      <span><span class="legend-dot" style="background:#EF9F27"></span>Beginning</span>
+      <span><span class="legend-dot" style="background:#1D9E75"></span>Developing</span>
+      <span><span class="legend-dot" style="background:#534AB7"></span>Confident</span>
+    </div>
+
+    <div class="criterion-card">
+      <div class="criterion-header"><span class="c-badge cb-1">Criterion 1</span><span class="c-title">Structure &amp; problem statement</span></div>
+      <div class="rating-row"><span class="rating-text">My myth is clearly and precisely formulated as a researchable question.</span><div class="rating-options" data-id="r1a"><button class="rating-btn" data-val="0">Not yet</button><button class="rating-btn" data-val="1">Beginning</button><button class="rating-btn" data-val="2">Developing</button><button class="rating-btn" data-val="3">Confident</button></div></div>
+      <div class="rating-row"><span class="rating-text">My paper / presentation follows the three-part structure: identification → deconstruction → conclusion.</span><div class="rating-options" data-id="r1b"><button class="rating-btn" data-val="0">Not yet</button><button class="rating-btn" data-val="1">Beginning</button><button class="rating-btn" data-val="2">Developing</button><button class="rating-btn" data-val="3">Confident</button></div></div>
+      <div class="rating-row"><span class="rating-text">My introduction and conclusion are aligned around the same central question.</span><div class="rating-options" data-id="r1c"><button class="rating-btn" data-val="0">Not yet</button><button class="rating-btn" data-val="1">Beginning</button><button class="rating-btn" data-val="2">Developing</button><button class="rating-btn" data-val="3">Confident</button></div></div>
+    </div>
+    <div class="criterion-card">
+      <div class="criterion-header"><span class="c-badge cb-2">Criterion 2</span><span class="c-title">Theory &amp; sources</span></div>
+      <div class="rating-row"><span class="rating-text">I have identified the key concepts and theories relevant to my myth.</span><div class="rating-options" data-id="r2a"><button class="rating-btn" data-val="0">Not yet</button><button class="rating-btn" data-val="1">Beginning</button><button class="rating-btn" data-val="2">Developing</button><button class="rating-btn" data-val="3">Confident</button></div></div>
+      <div class="rating-row"><span class="rating-text">I am synthesising my sources, not just listing or summarising them.</span><div class="rating-options" data-id="r2b"><button class="rating-btn" data-val="0">Not yet</button><button class="rating-btn" data-val="1">Beginning</button><button class="rating-btn" data-val="2">Developing</button><button class="rating-btn" data-val="3">Confident</button></div></div>
+      <div class="rating-row"><span class="rating-text">My sources are current, academically rigorous, and sufficient in breadth.</span><div class="rating-options" data-id="r2c"><button class="rating-btn" data-val="0">Not yet</button><button class="rating-btn" data-val="1">Beginning</button><button class="rating-btn" data-val="2">Developing</button><button class="rating-btn" data-val="3">Confident</button></div></div>
+    </div>
+    <div class="criterion-card">
+      <div class="criterion-header"><span class="c-badge cb-3">Criterion 3</span><span class="c-title">Methodology &amp; argumentation</span></div>
+      <div class="rating-row"><span class="rating-text">My argumentation engages with counter-evidence, not just confirming evidence.</span><div class="rating-options" data-id="r3a"><button class="rating-btn" data-val="0">Not yet</button><button class="rating-btn" data-val="1">Beginning</button><button class="rating-btn" data-val="2">Developing</button><button class="rating-btn" data-val="3">Confident</button></div></div>
+      <div class="rating-row"><span class="rating-text">My myth is scoped precisely enough to be supported by the evidence I have found.</span><div class="rating-options" data-id="r3b"><button class="rating-btn" data-val="0">Not yet</button><button class="rating-btn" data-val="1">Beginning</button><button class="rating-btn" data-val="2">Developing</button><button class="rating-btn" data-val="3">Confident</button></div></div>
+      <div class="rating-row"><span class="rating-text">I draw independent, well-reasoned conclusions from the literature rather than reproducing it.</span><div class="rating-options" data-id="r3c"><button class="rating-btn" data-val="0">Not yet</button><button class="rating-btn" data-val="1">Beginning</button><button class="rating-btn" data-val="2">Developing</button><button class="rating-btn" data-val="3">Confident</button></div></div>
+    </div>
+    <div class="criterion-card">
+      <div class="criterion-header"><span class="c-badge cb-4">Criterion 4</span><span class="c-title">Formal &amp; linguistic presentation</span></div>
+      <div class="rating-row"><span class="rating-text">My citation practice is consistent and complete.</span><div class="rating-options" data-id="r4a"><button class="rating-btn" data-val="0">Not yet</button><button class="rating-btn" data-val="1">Beginning</button><button class="rating-btn" data-val="2">Developing</button><button class="rating-btn" data-val="3">Confident</button></div></div>
+      <div class="rating-row"><span class="rating-text">My academic writing / presentation style is clear, precise, and objective.</span><div class="rating-options" data-id="r4b"><button class="rating-btn" data-val="0">Not yet</button><button class="rating-btn" data-val="1">Beginning</button><button class="rating-btn" data-val="2">Developing</button><button class="rating-btn" data-val="3">Confident</button></div></div>
+      <div class="rating-row"><span class="rating-text">I have documented my use of AI tools according to the seminar guidelines.</span><div class="rating-options" data-id="r4c"><button class="rating-btn" data-val="0">Not yet</button><button class="rating-btn" data-val="1">Beginning</button><button class="rating-btn" data-val="2">Developing</button><button class="rating-btn" data-val="3">Confident</button></div></div>
+    </div>
+
+    <div class="nav-bar">
+      <button class="btn-nav btn-back" onclick="goTo(0)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+        Overview
+      </button>
+      <div class="nav-right">
+        <div class="nav-buttons">
+          <button class="btn-save" onclick="downloadBlock(1)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Save Block 1 as PDF
+          </button>
+          <button class="btn-nav btn-next" onclick="goTo(2)">
+            Block 2a — Stocktaking
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 2: Block 2a -->
+  <div class="page" id="page-2">
+    <div class="page-header">
+      <div class="eyebrow">Block 2a · approx. 30 min</div>
+      <h1>Stocktaking — What has my deconstruction yielded so far?</h1>
+    </div>
+    <div class="explainer">
+      The <strong>deconstruction</strong> analyses and synthesises relevant literature — it reorganises findings into a coherent picture, but does not yet evaluate what this means for the myth. That step comes in Block 2b.<br><br>
+      Sketch your findings in <strong>bullet points</strong>. Be as concrete as possible: name studies, authors, or key concepts where you can. Add as many bullets as you need.
+    </div>
+
+    <div class="bullet-field">
+      <div class="bullet-prompt">The central findings I have synthesised from my literature so far:</div>
+      <div class="bullet-rows" id="b-central"></div>
+      <button class="add-bullet" onclick="addBullet('b-central')">+ Add finding</button>
+    </div>
+    <div class="bullet-field">
+      <div class="bullet-prompt">A finding that complicates or nuances the picture:</div>
+      <div class="bullet-rows" id="b-nuance"></div>
+      <button class="add-bullet" onclick="addBullet('b-nuance')">+ Add finding</button>
+    </div>
+    <div class="bullet-field">
+      <div class="bullet-prompt">Connections between findings I have identified:</div>
+      <div class="bullet-rows" id="b-conn"></div>
+      <button class="add-bullet" onclick="addBullet('b-conn')">+ Add connection</button>
+    </div>
+    <div class="bullet-field">
+      <div class="bullet-prompt">What I have not yet sufficiently addressed in my deconstruction:</div>
+      <div class="bullet-rows" id="b-gaps"></div>
+      <button class="add-bullet" onclick="addBullet('b-gaps')">+ Add gap</button>
+    </div>
+
+    <div class="nav-bar">
+      <button class="btn-nav btn-back" onclick="goTo(1)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+        Block 1
+      </button>
+      <div class="nav-right">
+        <div class="nav-buttons">
+          <button class="btn-save" onclick="downloadBlock(2)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Save Block 2a as PDF
+          </button>
+          <button class="btn-nav btn-next" onclick="goTo(3)">
+            Block 2b — Step to conclusion
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 3: Block 2b -->
+  <div class="page" id="page-3">
+    <div class="page-header">
+      <div class="eyebrow">Block 2b · approx. 30 min</div>
+      <h1>The step to conclusion — What does this mean for my myth?</h1>
+    </div>
+    <div class="explainer">
+      Now — and only now — move from analysis to evaluation. Based on what you have found in your deconstruction: <strong>what does the evidence allow you to conclude about your myth?</strong> Complete the sentence starters below in as much detail as you need.
+    </div>
+
+    <div class="sentence-card">
+      <div class="sentence-starter"><strong>My myth states that… The evidence I have found suggests that…</strong></div>
+      <textarea id="s-evidence" oninput="autoResize(this)"></textarea>
+    </div>
+    <div class="sentence-card">
+      <div class="sentence-starter">The picture is more nuanced because…</div>
+      <textarea id="s-nuance" oninput="autoResize(this)"></textarea>
+    </div>
+    <div class="sentence-card">
+      <div class="sentence-starter">One aspect I cannot yet answer with confidence is…</div>
+      <textarea id="s-open" oninput="autoResize(this)"></textarea>
+    </div>
+    <div class="sentence-card">
+      <div class="sentence-starter">For educational practice, this means…</div>
+      <textarea id="s-practice" oninput="autoResize(this)"></textarea>
+    </div>
+
+    <div class="nav-bar">
+      <button class="btn-nav btn-back" onclick="goTo(2)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+        Block 2a
+      </button>
+      <div class="nav-right">
+        <div class="nav-buttons">
+          <button class="btn-save" onclick="downloadBlock(3)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Save Block 2b as PDF
+          </button>
+          <button class="btn-nav btn-next" onclick="goTo(4)">
+            Block 3 — Conclusion outline
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 4: Block 3 -->
+  <div class="page" id="page-4">
+    <div class="page-header">
+      <div class="eyebrow">Block 3 · approx. 20 min</div>
+      <h1>Conclusion outline — Sketching the final chapter</h1>
+    </div>
+    <div class="explainer">
+      A strong conclusion does four things: it <strong>revisits the myth question</strong> from the introduction, <strong>synthesises</strong> the deconstruction's key findings without repeating detail, provides a <strong>clear answer</strong> to the myth, and reflects on <strong>implications</strong>. Sketch each element in bullet points.
+    </div>
+
+    <div class="bullet-field">
+      <div class="bullet-prompt">Revisiting the myth question from the introduction — how will I bring it back?</div>
+      <div class="bullet-rows" id="b-revisit"></div>
+      <button class="add-bullet" onclick="addBullet('b-revisit')">+ Add point</button>
+    </div>
+    <div class="bullet-field">
+      <div class="bullet-prompt">Key synthesis from the deconstruction — what is the essential take-away (not a repetition of details)?</div>
+      <div class="bullet-rows" id="b-synth"></div>
+      <button class="add-bullet" onclick="addBullet('b-synth')">+ Add point</button>
+    </div>
+    <div class="bullet-field">
+      <div class="bullet-prompt">My answer to the myth — confirmed / refuted / more complex than assumed?</div>
+      <div class="bullet-rows" id="b-answer"></div>
+      <button class="add-bullet" onclick="addBullet('b-answer')">+ Add point</button>
+    </div>
+    <div class="bullet-field">
+      <div class="bullet-prompt">Implications for educational practice or further research:</div>
+      <div class="bullet-rows" id="b-impl"></div>
+      <button class="add-bullet" onclick="addBullet('b-impl')">+ Add point</button>
+    </div>
+    <div class="bullet-field">
+      <div class="bullet-prompt">Open questions worth pursuing beyond this paper:</div>
+      <div class="bullet-rows" id="b-open"></div>
+      <button class="add-bullet" onclick="addBullet('b-open')">+ Add question</button>
+    </div>
+
+    <div class="nav-bar">
+      <button class="btn-nav btn-back" onclick="goTo(3)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+        Block 2b
+      </button>
+      <div class="nav-right">
+        <div class="nav-buttons">
+          <button class="btn-save" onclick="downloadBlock(4)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Save Block 3 as PDF
+          </button>
+          <button class="btn-download-all" onclick="downloadBlock(0)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download all as PDF
+          </button>
+        </div>
+        <span class="nav-hint">Answers are not saved anywhere — download before closing the page.</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const ratings = {};
+const bullets = {};
+const BULLET_IDS = ['b-central','b-nuance','b-conn','b-gaps','b-revisit','b-synth','b-answer','b-impl','b-open'];
+const TEXT_IDS = ['s-evidence','s-nuance','s-open','s-practice'];
+const RATING_IDS = ['r1a','r1b','r1c','r2a','r2b','r2c','r3a','r3b','r3c','r4a','r4b','r4c'];
+const SCALE = ['Not yet','Beginning','Developing','Confident'];
+const SCALE_COLORS = ['#E24B4A','#EF9F27','#1D9E75','#534AB7'];
+let currentPage = 0;
+
+BULLET_IDS.forEach(id => { bullets[id] = ['']; });
+
+function renderBullets(id) {
+  const container = document.getElementById(id);
+  if (!container) return;
+  container.innerHTML = '';
+  (bullets[id] || ['']).forEach((val, i) => {
+    const row = document.createElement('div');
+    row.className = 'bullet-row';
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.value = val;
+    inp.addEventListener('input', e => { bullets[id][i] = e.target.value; updateProgress(); });
+    row.innerHTML = '<span class="bullet-marker">•</span>';
+    row.appendChild(inp);
+    container.appendChild(row);
+  });
+}
+function addBullet(id) {
+  if (!bullets[id]) bullets[id] = [];
+  bullets[id].push('');
+  renderBullets(id);
+  const inputs = document.getElementById(id).querySelectorAll('input');
+  if (inputs.length) inputs[inputs.length-1].focus();
+}
+BULLET_IDS.forEach(id => renderBullets(id));
+
+document.querySelectorAll('.rating-options').forEach(group => {
+  group.querySelectorAll('.rating-btn').forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      const id = group.getAttribute('data-id');
+      ratings[id] = i;
+      group.querySelectorAll('.rating-btn').forEach((b, j) => {
+        b.className = 'rating-btn' + (j === i ? ' sel-'+j : '');
+      });
+      updateProgress();
+    });
+  });
+});
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+  updateProgress();
+}
+TEXT_IDS.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', () => autoResize(el));
+});
+
+function updateProgress() {
+  const rDone = RATING_IDS.filter(id => ratings[id] !== undefined).length;
+  const tDone = TEXT_IDS.filter(id => (document.getElementById(id)||{}).value?.trim()).length;
+  const bDone = ['b-central','b-answer'].filter(id => (bullets[id]||[]).some(v=>v.trim())).length;
+  const total = RATING_IDS.length + TEXT_IDS.length + 2;
+  const pct = Math.round((rDone + tDone + bDone) / total * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = pct + '%';
+  renderDots();
+}
+
+function renderDots() {
+  const labels = ['Overview','Block 1','Block 2a','Block 2b','Block 3'];
+  document.getElementById('step-dots').innerHTML = labels.map((l, i) =>
+    `<div class="step-dot ${i === currentPage ? 'active' : (i < currentPage ? 'done' : '')}" onclick="goTo(${i})" title="${l}">${i === 0 ? '◆' : i}</div>`
+  ).join('');
+}
+
+function goTo(n) {
+  document.querySelectorAll('.page').forEach((p, i) => p.classList.toggle('active', i === n));
+  currentPage = n;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  renderDots();
+}
+renderDots();
+
+function getBullets(id) {
+  return (bullets[id]||[]).filter(v=>v.trim()).map(v=>'• '+v).join('\n') || '—';
+}
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+function tv(id){ return esc((document.getElementById(id)||{}).value?.trim()||'—'); }
+
+function pdfHeader(name, myth) {
+  return `<div style="font-size:10px;color:#aaa;letter-spacing:.04em;margin-bottom:4px">SoSe 2026 · Educational Myths · Independent work session</div>
+<h1 style="font-size:18px;font-weight:600;margin-bottom:2px">${esc(name)}</h1>
+<div style="font-size:12px;color:#777;margin-bottom:24px">Myth / topic: ${esc(myth)}</div>`;
+}
+
+function sectionHead(num, color, title) {
+  return `<div style="display:flex;align-items:center;gap:8px;margin:20px 0 12px;padding-bottom:8px;border-bottom:2px solid #e8e7e2">
+    <span style="font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:${color};background:${color}18;border:1px solid ${color};border-radius:20px;padding:3px 10px">${num}</span>
+    <span style="font-size:14px;font-weight:600;color:#1a1a18">${title}</span></div>`;
+}
+
+function bField(label, id) {
+  return `<div style="margin-bottom:12px">
+    <div style="font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">${label}</div>
+    <div style="font-size:13px;color:#1a1a18;line-height:1.7;white-space:pre-wrap">${esc(getBullets(id))}</div></div>`;
+}
+function sField(label, id) {
+  return `<div style="margin-bottom:12px;border:1px solid #ddd;border-radius:6px;padding:10px 12px">
+    <div style="font-size:11px;color:#999;font-style:italic;margin-bottom:5px">${label}</div>
+    <div style="font-size:13px;color:#1a1a18;line-height:1.65">${tv(id)}</div></div>`;
+}
+
+const cHeaders = [
+  ['Criterion 1','Structure &amp; problem statement','#534AB7'],
+  ['Criterion 2','Theory &amp; sources','#085041'],
+  ['Criterion 3','Methodology &amp; argumentation','#633806'],
+  ['Criterion 4','Formal &amp; linguistic presentation','#712B13'],
+];
+const criteriaIds = [['r1a','r1b','r1c'],['r2a','r2b','r2c'],['r3a','r3b','r3c'],['r4a','r4b','r4c']];
+const criteriaLabels = [
+  ['My myth is clearly and precisely formulated as a researchable question.',
+   'My paper / presentation follows the three-part structure: identification → deconstruction → conclusion.',
+   'My introduction and conclusion are aligned around the same central question.'],
+  ['I have identified the key concepts and theories relevant to my myth.',
+   'I am synthesising my sources, not just listing or summarising them.',
+   'My sources are current, academically rigorous, and sufficient in breadth.'],
+  ['My argumentation engages with counter-evidence, not just confirming evidence.',
+   'My myth is scoped precisely enough to be supported by the evidence I have found.',
+   'I draw independent, well-reasoned conclusions from the literature rather than reproducing it.'],
+  ['My citation practice is consistent and complete.',
+   'My academic writing / presentation style is clear, precise, and objective.',
+   'I have documented my use of AI tools according to the seminar guidelines.'],
+];
+
+function block1HTML() {
+  return cHeaders.map((ch, ci) => `
+    <div style="margin-bottom:14px;border:1px solid #ddd;border-radius:8px;overflow:hidden">
+      <div style="padding:8px 12px;background:#f5f4f0;border-bottom:1px solid #ddd;display:flex;align-items:center;gap:8px">
+        <span style="font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:${ch[2]};background:${ch[2]}18;border:1px solid ${ch[2]};border-radius:20px;padding:2px 8px">${ch[0]}</span>
+        <span style="font-size:12px;font-weight:600">${ch[1]}</span></div>
+      <table style="width:100%;border-collapse:collapse">
+        ${criteriaIds[ci].map((rid,si)=>{
+          const val=ratings[rid]; const color=val!==undefined?SCALE_COLORS[val]:'#ccc'; const lbl=val!==undefined?SCALE[val]:'—';
+          return `<tr><td style="padding:6px 12px;font-size:12px;color:#333;border-bottom:1px solid #f0f0ee;width:78%">${criteriaLabels[ci][si]}</td>
+            <td style="padding:6px 12px;text-align:right;border-bottom:1px solid #f0f0ee;white-space:nowrap"><span style="background:${color}22;color:${color};border:1px solid ${color};border-radius:4px;padding:2px 8px;font-size:10px;font-weight:700">${lbl}</span></td></tr>`;
+        }).join('')}
+      </table></div>`).join('');
+}
+
+function block2aHTML() {
+  return bField('Central findings synthesised from literature','b-central') +
+    bField('A finding that complicates or nuances the picture','b-nuance') +
+    bField('Connections between findings','b-conn') +
+    bField('What I have not yet sufficiently addressed','b-gaps');
+}
+function block2bHTML() {
+  return sField('My myth states that… The evidence I have found suggests that…','s-evidence') +
+    sField('The picture is more nuanced because…','s-nuance') +
+    sField('One aspect I cannot yet answer with confidence is…','s-open') +
+    sField('For educational practice, this means…','s-practice');
+}
+function block3HTML() {
+  return bField('Revisiting the myth question from the introduction','b-revisit') +
+    bField('Key synthesis from the deconstruction','b-synth') +
+    bField('My answer to the myth','b-answer') +
+    bField('Implications for educational practice or further research','b-impl') +
+    bField('Open questions worth pursuing','b-open');
+}
+
+function wrapPDF(body, name, myth) {
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Self-Reflection — ${esc(name)}</title>
+<style>body{font-family:-apple-system,Helvetica,Arial,sans-serif;max-width:700px;margin:0 auto;padding:32px 28px 48px;color:#1a1a18;font-size:13px;line-height:1.6}
+.footer{margin-top:32px;font-size:10px;color:#ccc;border-top:1px solid #eee;padding-top:10px}</style>
+</head><body>${pdfHeader(name,myth)}${body}
+<div class="footer">Generated ${new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'})} · SoSe 2026 · Köstler — Educational Myths</div>
+</body></html>`;
+}
+
+function downloadBlock(blockNum) {
+  const name = document.getElementById('f-name').value.trim() || 'Student';
+  const myth = document.getElementById('f-myth').value.trim() || '—';
+  let body = '';
+  if (blockNum === 0) {
+    body = sectionHead('Block 1','#534AB7','Where do I stand? — Self-assessment') + block1HTML() +
+           sectionHead('Block 2a','#085041','Stocktaking — What has my deconstruction yielded so far?') + block2aHTML() +
+           sectionHead('Block 2b','#633806','The step to conclusion — What does this mean for my myth?') + block2bHTML() +
+           sectionHead('Block 3','#712B13','Conclusion outline') + block3HTML();
+  } else if (blockNum === 1) {
+    body = sectionHead('Block 1','#534AB7','Where do I stand? — Self-assessment') + block1HTML();
+  } else if (blockNum === 2) {
+    body = sectionHead('Block 2a','#085041','Stocktaking — What has my deconstruction yielded so far?') + block2aHTML();
+  } else if (blockNum === 3) {
+    body = sectionHead('Block 2b','#633806','The step to conclusion — What does this mean for my myth?') + block2bHTML();
+  } else if (blockNum === 4) {
+    body = sectionHead('Block 3','#712B13','Conclusion outline') + block3HTML();
+  }
+  const w = window.open('','_blank');
+  if (!w){ alert('Please allow pop-ups to download your PDF.'); return; }
+  w.document.write(wrapPDF(body, name, myth));
+  w.document.close();
+  w.focus();
+  setTimeout(()=>{ w.print(); }, 450);
+}
+</script>
+</body>
+</html>
